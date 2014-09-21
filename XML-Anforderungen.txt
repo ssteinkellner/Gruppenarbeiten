@@ -1,0 +1,7 @@
+1.) Benötigte Teile als Strings
+2.) Pfad der Logdateien
+3.) Pfad der Teile und Auslieferung
+4.) Name der Dateien als String
+5.) Anzahl der zufälligen Zahlen, eines Bestandteils
+6.) Maximaler Wert der zufälligen Zahlen des Bestandteils
+7.) Trennzeichen der zufälligen Zahlen des Bestandteils
