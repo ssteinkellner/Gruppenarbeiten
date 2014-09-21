@@ -27,4 +27,9 @@ public class Mitarbeiter implements Runnable, Watchable {
 		
 	}
 
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
