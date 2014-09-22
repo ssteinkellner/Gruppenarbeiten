@@ -1,0 +1,9 @@
+1.) Benötigte Teile
+2.) Pfad
+	- der Logdateien
+	- der Teile
+	- der Auslieferung
+3.) Name der Dateien
+4.) Anzahl der zufälligen Zahlen, eines Bestandteils
+5.) Maximaler Wert der zufälligen Zahlen des Bestandteils
+6.) Trennzeichen der zufälligen Zahlen des Bestandteils

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Config>
+	<Threadee>
+		<Part type="body"	count="1"/>
+		<Part type="chain"	count="1"/>
+		<Part type="arm"	count="2"/>
+		<Part type="eye"	count="2"/>
+	</Threadee>
+	<Files>
+		<folder type="log"	path="" />
+		<folder type="parts" path="" />
+		<folder type="done" path="" />
+		<file type="body"	name="rumpf.csv"/>
+		<file type="chain"	name="kette.csv"/>
+		<file type="arm"	name="arm.csv"/>
+		<file type="eye"	name="auge.csv"/>
+	</Files>
+	<Lieferant>
+		<random min="0" max="20" />
+		<list count="20" delimiter=";" />
+	</Lieferant>
+</Config>
