@@ -1,5 +1,7 @@
 package tgm.sew.hit.roboterfabrik;
 
+import java.util.concurrent.ExecutorService;
+
 import tgm.sew.hit.roboterfabrik.statisch.Dateizugriff;
 import tgm.sew.hit.roboterfabrik.statisch.Bauplan;
 
@@ -11,9 +13,9 @@ public class Sekretariat {
 
 	private ExecutorService employees;
 
-	protected Dateizugriff store;
+	private Dateizugriff store;
 
-	protected Bauplan buildingplan;
+	private Bauplan buildingplan;
 
 	private int runTime;
 
@@ -27,6 +29,10 @@ public class Sekretariat {
 
 	public synchronized int getNewProductId() {
 		return 0;
+	}
+
+	public ExecutorService getEmployees() {
+		return null;
 	}
 
 }

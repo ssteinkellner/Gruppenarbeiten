@@ -2,15 +2,13 @@ package tgm.sew.hit.roboterfabrik.arbeiter;
 
 import tgm.sew.hit.roboterfabrik.Sekretariat;
 
-public abstract class Mitarbeiter implements Runnable, Runnable {
+public abstract class Mitarbeiter implements Runnable {
 
 	private int id;
 
 	protected Sekretariat sekretariat;
 
-	private ExecutorService employees;
-
-	public Mitarbeiter(Sekretariat sekretariat, ExecutorService employees) {
+	public Mitarbeiter(Sekretariat sekretariat) {
 
 	}
 
