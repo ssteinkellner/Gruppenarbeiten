@@ -11,15 +11,23 @@ public class Lieferant extends Mitarbeiter {
 	}
 
 	public void changePart() {
-
+		String[] parts = Bauplan.getParts();
+		int random = (int) (Math.random() * parts.length);
+		this.currentPart = parts[random];
 	}
 
 	public String getRandomLine() {
-		return null;
+		String part = currentPart;
+        for (int i = 0; i < Bauplan.getPartLength(); i++) {
+            part += Bauplan.getDelimiter() + (int) (Math.random() * Bauplan.getMaxRandomNumber() + 1);  
+        }
+        return part;
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
+		while(!this.sekretariat.getEmployees().isShutdown()) {
+			
+		}
 		
 	}
 
