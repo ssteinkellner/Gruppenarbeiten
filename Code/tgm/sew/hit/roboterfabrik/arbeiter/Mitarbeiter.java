@@ -2,15 +2,15 @@ package tgm.sew.hit.roboterfabrik.arbeiter;
 
 import tgm.sew.hit.roboterfabrik.Sekretariat;
 
-public class Mitarbeiter implements Runnable, Watchable {
+public abstract class Mitarbeiter implements Runnable, Runnable {
 
 	private int id;
 
 	protected Sekretariat sekretariat;
 
-	private int keepGoing;
+	private ExecutorService employees;
 
-	public Mitarbeiter(Sekretariat sekretariat) {
+	public Mitarbeiter(Sekretariat sekretariat, ExecutorService employees) {
 
 	}
 
@@ -20,16 +20,6 @@ public class Mitarbeiter implements Runnable, Watchable {
 
 	public void setId(int id) {
 
-	}
-
-	public void shutdown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void run() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
