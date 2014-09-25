@@ -14,14 +14,45 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		super(sekretariat);
 	}
 
-	public String[] getAllParts() {
-		return null;
+	private boolean getAllParts() {
+		String[] needParts = Bauplan.getParts();
+		String[] parts;
+		String part;
+		for (int i = 0; i < needParts.length; i++) {
+			parts = this.lagermitarbeiter.getParts(parts[i], Bauplan.getPartCount(parts[i]));
+			Log.add("Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
+			for (int j = 0; j < parts.length; j++) {
+				part = parts[i];
+				if (part != null) {
+					this.parts[i]=part;
+				} else {
+					this.lagermitarbeiter.addParts(this.parts);
+					Log.add("Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurück: " + getConcatElements(this.parts));
+					Thread.sleep(100);
+					this.wait(this.lagermitarbeiter);
+					return false;
+				}
+			}
+		}
+		
 	}
 
-
+	private String getConcatElements(String[] array) {
+		String concatParts = "";
+		for (int i = 0; i < array.length-1;i++) {
+			if (array[i] != null) {
+				concatParts += array[i] + Bauplan.getDelimiter;
+			}
+		}
+		//concatParts += this.parts[this.parts.length-1];
+		return concatParts;
+	}
 	
 	private void deliverProduct() {
-		auslagerung.addLines(sekretariat.getBuildingplan().getDeliverPath, parts);
+		auslagerung.addLines(sekretariat.getBuildingplan().getDeliverPath, this.parts);
+		getConcatElements(this.parts);
+		Log.add(Bauplan.getName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId() + ", " + concatParts); 
+		this.parts = null;
 	}
 	
 	private int[] getIntArray(String part) {
@@ -71,7 +102,8 @@ public class Montagemitarbeiter extends Mitarbeiter {
                 counter--;
             }  
         } while (goOn);
-		String finishedPart = substring(0, sekretariat.getBuildingplan().getDelimiter());
+		String finishedPart = part.substring(0, sekretariat.getBuildingplan().getDelimiter());
+		finishedPart += concatParts(numbers);
 		for (int j = 0; j<numbers.length -2; j++) {
 			finishedPart += numbers[j] + sekretariat.getBuildingplan().getDelimiter();
 		}
@@ -83,7 +115,12 @@ public class Montagemitarbeiter extends Mitarbeiter {
 
 	public void run() {
 		while(!this.sekretariat.getEmployees().isShutdown()) {
-			
+			if (getAllParts()) {
+				for (int i = 0; i < this.parts.length;i++) {
+					parts[i] = sortPart(parts[i]);
+				}
+				deliverProduct();
+			}
 		}
 		
 	}

@@ -1,5 +1,7 @@
 package tgm.sew.hit.roboterfabrik.arbeiter;
 
+import java.util.Random;
+
 import tgm.sew.hit.roboterfabrik.Sekretariat;
 
 public class Lieferant extends Mitarbeiter {
@@ -12,21 +14,30 @@ public class Lieferant extends Mitarbeiter {
 
 	public void changePart() {
 		String[] parts = Bauplan.getParts();
-		int random = (int) (Math.random() * parts.length);
+		int random = new Random().nextInt(parts.length);
 		this.currentPart = parts[random];
 	}
 
 	public String getRandomLine() {
+		if (new Random().nextInt(10)<1) {
+			changePart();
+		}
 		String part = currentPart;
         for (int i = 0; i < Bauplan.getPartLength(); i++) {
-            part += Bauplan.getDelimiter() + (int) (Math.random() * Bauplan.getMaxRandomNumber() + 1);  
+            part += Bauplan.getDelimiter() + new Random().nextInt(1, Bauplan.getMaxRandomNumber() + 1)+1;  
         }
         return part;
 	}
-
 	public void run() {
 		while(!this.sekretariat.getEmployees().isShutdown()) {
-			
+			String[] parts = null;
+			int counter = 0;
+			do {
+				parts[counter] = getRandomLine();
+				counter++;
+			}
+			while(new Random().nextInt(20)<1);
+			this.lagermitarbeiter.addParts(parts);
 		}
 		
 	}
