@@ -2,7 +2,9 @@ package tgm.sew.hit.roboterfabrik.arbeiter;
 
 import java.util.Random;
 
+import oracle.jrockit.jfr.tools.ConCatRepository;
 import tgm.sew.hit.roboterfabrik.Sekretariat;
+import tgm.sew.hit.roboterfabrik.statisch.Log;
 /**
  * 
  * @author Martin Kritzl
@@ -31,7 +33,27 @@ public class Lieferant extends Mitarbeiter {
 		String[] parts = Bauplan.getParts();
 		int random = new Random().nextInt(parts.length);
 		this.currentPart = parts[random];
+		Log.add("Lieferant " + this.getId() + ": Habe Art des Teils auf " + this.currentPart + " geaendert");
 	}
+	
+	/**
+	 * 
+	 * @param array Ein array gefuellt mit Strings
+	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit dem im Bauplan
+	 * 			festgelegten Trennzeichen, beeinhaltet
+	 */
+	
+	private String getConcatElements(String[] array) {
+		String concatParts = "";
+		for (int i = 0; i < array.length-1;i++) {
+			if (array[i] != null) {
+				concatParts += array[i] + Bauplan.getDelimiter();
+			}
+		}
+		//concatParts += this.parts[this.parts.length-1];
+		return concatParts;
+	}
+	
 
 	/**Gibt einen String zurueck, der einen Part repraesentiert
 	 * 
@@ -64,6 +86,7 @@ public class Lieferant extends Mitarbeiter {
 			}
 			while(new Random().nextInt(20)<1);
 			this.lagermitarbeiter.addParts(parts);
+			Log.add("Lieferant " + this.getId() + ": Habe folgende Teile dem Lagermitarbeiter uebergeben: " + getConcatElements(parts));
 		}
 		
 	}
