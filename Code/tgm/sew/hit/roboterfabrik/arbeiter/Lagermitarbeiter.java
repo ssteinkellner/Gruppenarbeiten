@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.LinkedList;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 import tgm.sew.hit.roboterfabrik.Sekretariat;
 
@@ -23,6 +25,8 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
 
 public class Lagermitarbeiter extends Mitarbeiter {
 
+	private static final Logger logger = Logger.getLogger("Ablauf");
+	
 	/**
 	 * Dem Lagermitarbeiter wird wie jedem anderen Mitarbeiter eine ID zugewiesen.
 	 * @param sekretariat sorgt fuer die Zuweisung der ID
@@ -47,6 +51,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 		int i=0;
 		
 		try {
+			
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
@@ -62,13 +67,22 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			}
 			
 			Iterator<String> it = writeBack.iterator();
-			while(it.hasNext()){
+			while(it.hasNext()) {
 				raf.writeUTF(it.next());
 			}
+			
+			raf.close();
+			
+			logger.log(Level.INFO, "Der Part" + part + " wurde " + count + " mal hergegeben");
+		
 		} catch (FileNotFoundException fne) {
-			fne.printStackTrace();
+			
+			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
+			
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			
+			logger.log(Level.ERROR, "IO Fehler");
+			
 		}
 		
 		return null;
@@ -85,6 +99,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 		String fileName = Sekretariat.getBauplan().getFile(part);
 		
 		try {
+			
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
@@ -96,10 +111,19 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			for(int i=0;i<parts.length;i++){
 				raf.writeUTF(parts[i]);
 			}
+			
+			raf.close();
+			
+			logger.log(Level.INFO, part + " wurde gelagert");
+			
 		} catch (FileNotFoundException fne) {
-			fne.printStackTrace();
+			
+			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
+			
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			
+			logger.log(Level.ERROR, "IO Fehler");
+			
 		}
 	}
 
