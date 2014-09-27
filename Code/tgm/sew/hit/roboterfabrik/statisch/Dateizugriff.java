@@ -7,6 +7,8 @@ import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import tgm.sew.hit.roboterfabrik.Sekretariat;
+
 /**
  * Klasse zum allgemeinen zugriff auf files
  * @author Steinkellner Sebastian
@@ -15,7 +17,7 @@ import java.util.LinkedList;
 public class Dateizugriff {
 
 	public synchronized String[] extractLines(String part, int count) {
-		String fileName = Bauplan.getFile(part);
+		String fileName = Sekretariat.getBauplan().getFile(part);
 		String[] lines = new String[count];
 		LinkedList<String> writeBack = new LinkedList<String>();
 		int i=0;
@@ -49,7 +51,7 @@ public class Dateizugriff {
 	}
 
 	public synchronized void addLines(String part, String[] parts) {
-		String fileName = Bauplan.getFile(part);
+		String fileName = Sekretariat.getBauplan().getFile(part);
 		
 		try {
 			File f = new File(fileName);

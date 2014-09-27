@@ -19,7 +19,7 @@ public class Sekretariat {
 
 	private ExecutorService employees;
 	private Dateizugriff store;
-	private Bauplan buildingplan;
+	private static Bauplan buildingplan;
 
 	private int runTime;
 
@@ -52,4 +52,7 @@ public class Sekretariat {
 		return employees;
 	}
 
+	public static Bauplan getBauplan(){
+		return buildingplan;
+	}
 }

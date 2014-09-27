@@ -14,31 +14,36 @@ public class Simulation {
 	}
 	
 	public Simulation(String[] parameter){
-		int[] temp = new int[3];
-		
+		int[] tempi = new int[3];
+		String[] temps = new String[2];
 		
 		for(int i=0;i<parameter.length;i++){
 			if(parameter[i].equalsIgnoreCase("--lager")){
 				stopIfNoValue(parameter, i);
-				
+				i++;
+				temps[0] = parameter[i];
 			}else if(parameter[i].equalsIgnoreCase("--logs")){
 				stopIfNoValue(parameter, i);
-				
-			}else if(parameter[i].equalsIgnoreCase("--lieferanten")){
-				stopIfNoValue(parameter, i);
-				
-			}else if(parameter[i].equalsIgnoreCase("--monteure")){
-				stopIfNoValue(parameter, i);
-				
+				i++;
+				temps[1] = parameter[i];
 			}else if(parameter[i].equalsIgnoreCase("--laufzeit")){
 				stopIfNoValue(parameter, i);
-				
+				i++;
+				tempi[0] = Integer.parseInt(cutNumbers(parameter[i]));
+			}else if(parameter[i].equalsIgnoreCase("--lieferanten")){
+				stopIfNoValue(parameter, i);
+				i++;
+				tempi[0] = Integer.parseInt(cutNumbers(parameter[i]));
+			}else if(parameter[i].equalsIgnoreCase("--monteure")){
+				stopIfNoValue(parameter, i);
+				i++;
+				tempi[0] = Integer.parseInt(cutNumbers(parameter[i]));
 			}
 		}
 		
-		sekreteriat = new Sekretariat(0, 0, 0);
-//		sekretariat.getBauplan().setLogPath();
-//		sekretariat.getBauplan().setFilePath();
+		sekreteriat = new Sekretariat(tempi[0], tempi[1], tempi[2]);
+		sekreteriat.getBauplan().setPartPath(temps[0]);
+		sekreteriat.getBauplan().setLogPath(temps[1]);
 	}
 
 	
@@ -46,5 +51,9 @@ public class Simulation {
 		if(parameter[index+1].toLowerCase().startsWith("--")){
 			throw(new IllegalArgumentException("Nach "+parameter[index]+" muss ein Wert folgen. kein anderer --.*"));
 		}
+	}
+	
+	private String cutNumbers(String text){
+		return text.replaceAll("[^0-9]", "");
 	}
 }
