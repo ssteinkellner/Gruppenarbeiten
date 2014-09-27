@@ -27,7 +27,7 @@ public abstract class Mitarbeiter implements Runnable {
 	}
 
 	/**
-	 * Eine getter-Methode wird erstellt, die die aktuelle ID des jeweiligen Mitarbeiters herausliest.
+	 * Eine getter-Methode wird erstellt, die die aktuelle ID des jeweiligen Mitarbeiters herausliest
 	 * @return aktuelle ID
 	 */
 	

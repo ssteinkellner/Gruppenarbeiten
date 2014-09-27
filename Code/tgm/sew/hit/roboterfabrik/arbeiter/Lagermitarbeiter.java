@@ -12,7 +12,7 @@ import tgm.sew.hit.roboterfabrik.statisch.Log;
  * 
  * Der Lagermitarbeiter verwaltet regelmaeßig den Ein- und Ausgang des Lagers. Entweder soll der Lagermitarbeiter neue Teile vom Lieferanten einlagern oder
  * dem Montagemitarbeiter bestimmte Teile uebergeben. Falls er dem Montagemitarbeiter zu wenige Teile fuer den Zusammenbau eines Threadees gibt, muss er
- * die Teile wieder annehmen und dem Montagemitarbeiter erneut Teile uebergeben.
+ * die Teile wieder annehmen und dem Montagemitarbeiter erneut Teile uebergeben
  * 
  * @author Stefan Erceg
  * @version 20140927
