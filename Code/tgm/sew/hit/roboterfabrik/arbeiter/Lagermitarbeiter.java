@@ -1,18 +1,20 @@
 package tgm.sew.hit.roboterfabrik.arbeiter;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import tgm.sew.hit.roboterfabrik.Sekretariat;
-import tgm.sew.hit.roboterfabrik.statisch.Bauplan;
-import tgm.sew.hit.roboterfabrik.statisch.Log;
 
 /**
  * 
- * Der Lagermitarbeiter verwaltet regelmaeßig den Ein- und Ausgang des Lagers. Entweder soll der Lagermitarbeiter neue Teile vom Lieferanten einlagern oder
- * dem Montagemitarbeiter bestimmte Teile uebergeben. Falls er dem Montagemitarbeiter zu wenige Teile fuer den Zusammenbau eines Threadees gibt, muss er
- * die Teile wieder annehmen und dem Montagemitarbeiter erneut Teile uebergeben
+ * Der Lagermitarbeiter verwaltet regelmaeßig den Ein- und Ausgang des Lagers. Entweder soll der Lagermitarbeiter 
+ * neue Teile vom Lieferanten einlagern oder dem Montagemitarbeiter bestimmte Teile uebergeben. Falls er dem 
+ * Montagemitarbeiter zu wenige Teile fuer den Zusammenbau eines Threadees gibt, muss er die Teile wieder annehmen und 
+ * dem Montagemitarbeiter erneut Teile uebergeben.
  * 
  * @author Stefan Erceg
  * @version 20140927
@@ -31,51 +33,77 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	}
 	
 	/**
-	 * 
-	 * @param part
-	 * @param count
+	 * liefert dem Lagermitarbeiter die angeforderten Teile
+	 * @param part Bestandteil, welcher angefordert wird
+	 * @param count Anzahl des Bestandteils
 	 * @return
 	 */
 	
 	public String[] getParts(String part, int count) {
-		File f=new File(Bauplan.getLogPath()+File.separator+part.toLowerCase()+".csv");
-		Log.add("Das Bestandteil " + part + " wurde " + count + "mal hergegeben");
-		BufferedReader br = new BufferedReader(new FileReader(f));
+		
+		String fileName = Sekretariat.getBauplan().getFile(part);
+		String[] lines = new String[count];
+		LinkedList<String> writeBack = new LinkedList<String>();
+		int i=0;
+		
 		try {
-			String line = br.readLine();
-            br.close();
-            if (line == null || line.equals("")) {
-                return null;
-            }
-            removeLine(f);
-            String[] werte = line.split(",");
-            for (int a = 1; a < werte.length; a++) {
-                li.add(Integer.parseInt(werte[a]));
-            }
-            return new Teil(t,li);
-        } catch (FileNotFoundException ex) {
-            logger.log(Level.ERROR, "File wurde nicht gefunden");
-        } catch (IOException ex) {
-            logger.log(Level.ERROR, "Fehler beim bearbeiten der Datei");
-        }
-		return new String(part,count);
+			File f = new File(fileName);
+			RandomAccessFile raf = new RandomAccessFile(f, "rw");
+			
+			String line = raf.readLine();
+			while(line != null){
+				line = raf.readLine();
+				if(i<lines.length){
+					lines[i]=line;
+					i++;
+				}else{
+					writeBack.add(line);
+				}
+			}
+			
+			Iterator<String> it = writeBack.iterator();
+			while(it.hasNext()){
+				raf.writeUTF(it.next());
+			}
+		} catch (FileNotFoundException fne) {
+			fne.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		
+		return null;
+
+	}
+	
+	/**
+	 * fügt die Bestandteile vom Lieferanten und die zurückgegebenen Teile vom Montagemitarbeiter ins Lager hinzu
+	 * @param parts Bestandteile, die ins Lager eingelagert werden sollen
+	 */
+
+	public void addParts(String part, String[] parts) {
+		
+		String fileName = Sekretariat.getBauplan().getFile(part);
+		
+		try {
+			File f = new File(fileName);
+			RandomAccessFile raf = new RandomAccessFile(f, "rw");
+			
+			// ans ende der datei laufen
+			String line = raf.readLine();
+			while(line != null){ line = raf.readLine(); }
+			
+			//zeilen dazuschreiben
+			for(int i=0;i<parts.length;i++){
+				raf.writeUTF(parts[i]);
+			}
+		} catch (FileNotFoundException fne) {
+			fne.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 	}
-	
-	/**
-	 * 
-	 * @param parts
-	 */
 
-	public void addParts(String[] parts) {
-		File f=new File(Bauplan.getLogPath()+File.separator+parts[i].toLowerCase()+".csv");
-		
-	}
-
-	/**
-	 * 
-	 */
-	
+	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		
