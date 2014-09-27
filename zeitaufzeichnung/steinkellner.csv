@@ -1,5 +1,7 @@
-Arbeit	Datum	Zeit
-UML	11.09.2014	60
-UML	17.09.2014	70
-UML	23.09.2014	15
-Arbeitseinteilung	24.09.2014	30
+Arbeit;Datum;Zeit
+UML;11.09.2014;60
+UML;17.09.2014;70
+UML;23.09.2014;15
+Arbeitseinteilung;24.09.2014;30
+Bauplan,Sekretariat,Programmparameterprüfung;25.09.2014;80
+Dateizugriff;27.09.2014;60

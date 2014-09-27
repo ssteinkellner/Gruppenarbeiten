@@ -10,11 +10,11 @@ import java.util.HashMap;
  */
 public class Bauplan {
 
-	private volatile HashMap<String,Integer> parts;
-	private volatile HashMap<String,String> files;
+	private static  HashMap<String,Integer> parts;
+	private static HashMap<String,String> files;
 	
-	private volatile String logPath;
-	private volatile String partPath;
+	private static String logPath;
+	private static String partPath;
 
 	/**
 	 * erzeugt einen neuen Bauplan mit default-configuration
@@ -35,7 +35,7 @@ public class Bauplan {
 	 * @param name name des teils (sollte mit file uebereinstimmen)
 	 * @param count anzahl, die fuer einen Roboter gebruahct wird
 	 */
-	public void setPartCount(String name, int count) {
+	public static void setPartCount(String name, int count) {
 		if(parts.containsKey(name)){
 			parts.remove(name);
 		}
@@ -47,7 +47,7 @@ public class Bauplan {
 	 * @param name name des Teils (sollte mit part uebereinstimmen)
 	 * @param fileName name des Files
 	 */
-	public void setFile(String name, String fileName) {
+	public static void setFile(String name, String fileName) {
 		if(files.containsKey(name)){
 			files.remove(name);
 		}
@@ -58,7 +58,7 @@ public class Bauplan {
 	 * setzt den masterpfad fuers Loggen
 	 * @param path pfad zur datei
 	 */
-	public void setLogPath(String path) {
+	public static void setLogPath(String path) {
 		logPath = path;
 	}
 
@@ -66,7 +66,7 @@ public class Bauplan {
 	 * setzt den masterpfad fuer parts
 	 * @param path pfad zur datei
 	 */
-	public void setPartPath(String path) {
+	public static void setPartPath(String path) {
 		partPath = path;
 	}
 
@@ -75,7 +75,7 @@ public class Bauplan {
 	 * @param name name des teils
 	 * @return benoetigte Anzahl
 	 */
-	public synchronized int getPartCount(String name) {
+	public static synchronized int getPartCount(String name) {
 		if(parts.containsKey(name)){
 			return parts.get(name);
 		}
@@ -87,7 +87,7 @@ public class Bauplan {
 	 * @param name name des teils
 	 * @return pfad & Dateiname fuer teile
 	 */
-	public synchronized String getFile(String name) {
+	public static synchronized String getFile(String name) {
 		if(files.containsKey(name)){
 			return partPath + files.get(name);
 		}
@@ -98,7 +98,7 @@ public class Bauplan {
 	 * gibt den Masterpfad (und falls ergaenzt auch den Dateinamen) des Logs zurueck
 	 * @return pfad fuer logs
 	 */
-	public synchronized String getLogPath() {
+	public static synchronized String getLogPath() {
 		return logPath;
 	}
 }
