@@ -1,5 +1,15 @@
 package tgm.sew.hit.roboterfabrik.statisch;
 
+/**
+ * 
+ * Die Klasse "Log"
+ * 
+ * @author Stefan Erceg
+ * @version1 20140925
+ * @version2 20140927
+ *
+ */
+
 public class Log {
 
 	private static Dateizugriff logFile;
