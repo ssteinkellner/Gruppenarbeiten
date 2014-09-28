@@ -2,9 +2,11 @@ package tgm.sew.hit.roboterfabrik.arbeiter;
 
 import java.util.Random;
 
-import oracle.jrockit.jfr.tools.ConCatRepository;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import tgm.sew.hit.roboterfabrik.Sekretariat;
-import tgm.sew.hit.roboterfabrik.statisch.Log;
+
 /**
  * 
  * @author Martin Kritzl
@@ -15,6 +17,8 @@ import tgm.sew.hit.roboterfabrik.statisch.Log;
 public class Lieferant extends Mitarbeiter {
 
 	private String currentPart;
+	
+	private static Logger logger;
 
 	/**Erzeugt einen neuen Lieferanten und legt einen zufaelligen zu erzeugenden Part fest
 	 * 
@@ -23,6 +27,7 @@ public class Lieferant extends Mitarbeiter {
 	public Lieferant(Sekretariat sekretariat) {
 		super(sekretariat);
 		changePart();
+		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
 	}
 	
 	/**
@@ -30,10 +35,10 @@ public class Lieferant extends Mitarbeiter {
 	 */
 
 	public void changePart() {
-		String[] parts = Bauplan.getParts();
+		String[] parts = this.sekretariat.getBauplan().getParts();
 		int random = new Random().nextInt(parts.length);
 		this.currentPart = parts[random];
-		Log.add("Lieferant " + this.getId() + ": Habe Art des Teils auf " + this.currentPart + " geaendert");
+		logger.log(Level.INFO, "Lieferant " + this.getId() + ": Habe Art des Teils auf " + this.currentPart + " geaendert");
 	}
 	
 	/**
@@ -47,7 +52,7 @@ public class Lieferant extends Mitarbeiter {
 		String concatParts = "";
 		for (int i = 0; i < array.length-1;i++) {
 			if (array[i] != null) {
-				concatParts += array[i] + Bauplan.getDelimiter();
+				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
 			}
 		}
 		//concatParts += this.parts[this.parts.length-1];
@@ -67,8 +72,8 @@ public class Lieferant extends Mitarbeiter {
 			changePart();
 		}
 		String part = currentPart;
-        for (int i = 0; i < Bauplan.getPartLength(); i++) {
-            part += Bauplan.getDelimiter() + new Random().nextInt(1, Bauplan.getMaxRandomNumber() + 1)+1;  
+        for (int i = 0; i < this.sekretariat.getBauplan().getPartLength(); i++) {
+            part += this.sekretariat.getBauplan().getDelimiter() + new Random().nextInt(1, this.sekretariat.getBauplan().getMaxRandomNumber() + 1)+1;  
         }
         return part;
 	}
@@ -85,8 +90,8 @@ public class Lieferant extends Mitarbeiter {
 				counter++;
 			}
 			while(new Random().nextInt(20)<1);
-			this.lagermitarbeiter.addParts(parts);
-			Log.add("Lieferant " + this.getId() + ": Habe folgende Teile dem Lagermitarbeiter uebergeben: " + getConcatElements(parts));
+			this.sekretariat.getLagermitarbeiter().addParts(parts);
+			logger.log(Level.INFO, "Lieferant " + this.getId() + ": Habe folgende Teile dem Lagermitarbeiter uebergeben: " + getConcatElements(parts));
 		}
 		
 	}

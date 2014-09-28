@@ -21,6 +21,7 @@ public class WatchDog implements Runnable{
 	 */
 	
 	public WatchDog(ExecutorService mitarbeiter, int runTime) {
+		this.time = new Thread(this);
 		this.time.start();
 	}
 	
