@@ -13,7 +13,7 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
 
 /**
  * 
- * Der Lagermitarbeiter verwaltet regelmaeßig den Ein- und Ausgang des Lagers. Entweder soll der Lagermitarbeiter 
+ * Der Lagermitarbeiter verwaltet regelmaessig den Ein- und Ausgang des Lagers. Entweder soll der Lagermitarbeiter 
  * neue Teile vom Lieferanten einlagern oder dem Montagemitarbeiter bestimmte Teile uebergeben. Falls er dem 
  * Montagemitarbeiter zu wenige Teile fuer den Zusammenbau eines Threadees gibt, muss er die Teile wieder annehmen und 
  * dem Montagemitarbeiter erneut Teile uebergeben.
@@ -24,8 +24,9 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
  */
 
 public class Lagermitarbeiter extends Mitarbeiter {
-
-	private static final Logger logger = Logger.getLogger("Ablauf");
+	
+	// Logger wird initialisiert
+	private static final Logger logger = Logger.getLogger("Arbeitsablauf");
 	
 	/**
 	 * Dem Lagermitarbeiter wird wie jedem anderen Mitarbeiter eine ID zugewiesen.
@@ -45,7 +46,9 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	
 	public String[] getParts(String part, int count) {
 		
+		// gewuenschte Datei, in die Zeilen hinzugefuegt werden sollen, wird uebergeben
 		String fileName = Sekretariat.getBauplan().getFile(part);
+		
 		String[] lines = new String[count];
 		LinkedList<String> writeBack = new LinkedList<String>();
 		int i=0;
@@ -55,17 +58,21 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
+			// Zeilen von der Datei werden durchgegangen
 			String line = raf.readLine();
-			while(line != null){
+			while(line != null) {
 				line = raf.readLine();
-				if(i<lines.length){
-					lines[i]=line;
+				// bestimmte Zeilen werden je nach Angabe der Anzahl des Bestandteils in ein String-Array geschrieben
+				if(i<lines.length) {
+					lines[i] = line;
 					i++;
-				}else{
+				// ansonsten wird die jeweilige Zeile zu einer LinkedList hinzugefuegt
+				} else {
 					writeBack.add(line);
 				}
 			}
 			
+			// der Inhalt der LinkedList wird in das RAF zurückgeschrieben
 			Iterator<String> it = writeBack.iterator();
 			while(it.hasNext()) {
 				raf.writeUTF(it.next());
@@ -73,8 +80,10 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			
 			raf.close();
 			
+			// Meldung ins Logfile hineinschreiben
 			logger.log(Level.INFO, "Der Part" + part + " wurde " + count + " mal hergegeben");
 		
+		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
 			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
@@ -90,12 +99,13 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	}
 	
 	/**
-	 * fügt die Bestandteile vom Lieferanten und die zurückgegebenen Teile vom Montagemitarbeiter ins Lager hinzu
+	 * fuegt die Bestandteile vom Lieferanten und die zurueckgegebenen Teile vom Montagemitarbeiter ins Lager hinzu
 	 * @param parts Bestandteile, die ins Lager eingelagert werden sollen
 	 */
 
 	public void addParts(String part, String[] parts) {
 		
+		// gewuenschte Datei, in die Zeilen hinzugefuegt werden sollen, wird uebergeben
 		String fileName = Sekretariat.getBauplan().getFile(part);
 		
 		try {
@@ -103,19 +113,23 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
-			// ans ende der datei laufen
+			// bis an das Ende der Datei laufen
 			String line = raf.readLine();
-			while(line != null){ line = raf.readLine(); }
+			while(line != null) { 
+				line = raf.readLine(); 
+			}
 			
-			//zeilen dazuschreiben
-			for(int i=0;i<parts.length;i++){
+			// Zeilen werden in die jeweilige Partdatei dazugeschrieben
+			for(int i=0;i<parts.length;i++) {
 				raf.writeUTF(parts[i]);
 			}
 			
 			raf.close();
 			
+			// Meldung ins Logfile hineinschreiben
 			logger.log(Level.INFO, part + " wurde gelagert");
-			
+		
+		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
 			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
