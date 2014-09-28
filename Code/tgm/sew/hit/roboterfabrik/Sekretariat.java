@@ -2,10 +2,11 @@ package tgm.sew.hit.roboterfabrik;
 
 import java.util.concurrent.ExecutorService;
 
+import tgm.sew.hit.roboterfabrik.arbeiter.Lagermitarbeiter;
 import tgm.sew.hit.roboterfabrik.arbeiter.Lieferant;
 import tgm.sew.hit.roboterfabrik.arbeiter.Montagemitarbeiter;
 import tgm.sew.hit.roboterfabrik.statisch.Bauplan;
-import tgm.sew.hit.roboterfabrik.statisch.Dateizugriff;
+import tgm.sew.hit.roboterfabrik.statisch.WatchDog;
 
 /**
  * Klasse zur verwaltung der Mitarbeiter
@@ -14,28 +15,28 @@ import tgm.sew.hit.roboterfabrik.statisch.Dateizugriff;
  */
 public class Sekretariat {
 
-	private volatile int lastWorkerId;
-	private volatile int lastProductId;
+	private int lastWorkerId;
+	private int lastProductId;
 
 	private ExecutorService employees;
-	private Dateizugriff store;
 	private static Bauplan buildingplan;
-
-	private int runTime;
+	private Lagermitarbeiter storeWorker;
 
 	public Sekretariat(int runTime, int countLieferant, int countMontage) {
 		lastWorkerId = 0;
 		lastProductId = 0;
 		
-		this.runTime = runTime;
+		buildingplan = new Bauplan("..");
 		
 		for(int i=0; i<countLieferant; i++){
-			Lieferant l = new Lieferant(this);
+			employees.execute(new Lieferant(this));
 		}
 		
 		for(int i=0; i<countMontage; i++){
-			Montagemitarbeiter m = new Montagemitarbeiter(this);
+			employees.execute(new Montagemitarbeiter(this));
 		}
+		
+		new WatchDog(employees, runTime);
 	}
 
 	public synchronized int getNewWorkerId() {
@@ -54,5 +55,9 @@ public class Sekretariat {
 
 	public static Bauplan getBauplan(){
 		return buildingplan;
+	}
+	
+	public Lagermitarbeiter getLagerMitarbeiter(){
+		return storeWorker;
 	}
 }

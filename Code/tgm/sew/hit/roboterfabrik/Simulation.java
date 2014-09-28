@@ -14,7 +14,7 @@ public class Simulation {
 	}
 	
 	public Simulation(String[] parameter){
-		int[] tempi = new int[3];
+		int[] tempi = {0,0,0};
 		String[] temps = new String[2];
 		
 		for(int i=0;i<parameter.length;i++){
