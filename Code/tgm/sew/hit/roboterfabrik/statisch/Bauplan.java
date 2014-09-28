@@ -13,8 +13,9 @@ public class Bauplan {
 	private HashMap<String,Integer> parts;
 	private HashMap<String,String> files;
 	
-	private String logPath;
-	private String partPath;
+	private String logPath, partPath;
+	private char delimiter;
+	private int partCount, randomMax, randomMin, retryTimeOut;
 
 	/**
 	 * erzeugt einen neuen Bauplan mit default-configuration
@@ -26,6 +27,13 @@ public class Bauplan {
 		
 		
 		/* Default Configuration */
+		delimiter=';';
+		
+		partCount=20;
+		randomMax=20;
+		randomMin=0;
+		retryTimeOut=5000;
+		
 		logPath = path+"/log";
 		partPath = path+"/parts";
 	}
@@ -75,7 +83,7 @@ public class Bauplan {
 	 * @param name name des teils
 	 * @return benoetigte Anzahl
 	 */
-	public synchronized int getPartCount(String name) {
+	public int getPartCount(String name) {
 		if(parts.containsKey(name)){
 			return parts.get(name);
 		}
@@ -87,7 +95,7 @@ public class Bauplan {
 	 * @param name name des teils
 	 * @return pfad & Dateiname fuer teile
 	 */
-	public synchronized String getFile(String name) {
+	public String getFile(String name) {
 		if(files.containsKey(name)){
 			return partPath + files.get(name);
 		}
@@ -98,7 +106,48 @@ public class Bauplan {
 	 * gibt den Masterpfad (und falls ergaenzt auch den Dateinamen) des Logs zurueck
 	 * @return pfad fuer logs
 	 */
-	public synchronized String getLogPath() {
+	public String getLogPath() {
 		return logPath;
+	}
+	
+	/**
+	 * gibt den für das csv gewählten Delimiter zurück
+	 * @return Delimiter des csv
+	 */
+	public char getDelimiter(){
+		return delimiter;
+	}
+
+	/**
+	 * gibt die Länge der Integerliste zurück, die einen Teil repräsentiert
+	 * @return länge der liste
+	 */
+	public int getPartLength() {
+		return partCount;
+	}
+	
+	/**
+	 * gibt den wert, den eine generierte random Zahl maximal haben darf, zurück
+	 * @return maximalwert
+	 */
+	public int getMaxRandomNumber() {
+		return randomMax;
+	}
+	
+	/**
+	 * gibt den wert, den eine generierte random Zahl minimal haben darf, zurück
+	 * @return minimalwert
+	 */
+	public int getMinRandomNumber() {
+		return randomMin;
+	}
+	
+	/**
+	 * gibt die millisekunden, die ein Monteur warten soll,
+	 * bevor er wieder versucht, alle teile zu bekommen, zurück
+	 * @return timeOut in millisekunden
+	 */
+	public int getTimeRetry(){
+		return retryTimeOut;
 	}
 }
