@@ -3,9 +3,12 @@ package tgm.sew.hit.roboterfabrik.arbeiter;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import tgm.sew.hit.roboterfabrik.Sekretariat;
-import tgm.sew.hit.roboterfabrik.statisch.Dateizugriff;
-import tgm.sew.hit.roboterfabrik.statisch.Log;
+import tgm.sew.hit.roboterfabrik.statisch.Bauplan;
+
 
 /**
  * 
@@ -18,7 +21,9 @@ public class Montagemitarbeiter extends Mitarbeiter {
 
 	private String[] parts;
 
-	private Dateizugriff auslagerung;
+	private Lagermitarbeiter auslagerung;
+	
+	private static final Logger logger = Logger.getLogger("Arbeitsablauf");
 
 	/**Erzeugt einen neuen Montagemitarbeiter
 	 * 
@@ -27,6 +32,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	public Montagemitarbeiter(Sekretariat sekretariat) {
 		super(sekretariat);
+		this.auslagerung = new Lagermitarbeiter(sekretariat);
 	}
 
 	/**Holt sich alle notwendigen Teile vom lagermitarbeiter und gibt sie gleich wieder
@@ -37,22 +43,22 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	private boolean getAllParts() {
-		String[] needParts = Bauplan.getParts();
+		String[] needParts = this.sekretariat.getBauplan().getParts();
 		String[] parts;
 		String part;
 		for (int i = 0; i < needParts.length; i++) {
-			parts = this.lagermitarbeiter.getParts(parts[i], Bauplan.getPartCount(parts[i]));
-			Log.add("Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
+			parts = this.sekretariat.getLagermitarbeiter().getParts(parts[i], this.sekretariat.getBauplan().getPartCount(parts[i]));
+			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
 			for (int j = 0; j < parts.length; j++) {
 				part = parts[i];
 				if (part != null) {
 					this.parts[i]=part;
 				} else {
-					this.lagermitarbeiter.addParts(this.parts);
-					Log.add("Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(this.parts));
-					Log.add("Montagemitarbeiter " + this.getId() + ": Frage in " + Bauplan.getTimeRetry() + "ms erneut nach Teilen");
-					Thread.sleep(Bauplan.getTimeRetry());
-					this.wait(this.lagermitarbeiter);
+					this.sekretariat.getLagermitarbeiter().addParts(this.parts);
+					logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(this.parts));
+					logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
+					Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
+					this.wait(this.sekretariat.getLagermitarbeiter());
 					return false;
 				}
 			}
@@ -71,7 +77,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		String concatParts = "";
 		for (int i = 0; i < array.length-1;i++) {
 			if (array[i] != null) {
-				concatParts += array[i] + Bauplan.getDelimiter();
+				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
 			}
 		}
 		//concatParts += this.parts[this.parts.length-1];
@@ -84,10 +90,10 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	private void deliverProduct() {
 		String[] addThreadee;
-		addThreadee[0]=Bauplan.getName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId();
+		addThreadee[0]=this.sekretariat.getBauplan().getName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId();
 		addThreadee[1]=getConcatElements(this.parts);
-		auslagerung.addLines(Bauplan.getDeliverPath, addThreadee);
-		Log.add(addThreadee[0] + "\r\n" + addThreadee[1]); 
+		auslagerung.addParts(this.sekretariat.getBauplan().getDeliverPath(), addThreadee);
+		logger.log(Level.INFO, addThreadee[0] + "\r\n" + addThreadee[1]); 
 		this.parts = null;
 	}
 	
@@ -98,24 +104,25 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 
 	public String sortPart(String part) {
-		String prefix = part.substring(0, part.indexOf(Bauplan.getDelimiter()));
-		part = part.substring(part.indexOf(Bauplan.getDelimiter())+Bauplan.getDelimiter().length(), part.length());
+		String delimiter = this.sekretariat.getBauplan().getDelimiter();
+		String prefix = part.substring(0, part.indexOf(delimiter));
+		part = part.substring(part.indexOf(delimiter)+delimiter.length(), part.length());
 		ArrayList<Integer> parts = new ArrayList<Integer>();
 		try{
-			for (int i = 0; i < Bauplan.getPartLength()-1;i++){
-				parts.add(Integer.parseInt(part.substring(0, part.indexOf(Bauplan.getDelimiter()))));
-				part = part.substring(part.indexOf(Bauplan.getDelimiter())+Bauplan.getDelimiter().length(), part.length());
+			for (int i = 0; i < this.sekretariat.getBauplan().getPartLength()-1;i++){
+				parts.add(Integer.parseInt(part.substring(0, part.indexOf(delimiter))));
+				part = part.substring(part.indexOf(delimiter)+delimiter.length(), part.length());
 			}
 			parts.add(Integer.parseInt(part.substring(0, part.length())));
 		} catch(NumberFormatException e) {
-			Log.add("Montagemitarbeiter " + this.getId() + ": Fehlerhafter Part(NumberFormatException)");
+			logger.log(Level.ERROR, "Montagemitarbeiter " + this.getId() + ": Fehlerhafter Part(NumberFormatException)");
 		}
 		Collections.sort(parts);
-		String sortedPart = prefix + Bauplan.getDelimiter();
+		String sortedPart = prefix + delimiter;
 		for (int number : parts) {
-			sortedPart += number + Bauplan.getDelimiter();
+			sortedPart += number + delimiter;
 		}
-		sortedPart = sortedPart.substring(0, sortedPart.lastIndexOf(Bauplan.getDelimiter()));
+		sortedPart = sortedPart.substring(0, sortedPart.lastIndexOf(delimiter));
 		return sortedPart;
 	}
 	
