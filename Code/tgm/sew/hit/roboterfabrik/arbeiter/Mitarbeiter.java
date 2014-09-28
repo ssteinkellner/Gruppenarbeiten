@@ -23,6 +23,7 @@ public abstract class Mitarbeiter implements Runnable {
 	 */
 	
 	public Mitarbeiter(Sekretariat sekretariat) {
+		this.sekretariat = sekretariat;
 		this.id = sekretariat.getNewWorkerId();
 	}
 
