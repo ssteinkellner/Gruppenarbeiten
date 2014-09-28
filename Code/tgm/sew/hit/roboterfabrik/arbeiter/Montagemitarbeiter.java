@@ -23,7 +23,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 
 	private Lagermitarbeiter auslagerung;
 	
-	private static final Logger logger = Logger.getLogger("Arbeitsablauf");
+	private static Logger logger;
 
 	/**Erzeugt einen neuen Montagemitarbeiter
 	 * 
@@ -33,6 +33,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	public Montagemitarbeiter(Sekretariat sekretariat) {
 		super(sekretariat);
 		this.auslagerung = new Lagermitarbeiter(sekretariat);
+		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
 	}
 
 	/**Holt sich alle notwendigen Teile vom lagermitarbeiter und gibt sie gleich wieder

@@ -18,7 +18,7 @@ public class Lieferant extends Mitarbeiter {
 
 	private String currentPart;
 	
-	private static final Logger logger = Logger.getLogger("Arbeitsablauf");
+	private static Logger logger;
 
 	/**Erzeugt einen neuen Lieferanten und legt einen zufaelligen zu erzeugenden Part fest
 	 * 
@@ -27,6 +27,7 @@ public class Lieferant extends Mitarbeiter {
 	public Lieferant(Sekretariat sekretariat) {
 		super(sekretariat);
 		changePart();
+		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
 	}
 	
 	/**
