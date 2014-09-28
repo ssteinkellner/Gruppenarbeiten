@@ -43,28 +43,45 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 * @return Ob alle Teile angefordert werden konnten
 	 */
 	
-	private boolean getAllParts() {
+	public boolean getAllParts() {
 		String[] needParts = this.sekretariat.getBauplan().getParts();
-		String[] parts;
+		String[] gotParts;
 		String part;
 		for (int i = 0; i < needParts.length; i++) {
-			parts = this.sekretariat.getLagermitarbeiter().getParts(parts[i], this.sekretariat.getBauplan().getPartCount(parts[i]));
+			gotParts = this.sekretariat.getLagermitarbeiter().getParts(gotParts[i], this.sekretariat.getBauplan().getPartCount(gotParts[i]));
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
-			for (int j = 0; j < parts.length; j++) {
-				part = parts[i];
-				if (part != null) {
-					this.parts[i]=part;
-				} else {
-					this.sekretariat.getLagermitarbeiter().addParts(this.parts);
-					logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(this.parts));
-					logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
-					Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
-					this.wait(this.sekretariat.getLagermitarbeiter());
-					return false;
+			if (gotParts.length == this.sekretariat.getBauplan().getPartCount(gotParts[i])) {
+				for (int j = 0; j < gotParts.length; j++) {
+					this.parts[i+j] = gotParts[j];
 				}
+			} else {
+				giveBack();
+				return false;
 			}
 		}
 		
+	}
+	
+	/**Gibt die Teile zurück die gerade im Besitz des Montagemitarbeiters sind
+	 * 
+	 * @return Die Teile die gerade verarbeitet werden
+	 */
+	
+	public String[] getParts() {
+		return this.parts;
+	}
+	
+	/**
+	 * Gibt die Teile wieder an den Lagermitarbeiter zurück
+	 */
+	
+	private void giveBack() {
+		this.sekretariat.getLagermitarbeiter().addParts(this.parts);
+		this.parts = null;
+		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(this.parts));
+		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
+		Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
+		this.wait(this.sekretariat.getLagermitarbeiter());
 	}
 
 	/**
@@ -105,14 +122,14 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 
 	public String sortPart(String part) {
-		String delimiter = this.sekretariat.getBauplan().getDelimiter();
+		char delimiter = this.sekretariat.getBauplan().getDelimiter();
 		String prefix = part.substring(0, part.indexOf(delimiter));
-		part = part.substring(part.indexOf(delimiter)+delimiter.length(), part.length());
+		part = part.substring(part.indexOf(delimiter)+1, part.length());
 		ArrayList<Integer> parts = new ArrayList<Integer>();
 		try{
 			for (int i = 0; i < this.sekretariat.getBauplan().getPartLength()-1;i++){
 				parts.add(Integer.parseInt(part.substring(0, part.indexOf(delimiter))));
-				part = part.substring(part.indexOf(delimiter)+delimiter.length(), part.length());
+				part = part.substring(part.indexOf(delimiter)+1, part.length());
 			}
 			parts.add(Integer.parseInt(part.substring(0, part.length())));
 		} catch(NumberFormatException e) {
