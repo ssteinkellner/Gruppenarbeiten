@@ -57,7 +57,7 @@ public class Sekretariat {
 		return buildingplan;
 	}
 	
-	public Lagermitarbeiter getLagerMitarbeiter(){
+	public Lagermitarbeiter getLagermitarbeiter(){
 		return storeWorker;
 	}
 }

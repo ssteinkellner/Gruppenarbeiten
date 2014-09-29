@@ -13,7 +13,7 @@ public class Bauplan {
 	private HashMap<String,Integer> parts;
 	private HashMap<String,String> files;
 	
-	private String logPath, partPath;
+	private String logPath, partPath, produktName;
 	private char delimiter;
 	private int partCount, randomMax, randomMin, retryTimeOut;
 
@@ -33,6 +33,7 @@ public class Bauplan {
 		randomMax=20;
 		randomMin=0;
 		retryTimeOut=5000;
+		produktName="Threadee";
 		
 		logPath = path+"/log";
 		partPath = path+"/parts";
@@ -149,5 +150,21 @@ public class Bauplan {
 	 */
 	public int getTimeRetry(){
 		return retryTimeOut;
+	}
+	
+	/**
+	 * gibt den namen des Produkts zurück
+	 * @return name des produkts
+	 */
+	public String getProduktName(){
+		return produktName;
+	}
+	
+	/**
+	 * gibt die Namen der einzelnen Teile zurück
+	 * @return namen der teile
+	 */
+	public String[] getPartNames(){
+		return (String[]) parts.keySet().toArray();
 	}
 }
