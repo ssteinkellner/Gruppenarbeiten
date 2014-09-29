@@ -120,7 +120,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
 			}
 		}
-		//concatParts += this.parts[this.parts.length-1];
+		concatParts += array[this.parts.length-1];
 		return concatParts;
 	}
 	
@@ -129,7 +129,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	private void deliverProduct() {
-		String[] addThreadee;
+		String[] addThreadee = new String[2];
 		addThreadee[0]=this.sekretariat.getBauplan().getProduktName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId();
 		addThreadee[1]=getConcatElements(this.parts);
 		auslagerung.addParts(this.sekretariat.getBauplan().getDeliverPath(), addThreadee);
