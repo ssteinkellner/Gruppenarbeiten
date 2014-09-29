@@ -44,22 +44,30 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	public boolean getAllParts() {
-		String[] needParts = this.sekretariat.getBauplan().getParts();
-		String[] gotParts;
+		String[] needParts = this.sekretariat.getBauplan().getPartNames();
+		ArrayList<String[]> gotParts = new ArrayList<String[]>();
 		String part;
+		int count = 0;
 		for (int i = 0; i < needParts.length; i++) {
-			gotParts = this.sekretariat.getLagermitarbeiter().getParts(gotParts[i], this.sekretariat.getBauplan().getPartCount(gotParts[i]));
+			gotParts.add(this.sekretariat.getLagermitarbeiter().getParts(needParts[i], this.sekretariat.getBauplan().getPartCount(needParts[i])));
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
-			if (gotParts.length == this.sekretariat.getBauplan().getPartCount(gotParts[i])) {
-				for (int j = 0; j < gotParts.length; j++) {
-					this.parts[i+j] = gotParts[j];
+			if (gotParts.get(i).length == this.sekretariat.getBauplan().getPartCount(needParts[i])) {
+				for (int j = 0; j < gotParts.size(); j++) {
+					for(String s : gotParts.get(j))
+						this.parts[i+j] = s;
+						count++;
 				}
 			} else {
-				giveBack();
+				for (int j = 0; j < gotParts.size(); j++) {
+					for(String s : gotParts.get(j))
+						this.parts[i+j] = s;
+						count++;
+				}
+				giveBack(gotParts, count);
 				return false;
 			}
 		}
-		
+		return true;
 	}
 	
 	/**Gibt die Teile zurück die gerade im Besitz des Montagemitarbeiters sind
@@ -75,13 +83,27 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 * Gibt die Teile wieder an den Lagermitarbeiter zurück
 	 */
 	
-	private void giveBack() {
-		this.sekretariat.getLagermitarbeiter().addParts(this.parts);
+	private void giveBack(ArrayList<String[]> addParts, int count) {
+		
+		for (int i = 0; i < count; i++) {
+			this.sekretariat.getLagermitarbeiter().addParts(addParts.get(i)[0], addParts.get(i));
+		}
+		
 		this.parts = null;
 		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(this.parts));
 		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
-		Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
-		this.wait(this.sekretariat.getLagermitarbeiter());
+		try {
+			Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			this.wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -108,7 +130,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	private void deliverProduct() {
 		String[] addThreadee;
-		addThreadee[0]=this.sekretariat.getBauplan().getName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId();
+		addThreadee[0]=this.sekretariat.getBauplan().getProduktName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId();
 		addThreadee[1]=getConcatElements(this.parts);
 		auslagerung.addParts(this.sekretariat.getBauplan().getDeliverPath(), addThreadee);
 		logger.log(Level.INFO, addThreadee[0] + "\r\n" + addThreadee[1]); 
