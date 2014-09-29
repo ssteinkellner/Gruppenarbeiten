@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 public class WatchDog implements Runnable{
 
 	private Thread time;
-	private long runtime;
+	private int runtime;
 	private ExecutorService mitarbeiter; 
 
 	/**Erzeugt einen neuen Watchdog
@@ -23,6 +23,8 @@ public class WatchDog implements Runnable{
 	public WatchDog(ExecutorService mitarbeiter, int runTime) {
 		this.time = new Thread(this);
 		this.time.start();
+		this.runtime = runTime;
+		this.mitarbeiter = mitarbeiter;
 	}
 	
 	/**
@@ -31,7 +33,7 @@ public class WatchDog implements Runnable{
 
 	public void run() {
 		try {
-			this.time.sleep(runtime);
+			Thread.sleep(runtime);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
