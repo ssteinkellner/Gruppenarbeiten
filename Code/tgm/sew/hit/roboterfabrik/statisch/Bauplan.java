@@ -13,7 +13,7 @@ public class Bauplan {
 	private HashMap<String,Integer> parts;
 	private HashMap<String,String> files;
 	
-	private String logPath, partPath, produktName;
+	private String logPath, partPath, deliverPath, produktName;
 	private char delimiter;
 	private int partCount, randomMax, randomMin, retryTimeOut;
 
@@ -37,6 +37,7 @@ public class Bauplan {
 		
 		logPath = path+"/log";
 		partPath = path+"/parts";
+		deliverPath = path+"/auslieferung.csv";
 	}
 
 	/**
@@ -166,5 +167,13 @@ public class Bauplan {
 	 */
 	public String[] getPartNames(){
 		return (String[]) parts.keySet().toArray();
+	}
+	
+	/**
+	 * gibt den Pfad der datei, in die die auszuliefernden roboter geschrieben werden sollen zurück
+	 * @return auslieferungsdateipfad
+	 */
+	public String getDeliverPath(){
+		return deliverPath;
 	}
 }
