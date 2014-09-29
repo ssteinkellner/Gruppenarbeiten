@@ -1,6 +1,6 @@
 *.class
 ~$* #opened windows files
-
+*_old.*
 
 
 #################
