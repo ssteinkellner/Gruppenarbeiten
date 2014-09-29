@@ -1,6 +1,7 @@
 package tgm.sew.hit.roboterfabrik;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import tgm.sew.hit.roboterfabrik.arbeiter.Lagermitarbeiter;
 import tgm.sew.hit.roboterfabrik.arbeiter.Lieferant;
@@ -27,6 +28,8 @@ public class Sekretariat {
 		lastProductId = 0;
 		
 		buildingplan = new Bauplan("..");
+		
+		employees = Executors.newFixedThreadPool(countLieferant+countMontage);
 		
 		for(int i=0; i<countLieferant; i++){
 			employees.execute(new Lieferant(this));
