@@ -166,7 +166,12 @@ public class Bauplan {
 	 * @return namen der teile
 	 */
 	public String[] getPartNames(){
-		return (String[]) parts.keySet().toArray();
+		Object[] keys = parts.keySet().toArray();
+		String[] namen = new String[keys.length];
+		for(int i=0;i<keys.length;i++){
+			namen[i] = (String)keys[i];
+		}
+		return namen;
 	}
 	
 	/**
