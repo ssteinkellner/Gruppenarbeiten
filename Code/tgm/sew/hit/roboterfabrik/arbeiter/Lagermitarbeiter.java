@@ -96,7 +96,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
-			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
+			logger.log(Level.ERROR, "Datei " + part + " wurde nicht gefunden");
 			return null;
 			
 		} catch (IOException ioe) {
@@ -142,7 +142,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
-			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
+			logger.log(Level.ERROR, "Datei " + part + " wurde nicht gefunden");
 			
 		} catch (IOException ioe) {
 			
