@@ -113,7 +113,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 * 			festgelegten Trennzeichen, beeinhaltet
 	 */
 	
-	private String getConcatElements(String[] array) {
+	public String getConcatElements(String[] array) {
 		String concatParts = "";
 		for (int i = 0; i < array.length-1;i++) {
 			if (array[i] != null) {

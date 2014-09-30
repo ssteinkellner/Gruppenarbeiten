@@ -18,8 +18,11 @@ public class TestMontagemitarbeiter {
 	
 	@Before
 	public void doItBefore() {
+		this.s1 = new Sekretariat(1000, 2, 2);
 		this.m1 = new Montagemitarbeiter(s1);
 		l1 = Mockito.mock(Lagermitarbeiter.class);
+		Mockito.when(this.s1.getBauplan().getDelimiter()).thenReturn(';');
+		Mockito.when(this.s1.getBauplan().getPartNames().thenReturn(new String[]{"body", "chain", "arm", "eye"}));
 	}
 	
 	@Test
@@ -27,6 +30,7 @@ public class TestMontagemitarbeiter {
 		assertEquals(m1.sortPart("6;5;10;56;0;1"), "0;1;5;6;10;56");
 	}
 	
+	@Test
 	public void getAllParts1() {
 		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"auge;6;4;9;1;34", "auge;7;3;1;16;3"});
 		Mockito.when(l1.getParts("body", 1)).thenReturn(new String[]{"body;6;4;9;1;34", "body;7;3;1;16;3"});
@@ -35,6 +39,7 @@ public class TestMontagemitarbeiter {
 		assertEquals(true, m1.getAllParts());
 	}
 	
+	@Test
 	public void getAllParts2() {
 		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"auge;6;4;9;1;34"});
 		Mockito.when(l1.getParts("body", 1)).thenReturn(new String[]{"body;6;4;9;1;34", "body;7;3;1;16;3"});
@@ -43,6 +48,10 @@ public class TestMontagemitarbeiter {
 		assertEquals(false, m1.getAllParts());
 	}
 	
+	@Test
+	public void getConcatElements() {
+		assertEquals("arm;7;4;10;1;56;body;8;1;19;3;4", m1.getConcatElements(new String[]{"arm;7;4;10;1;56", "body;8;1;19;3;4"}));
+	}
 	
 	
 
