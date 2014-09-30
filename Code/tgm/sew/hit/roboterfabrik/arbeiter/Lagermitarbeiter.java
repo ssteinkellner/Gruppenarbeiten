@@ -75,7 +75,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			// der Inhalt der LinkedList wird in das RAF zurückgeschrieben
 			Iterator<String> it = writeBack.iterator();
 			while(it.hasNext()) {
-				raf.writeUTF(it.next());
+				raf.writeUTF(it.next() + "\r\n");
 			}
 			
 			raf.close();
@@ -121,7 +121,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			
 			// Zeilen werden in die jeweilige Partdatei dazugeschrieben
 			for(int i=0;i<parts.length;i++) {
-				raf.writeUTF(parts[i]);
+				raf.writeUTF(parts[i] + "\r\n");
 			}
 			
 			raf.close();
