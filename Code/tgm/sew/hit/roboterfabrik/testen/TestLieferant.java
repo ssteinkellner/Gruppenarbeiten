@@ -15,6 +15,12 @@ public class TestLieferant {
 	
 	@Before
 	public void doItBefore() {
+		this.s1 = new Sekretariat(1000, 1, 1);
 		this.l1 = new Lieferant(s1);
+	}
+	
+	@Test
+	public void getRandomLine() {
+		assertEquals("", l1.getRandomLine());
 	}
 }

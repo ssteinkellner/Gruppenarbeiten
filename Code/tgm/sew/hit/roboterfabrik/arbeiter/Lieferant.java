@@ -70,9 +70,9 @@ public class Lieferant extends Mitarbeiter {
 	public String getRandomLine() {
 		String part = this.currentPart;
         for (int i = 0; i < this.sekretariat.getBauplan().getPartLength(); i++) {
-            part += this.sekretariat.getBauplan().getDelimiter() + new Random().nextInt(this.sekretariat.getBauplan().getMaxRandomNumber() + 1)+1;  
+            part += "" + this.sekretariat.getBauplan().getDelimiter() + new Random().nextInt(this.sekretariat.getBauplan().getMaxRandomNumber() + 1);  
         }
-        return this.currentPart + part;
+        return part;
 	}
 	
 	/**
@@ -80,16 +80,13 @@ public class Lieferant extends Mitarbeiter {
 	 */
 	public void run() {
 		while(!this.sekretariat.getEmployees().isShutdown()) {
-			if (new Random().nextInt(2)<1) {
-				changePart();
+			changePart();
+			int anzahl = new Random().nextInt(20)+10;
+			String[] parts = new String[anzahl];
+			for (int i = 0;i<anzahl;i++) {
+				parts[i] = this.getRandomLine();
 			}
-			String[] parts = null;
-			int counter = 0;
-			do {
-				parts[counter] = this.getRandomLine();
-				counter++;
-			}
-			while(new Random().nextInt(20)<1);
+			
 			this.sekretariat.getLagermitarbeiter().addParts(this.currentPart, parts);
 			logger.log(Level.INFO, "Lieferant " + this.getId() + ": Habe folgende Teile dem Lagermitarbeiter uebergeben: " + getConcatElements(parts));
 		}

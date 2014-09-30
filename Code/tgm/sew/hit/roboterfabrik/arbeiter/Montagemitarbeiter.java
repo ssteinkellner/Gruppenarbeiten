@@ -51,6 +51,10 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		for (int i = 0; i < needParts.length; i++) {
 			int currentCount = this.sekretariat.getBauplan().getPartCount(needParts[i]);
 			String[] currentParts = this.sekretariat.getLagermitarbeiter().getParts(needParts[i], currentCount);
+			if(currentParts == null) {
+				giveBack(gotParts, count);
+				return false;
+			}
 			gotParts.add(currentParts);
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
 			if (gotParts.get(i).length == this.sekretariat.getBauplan().getPartCount(needParts[i])) {
@@ -100,12 +104,13 @@ public class Montagemitarbeiter extends Mitarbeiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		/*
 		try {
-			this.wait();
+			this.sekretariat.getLagermitarbeiter().wait();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	/**
@@ -117,13 +122,17 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	public String getConcatElements(String[] array) {
 		String concatParts = "";
-		for (int i = 0; i < array.length-1;i++) {
-			if (array[i] != null) {
-				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
+		if (array != null) {
+			for (int i = 0; i < array.length-1;i++) {
+				if (array[i] != null) {
+					concatParts += array[i] + "\n";
+				}
 			}
+			concatParts += array[array.length-1];
+			return concatParts;
+		} else {
+			return null;
 		}
-		concatParts += array[this.parts.length-1];
-		return concatParts;
 	}
 	
 	/**
@@ -162,10 +171,10 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		Collections.sort(parts);
 		String sortedPart = prefix + delimiter;
 		for (int number : parts) {
-			sortedPart += number + delimiter;
+			sortedPart += "" + number + delimiter;
 		}
 		sortedPart = sortedPart.substring(0, sortedPart.lastIndexOf(delimiter));
-		return sortedPart;
+ 		return sortedPart;
 	}
 	
 	/**

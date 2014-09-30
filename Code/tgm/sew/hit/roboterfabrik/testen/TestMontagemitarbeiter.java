@@ -27,15 +27,16 @@ public class TestMontagemitarbeiter {
 	
 	@Test
 	public void sortPart() {
-		assertEquals(m1.sortPart("6;5;10;56;0;1"), "0;1;5;6;10;56");
+		assertEquals("eye;1;1;2;3;3;4;5;5;5;7;9;10;14;15;16;16;17;17;18;18", m1.sortPart("eye;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"));
 	}
 	
 	@Test
 	public void getAllParts1() {
-		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"auge;6;4;9;1;34", "auge;7;3;1;16;3"});
-		Mockito.when(l1.getParts("body", 1)).thenReturn(new String[]{"body;6;4;9;1;34", "body;7;3;1;16;3"});
-		Mockito.when(l1.getParts("arm", 2)).thenReturn(new String[]{"arm;6;4;9;1;34", "arm;7;3;1;16;3"});
-		Mockito.when(l1.getParts("chain", 1)).thenReturn(new String[]{"chain;6;4;9;1;34", "chain;7;3;1;16;3"});
+		Mockito.when(l1.getParts("head", 1)).thenReturn(new String[]{"head;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"auge;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2", "auge;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		Mockito.when(l1.getParts("body", 1)).thenReturn(new String[]{"body;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		Mockito.when(l1.getParts("arm", 2)).thenReturn(new String[]{"arm;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2", "arm;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		Mockito.when(l1.getParts("chain", 1)).thenReturn(new String[]{"chain;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
 		assertEquals(true, m1.getAllParts());
 	}
 	
@@ -50,7 +51,7 @@ public class TestMontagemitarbeiter {
 	
 	@Test
 	public void getConcatElements() {
-		assertEquals("arm;7;4;10;1;56;body;8;1;19;3;4", m1.getConcatElements(new String[]{"arm;7;4;10;1;56", "body;8;1;19;3;4"}));
+		assertEquals("arm;7;4;10;1;56\nbody;8;1;19;3;4", m1.getConcatElements(new String[]{"arm;7;4;10;1;56", "body;8;1;19;3;4"}));
 	}
 	
 	
