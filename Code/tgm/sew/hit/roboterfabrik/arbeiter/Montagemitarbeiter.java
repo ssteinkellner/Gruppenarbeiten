@@ -43,37 +43,39 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 * @return Ob alle Teile angefordert werden konnten
 	 */
 	
-	public boolean getAllParts() {
+	public String[] getAllParts() {
+		//Es wird die Liste der benötigten Teile vom Bauplan geholt
 		String[] needParts = this.sekretariat.getBauplan().getPartNames();
 		ArrayList<String[]> gotParts = new ArrayList<String[]>();
-		String part;
-		int count = 0;
+		String part = "";
+		//Es werden die verschiedenen Bestandteile einzeln angefordert
 		for (int i = 0; i < needParts.length; i++) {
+			//Wie viele Bestandteile dieser Art werden benötigt
 			int currentCount = this.sekretariat.getBauplan().getPartCount(needParts[i]);
+			//Holt si
 			String[] currentParts = this.sekretariat.getLagermitarbeiter().getParts(needParts[i], currentCount);
-			if(currentParts == null) {
-				giveBack(gotParts, count);
-				return false;
+			//Falls Teile nicht mehr vorhanden sind 
+			/*
+			for (int j = 0; j < currentParts.length;j++) {
+				if (currentParts[j]!=null) {
+					gotParts.add(new String[]{currentParts[i]});
+				}
+				giveBack(gotParts);
+				return null;
+			}
+			*/
+			if (currentParts == null) {
+				giveBack(gotParts);
+				return null;
 			}
 			gotParts.add(currentParts);
-			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
-			if (gotParts.get(i).length == this.sekretariat.getBauplan().getPartCount(needParts[i])) {
-				for (int j = 0; j < gotParts.size(); j++) {
-					for(String s : gotParts.get(j))
-						this.parts[i+j] = s;
-						count++;
-				}
-			} else {
-				for (int j = 0; j < gotParts.size(); j++) {
-					for(String s : gotParts.get(j))
-						this.parts[i+j] = s;
-						count++;
-				}
-				giveBack(gotParts, count);
-				return false;
+			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(currentParts));
+			for (int j = 0; j < gotParts.size(); j++) {
+				for(String s : gotParts.get(j))
+					this.parts[i+j] = s;
 			}
 		}
-		return true;
+		return this.parts;
 	}
 	
 	/**Gibt die Teile zurück die gerade im Besitz des Montagemitarbeiters sind
@@ -89,14 +91,12 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 * Gibt die Teile wieder an den Lagermitarbeiter zurück
 	 */
 	
-	private void giveBack(ArrayList<String[]> addParts, int count) {
-		
-		for (int i = 0; i < count; i++) {
+	private void giveBack(ArrayList<String[]> addParts) {
+		for (int i = 0; i < addParts.size(); i++) {
 			this.sekretariat.getLagermitarbeiter().addParts(addParts.get(i)[0], addParts.get(i));
+			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(addParts.get(i)));
 		}
-		
 		this.parts = null;
-		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(this.parts));
 		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
 		try {
 			Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
@@ -141,10 +141,10 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	private void deliverProduct() {
 		String[] addThreadee = new String[2];
-		addThreadee[0]=this.sekretariat.getBauplan().getProduktName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId();
+		addThreadee[0]=this.sekretariat.getBauplan().getProduktName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId()+ "\r\n";
 		addThreadee[1]=getConcatElements(this.parts);
 		auslagerung.addParts(this.sekretariat.getBauplan().getDeliverPath(), addThreadee);
-		logger.log(Level.INFO, addThreadee[0] + "\r\n" + addThreadee[1]); 
+		logger.log(Level.INFO, addThreadee); 
 		this.parts = null;
 	}
 	
@@ -183,7 +183,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	public void run() {
 		while(!this.sekretariat.getEmployees().isShutdown()) {
-			if (this.getAllParts()) {
+			if (this.getAllParts() != null) {
 				for (int i = 0; i < this.parts.length;i++) {
 					parts[i] = sortPart(parts[i]);
 				}

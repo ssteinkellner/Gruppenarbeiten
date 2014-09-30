@@ -2,6 +2,8 @@ package tgm.sew.hit.roboterfabrik.testen;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -19,10 +21,8 @@ public class TestMontagemitarbeiter {
 	@Before
 	public void doItBefore() {
 		this.s1 = new Sekretariat(1000, 1, 1);
-		//Mockito.when(this.s1.getBauplan().getPartNames()).thenReturn(new String[]{"body", "chain", "arm", "eye"});
 		this.m1 = new Montagemitarbeiter(s1);
 		l1 = Mockito.mock(Lagermitarbeiter.class);
-		//Mockito.when(this.s1.getBauplan().getDelimiter()).thenReturn(';');
 	}
 	
 	@Test
@@ -32,21 +32,28 @@ public class TestMontagemitarbeiter {
 	
 	@Test
 	public void getAllParts1() {
-		Mockito.when(l1.getParts("head", 1)).thenReturn(new String[]{"head;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
-		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"auge;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2", "auge;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
-		Mockito.when(l1.getParts("body", 1)).thenReturn(new String[]{"body;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
-		Mockito.when(l1.getParts("arm", 2)).thenReturn(new String[]{"arm;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2", "arm;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
-		Mockito.when(l1.getParts("chain", 1)).thenReturn(new String[]{"chain;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
-		assertEquals(true, m1.getAllParts());
+		ArrayList<String[]> para= new ArrayList<String[]>();
+		para.add(new String[]{"eye;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2", "eye;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		para.add(new String[]{"body;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		para.add(new String[]{"arm;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2", "arm;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		para.add(new String[]{"chain;5;3;10;18;1;9;16;5;7;17;1;5;3;15;18;14;17;4;16;2"});
+		Mockito.when(l1.getParts("eye", 2)).thenReturn(para.get(0));
+		Mockito.when(l1.getParts("body", 1)).thenReturn(para.get(1));
+		Mockito.when(l1.getParts("arm", 2)).thenReturn(para.get(2));
+		Mockito.when(l1.getParts("chain", 1)).thenReturn(para.get(3));
+		String[] allParts = m1.getAllParts();
+		for (int i = 0; i<allParts.length;i++) {
+			assertEquals(para.get(i), allParts[i]);
+		}
 	}
 	
-	@Test
+	
 	public void getAllParts2() {
-		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"auge;6;4;9;1;34"});
+		Mockito.when(l1.getParts("eye", 2)).thenReturn(new String[]{"eye;6;4;9;1;34"});
 		Mockito.when(l1.getParts("body", 1)).thenReturn(new String[]{"body;6;4;9;1;34", "body;7;3;1;16;3"});
 		Mockito.when(l1.getParts("arm", 2)).thenReturn(new String[]{"arm;6;4;9;1;34", "arm;7;3;1;16;3"});
 		Mockito.when(l1.getParts("chain", 1)).thenReturn(new String[]{"chain;6;4;9;1;34", "chain;7;3;1;16;3"});
-		assertEquals(false, m1.getAllParts());
+		assertEquals(null, m1.getAllParts());
 	}
 	
 	@Test

@@ -34,11 +34,12 @@ public class Lieferant extends Mitarbeiter {
 	 * aendert zufaellig den Part der geliefert werden soll
 	 */
 
-	public void changePart() {
+	public String changePart() {
 		String[] parts = this.sekretariat.getBauplan().getPartNames();
 		int random = new Random().nextInt(parts.length);
 		this.currentPart = parts[random];
 		logger.log(Level.INFO, "Lieferant " + this.getId() + ": Habe Art des Teils auf " + this.currentPart + " geaendert");
+		return this.currentPart;
 	}
 	
 	/**

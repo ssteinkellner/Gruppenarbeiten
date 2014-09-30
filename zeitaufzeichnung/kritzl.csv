@@ -16,3 +16,6 @@ log-statements, sortPart;26.09.2014;60
 edit log-statements, improve Code;28.09.2014;90
 change getAllParts(), tests;28.09.2014;120
 change giveBack(ArrayList<String[], int);29.09.2014;40
+debugen;29.09.2014;60
+debugen, Testen;30.09.2014;120
+debugen, getAllParts;30.09.2014;120
