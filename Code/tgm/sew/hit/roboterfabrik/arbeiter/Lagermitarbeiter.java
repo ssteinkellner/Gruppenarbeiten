@@ -69,7 +69,14 @@ public class Lagermitarbeiter extends Mitarbeiter {
 					i++;
 				// ansonsten wird die jeweilige Zeile zu einer LinkedList hinzugefuegt
 				} else {
-					writeBack.add(line);
+					/* wenn der Montagemitarbeiter eine hoehere Anzahl vom Bestandteil anfordert als von der 
+					verfuegbaren Anzahl des jeweiligen Bestandteils im Lager, wird null zurueckgeliefert */
+					if(line != null) {
+						writeBack.add(line);
+					} else {
+						raf.close();
+						return null;
+					}
 				}
 			}
 			
