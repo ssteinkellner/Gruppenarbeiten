@@ -1,5 +1,7 @@
 package tgm.sew.hit.roboterfabrik;
 
+import org.apache.log4j.BasicConfigurator;
+
 /**
  * Klasse zum starten des programms
  * @author Steinkellner Sebastian
@@ -10,6 +12,7 @@ public class Simulation {
 	private static Sekretariat sekreteriat;
 
 	public static void main(String[] args) {
+		BasicConfigurator.configure();
 		new Simulation(args);
 	}
 	
