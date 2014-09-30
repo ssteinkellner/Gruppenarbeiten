@@ -25,6 +25,17 @@ public class Bauplan {
 		parts = new HashMap<String, Integer>();
 		files = new HashMap<String, String>();
 		
+		/* default parts and files */
+		parts.put("head", 1);
+		files.put("head", "kopf.csv");
+		parts.put("chain", 1);
+		files.put("chain", "kette.csv");
+		parts.put("arm", 1);
+		files.put("arm", "arm.csv");
+		parts.put("eye", 1);
+		files.put("eye","auge.csv");
+		parts.put("body", 1);
+		files.put("body","rumpf.csv");
 		
 		/* Default Configuration */
 		delimiter=';';

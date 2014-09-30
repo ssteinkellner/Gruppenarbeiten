@@ -33,11 +33,11 @@ public class Simulation {
 			}else if(parameter[i].equalsIgnoreCase("--lieferanten")){
 				stopIfNoValue(parameter, i);
 				i++;
-				tempi[0] = Integer.parseInt(cutNumbers(parameter[i]));
+				tempi[1] = Integer.parseInt(cutNumbers(parameter[i]));
 			}else if(parameter[i].equalsIgnoreCase("--monteure")){
 				stopIfNoValue(parameter, i);
 				i++;
-				tempi[0] = Integer.parseInt(cutNumbers(parameter[i]));
+				tempi[2] = Integer.parseInt(cutNumbers(parameter[i]));
 			}
 		}
 		
