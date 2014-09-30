@@ -49,7 +49,9 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		String part;
 		int count = 0;
 		for (int i = 0; i < needParts.length; i++) {
-			gotParts.add(this.sekretariat.getLagermitarbeiter().getParts(needParts[i], this.sekretariat.getBauplan().getPartCount(needParts[i])));
+			int currentCount = this.sekretariat.getBauplan().getPartCount(needParts[i]);
+			String[] currentParts = this.sekretariat.getLagermitarbeiter().getParts(needParts[i], currentCount);
+			gotParts.add(currentParts);
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(this.parts));
 			if (gotParts.get(i).length == this.sekretariat.getBauplan().getPartCount(needParts[i])) {
 				for (int j = 0; j < gotParts.size(); j++) {
@@ -172,7 +174,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	
 	public void run() {
 		while(!this.sekretariat.getEmployees().isShutdown()) {
-			if (getAllParts()) {
+			if (this.getAllParts()) {
 				for (int i = 0; i < this.parts.length;i++) {
 					parts[i] = sortPart(parts[i]);
 				}

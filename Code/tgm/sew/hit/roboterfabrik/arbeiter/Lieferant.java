@@ -26,8 +26,8 @@ public class Lieferant extends Mitarbeiter {
 	 */
 	public Lieferant(Sekretariat sekretariat) {
 		super(sekretariat);
-		changePart();
 		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
+		changePart();
 	}
 	
 	/**
@@ -68,11 +68,11 @@ public class Lieferant extends Mitarbeiter {
 	 */
 	
 	public String getRandomLine() {
-		String part = currentPart;
+		String part = this.currentPart;
         for (int i = 0; i < this.sekretariat.getBauplan().getPartLength(); i++) {
             part += this.sekretariat.getBauplan().getDelimiter() + new Random().nextInt(this.sekretariat.getBauplan().getMaxRandomNumber() + 1)+1;  
         }
-        return part;
+        return this.currentPart + part;
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class Lieferant extends Mitarbeiter {
 			String[] parts = null;
 			int counter = 0;
 			do {
-				parts[counter] = getRandomLine();
+				parts[counter] = this.getRandomLine();
 				counter++;
 			}
 			while(new Random().nextInt(20)<1);

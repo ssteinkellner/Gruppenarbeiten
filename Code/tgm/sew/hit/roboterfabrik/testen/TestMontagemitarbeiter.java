@@ -18,11 +18,11 @@ public class TestMontagemitarbeiter {
 	
 	@Before
 	public void doItBefore() {
-		this.s1 = new Sekretariat(1000, 2, 2);
+		this.s1 = new Sekretariat(1000, 1, 1);
+		//Mockito.when(this.s1.getBauplan().getPartNames()).thenReturn(new String[]{"body", "chain", "arm", "eye"});
 		this.m1 = new Montagemitarbeiter(s1);
 		l1 = Mockito.mock(Lagermitarbeiter.class);
-		Mockito.when(this.s1.getBauplan().getDelimiter()).thenReturn(';');
-		Mockito.when(this.s1.getBauplan().getPartNames().thenReturn(new String[]{"body", "chain", "arm", "eye"}));
+		//Mockito.when(this.s1.getBauplan().getDelimiter()).thenReturn(';');
 	}
 	
 	@Test
