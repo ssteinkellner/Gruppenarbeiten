@@ -26,8 +26,6 @@ public class Bauplan {
 		files = new HashMap<String, String>();
 		
 		/* default parts and files */
-		parts.put("head", 1);
-		files.put("head", "kopf.csv");
 		parts.put("chain", 1);
 		files.put("chain", "kette.csv");
 		parts.put("arm", 1);
