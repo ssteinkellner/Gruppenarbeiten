@@ -28,6 +28,7 @@ public class Sekretariat {
 		lastProductId = 0;
 		
 		buildingplan = new Bauplan("..");
+		storeWorker = new Lagermitarbeiter(this);
 		
 		employees = Executors.newFixedThreadPool(countLieferant+countMontage);
 		
