@@ -25,16 +25,17 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
 
 public class Lagermitarbeiter extends Mitarbeiter {
 	
-	// Logger wird initialisiert
-	private static final Logger logger = Logger.getLogger("Arbeitsablauf");
+	// Logger wird definiert
+	private static Logger logger;
 	
 	/**
-	 * Dem Lagermitarbeiter wird wie jedem anderen Mitarbeiter eine ID zugewiesen.
+	 * Dem Lagermitarbeiter wird wie jedem anderen Mitarbeiter eine ID zugewiesen und der Logger wird initialisiert.
 	 * @param sekretariat sorgt fuer die Zuweisung der ID
 	 */
 	
 	public Lagermitarbeiter(Sekretariat sekretariat) {
 		super(sekretariat);
+		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
 	}
 	
 	/**
@@ -82,19 +83,21 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			
 			// Meldung ins Logfile hineinschreiben
 			logger.log(Level.INFO, "Der Part" + part + " wurde " + count + " mal hergegeben");
-		
+			
+			return lines;
+			
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
 			logger.log(Level.ERROR, "Datei wurde nicht gefunden");
+			return null;
 			
 		} catch (IOException ioe) {
 			
 			logger.log(Level.ERROR, "IO Fehler");
+			return null;
 			
 		}
-		
-		return null;
 
 	}
 	
