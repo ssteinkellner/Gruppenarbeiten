@@ -72,6 +72,6 @@ public class Simulation {
 	 * @return alle ziffern, die in dem text vorkommen
 	 */
 	private String cutNumbers(String text){
-		return text.replaceAll("[^0-9]", "");
+		return "0"+text.replaceAll("[^0-9]", "");
 	}
 }

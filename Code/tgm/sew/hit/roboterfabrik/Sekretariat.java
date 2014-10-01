@@ -121,15 +121,18 @@ public class Sekretariat {
 		employees = Executors.newFixedThreadPool(count[0]+count[1]);
 		
 		// lieferanten erzeugen und starten
+		if(count[0]==0){ throw new IllegalArgumentException("ungültige Lieferantenanzahl: 0"); }
 		for(int i=0; i<count[0]; i++){
 			employees.execute(new Lieferant(this));
 		}
 		
 		// monteure erstellen und starten
+		if(count[1]==0){ throw new IllegalArgumentException("ungültige Monteuranzahl: 0"); }
 		for(int i=0; i<count[1]; i++){
 			employees.execute(new Montagemitarbeiter(this));
 		}
-		
+
+		if(runTime<=0){ throw new IllegalArgumentException("ungültige Laufzeit: 0"); }
 		new WatchDog(employees, runTime);
 	}
 }
