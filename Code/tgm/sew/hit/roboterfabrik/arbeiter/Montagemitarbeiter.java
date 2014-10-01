@@ -110,28 +110,6 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		}
 	}
 
-	/**Haengt mehrere Strings eines Arrays zusammen
-	 * 
-	 * @param array Ein array gefuellt mit Strings
-	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit dem im Bauplan
-	 * 			festgelegten Trennzeichen, beeinhaltet
-	 */
-	
-	public String getConcatElements(String[] array) {
-		//Hängt alle Strings des Arrays zusammen und gibt dazwischen einen Tabulator
-		String concatParts = "";
-		if (array != null) {
-			for (int i = 0; i < array.length-1;i++) {
-				if (array[i] != null) {
-					concatParts += array[i]+"\t";
-				}
-			}
-			concatParts += array[array.length-1];
-			return concatParts;
-		} else {
-			return null;
-		}
-	}
 	
 	/**
 	 * uebergibt dem Dateizugriff den hinzuzufuegenden Threadee
