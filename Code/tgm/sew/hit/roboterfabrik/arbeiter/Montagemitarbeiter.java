@@ -56,7 +56,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 			int currentCount = this.sekretariat.getBauplan().getPartCount(needParts[i]);
 			//Holt sich alle Teile dieser Art
 			String[] currentParts = this.sekretariat.getLagermitarbeiter().getParts(needParts[i], currentCount);
-			//Falls Teile nicht mehr vorhanden sind 
+			//Falls Teile nicht mehr vorhanden sind werden die anderen wieder zurückgegeben
 			if (currentParts == null) {
 				giveBack(gotParts);
 				return null;
