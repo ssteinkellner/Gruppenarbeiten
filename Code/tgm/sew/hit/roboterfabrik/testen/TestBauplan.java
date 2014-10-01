@@ -74,7 +74,7 @@ public class TestBauplan {
 
 	@Test
 	public void testTimeout(){
-		assertEquals(5000, bp.getTimeRetry());
+		assertEquals(60, bp.getTimeRetry());
 	}
 
 	@Test
