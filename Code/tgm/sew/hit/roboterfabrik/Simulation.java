@@ -30,14 +30,26 @@ public class Simulation {
 		sekretariat = new Sekretariat();
 		
 		for(int i=0;i<parameter.length;i++){
-			if(parameter[i].equalsIgnoreCase("--lager")){
+			if(parameter[i].toLowerCase().contains("help")){
+				String text = "- - - <[ Roboterfabrik help ]> - - -"
+						+ "\n parameter     | Beschreibung              | Beispiel"
+						+ "\n --lager       | muss mit einem '/' enden  | /pfad/zum/lager/"
+						+ "\n --logs        | muss mit einem '/' enden  | /pfad/zum/loggen/"
+						+ "\n --laufzeit    | laufzeit in millisekunden | 10000"
+						+ "\n --mounteure   | anzahl der mounteure      | 25"
+						+ "\n --lieferanten | anzahl der lieferanten    | 12";
+				System.out.println(text);
+				System.exit(0);
+			}else if(parameter[i].equalsIgnoreCase("--lager")){
 				stopIfNoValue(parameter, i);
 				i++;
+				stopIfNotPath(parameter[i]);
 				Sekretariat.getBauplan().setPartPath(parameter[i]);
 				Sekretariat.getBauplan().setDeliverPath(parameter[i]+"auslieferung.csv");
 			}else if(parameter[i].equalsIgnoreCase("--logs")){
 				stopIfNoValue(parameter, i);
 				i++;
+				stopIfNotPath(parameter[i]);
 				Sekretariat.getBauplan().setLogPath(parameter[i]);
 			}else if(parameter[i].equalsIgnoreCase("--laufzeit")){
 				stopIfNoValue(parameter, i);
@@ -66,6 +78,17 @@ public class Simulation {
 	private void stopIfNoValue(String[] parameter, int index){
 		if(parameter[index+1].toLowerCase().startsWith("--")){
 			throw new IllegalArgumentException("Nach "+parameter[index]+" muss ein Wert folgen. kein anderer --.*");
+		}
+	}
+	
+	/**
+	 * eine methode, die eine IllegalArgumentException wirft,
+	 * wenn ein pfad ohne abschließendes '/' angegeben wurde
+	 * @param parameter parameter, der überprüft werden soll
+	 */
+	private void stopIfNotPath(String parameter){
+		if(!parameter.substring(parameter.length()-1).contains("/")){
+			throw new IllegalArgumentException("ein Pfad muss mit '/' enden!");
 		}
 	}
 	
