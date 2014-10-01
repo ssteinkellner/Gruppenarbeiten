@@ -1,6 +1,13 @@
 package tgm.sew.hit.roboterfabrik.statisch;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.SimpleLayout;
 
 /**
  * @author Steinkellner Sebastian
@@ -78,6 +85,12 @@ public class Bauplan {
 	 * @param path pfad zur datei
 	 */
 	public void setLogPath(String path) {
+		try {
+			String fileName = path;
+			BasicConfigurator.configure(new FileAppender(new SimpleLayout(),fileName));
+		} catch (IOException e) {
+			System.err.println("Bauplan: IOException when configurating Logger!\n "+e.getMessage());
+		}
 		logPath = path;
 	}
 
@@ -197,5 +210,22 @@ public class Bauplan {
 			namen[i] = (String)keys[i];
 		}
 		return namen;
+	}
+	
+	/**
+	 * eine methode, die prüft, ob das angegebene directory vorhanden ist, und es erstellt wenn nicht
+	 * @param path pfad zum directory mit '/' am ende (alles nach dem letzten '/' wird weggeschnitten)
+	 */
+	private void checkDir(String path){
+		File dir = new File(path.substring(0,path.lastIndexOf("/")));
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+	}
+
+	public void checkPath() {
+		checkDir(partPath);
+		checkDir(logPath);
+		checkDir(deliverPath);
 	}
 }

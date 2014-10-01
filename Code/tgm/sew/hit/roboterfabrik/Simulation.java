@@ -1,6 +1,10 @@
 package tgm.sew.hit.roboterfabrik;
 
+import java.io.IOException;
+
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.SimpleLayout;
 
 /**
  * Klasse zum starten des programms

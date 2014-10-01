@@ -118,6 +118,8 @@ public class Sekretariat {
 	 * <br /> - setLieferantCount(int)
 	 */
 	public void start(){
+		buildingplan.checkPath();
+		
 		employees = Executors.newFixedThreadPool(count[0]+count[1]);
 		
 		// lieferanten erzeugen und starten
