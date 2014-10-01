@@ -29,8 +29,8 @@ public class Simulation {
 			if(parameter[i].equalsIgnoreCase("--lager")){
 				stopIfNoValue(parameter, i);
 				i++;
-				Sekretariat.getBauplan().setPartPath(parameter[i]);
-				Sekretariat.getBauplan().setDeliverPath(parameter[i]);
+				Sekretariat.getBauplan().setPartPath(parameter[i]+"/");
+				Sekretariat.getBauplan().setDeliverPath(parameter[i]+"/auslieferung.csv");
 			}else if(parameter[i].equalsIgnoreCase("--logs")){
 				stopIfNoValue(parameter, i);
 				i++;
@@ -72,6 +72,6 @@ public class Simulation {
 	 * @return alle ziffern, die in dem text vorkommen
 	 */
 	private String cutNumbers(String text){
-		return text.replaceAll("[^0-9]", "");
+		return "0"+text.replaceAll("[^0-9]", "");
 	}
 }
