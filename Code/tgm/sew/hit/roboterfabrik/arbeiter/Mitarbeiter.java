@@ -35,5 +35,23 @@ public abstract class Mitarbeiter implements Runnable {
 	public int getId() {
 		return this.id;
 	}
-
+	
+	/**
+	 * 
+	 * @param array Ein array gefuellt mit Strings
+	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit dem im Bauplan
+	 * 			festgelegten Trennzeichen, beeinhaltet
+	 */
+	
+	protected String getConcatElements(String[] array) {
+		String concatParts = "";
+		for (int i = 0; i < array.length-1;i++) {
+			if (array[i] != null) {
+				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
+			}
+		}
+		//concatParts += this.parts[this.parts.length-1];
+		return concatParts;
+	}
+	
 }
