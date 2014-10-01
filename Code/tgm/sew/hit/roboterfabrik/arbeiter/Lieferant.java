@@ -49,15 +49,20 @@ public class Lieferant extends Mitarbeiter {
 	 * 			festgelegten Trennzeichen, beeinhaltet
 	 */
 	
-	private String getConcatElements(String[] array) {
+	public String getConcatElements(String[] array) {
+		//Hängt alle Strings des Arrays zusammen und gibt 
 		String concatParts = "";
-		for (int i = 0; i < array.length-1;i++) {
-			if (array[i] != null) {
-				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
+		if (array != null) {
+			for (int i = 0; i < array.length-1;i++) {
+				if (array[i] != null) {
+					concatParts += array[i]+"\t";
+				}
 			}
+			concatParts += array[array.length-1];
+			return concatParts;
+		} else {
+			return null;
 		}
-		//concatParts += this.parts[this.parts.length-1];
-		return concatParts;
 	}
 	
 

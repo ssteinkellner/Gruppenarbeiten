@@ -58,7 +58,7 @@ public class TestMontagemitarbeiter {
 	
 	@Test
 	public void getConcatElements() {
-		assertEquals("arm;7;4;10;1;56\nbody;8;1;19;3;4", m1.getConcatElements(new String[]{"arm;7;4;10;1;56", "body;8;1;19;3;4"}));
+		assertEquals("arm;7;4;10;1;56	body;8;1;19;3;4", m1.getConcatElements(new String[]{"arm;7;4;10;1;56", "body;8;1;19;3;4"}));
 	}
 	
 	

@@ -86,11 +86,10 @@ public class Lagermitarbeiter extends Mitarbeiter {
 					raf.seek(length-i);
 					s = raf.readLine();
 				}
-				//Wenn der Name gefunden wurde, das heißt eine komplette Zeile gelesen wurde wird
+				//Wenn der Name gefunden wurde, das heißt eine komplette Zeile gelesen wurde, wird
 				//der String in lines geschrieben. Danach wird das Ende des Files vor dem Zeilenumbruch gesetzt
 				//setLength(urspruengliche Laenge - Laenge des gelesenen Strings - Zeilenumbruch
-				raf.seek(length-i);
-				lines[j] = raf.readLine();
+				lines[j] = s;
 				raf.setLength(length-i-2);
 			}
 			

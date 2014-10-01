@@ -35,7 +35,6 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		this.auslagerung = new Lagermitarbeiter(sekretariat);
 		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
 		this.parts = new String[6];
-		setNull();
 	}
 
 	/**Holt sich alle notwendigen Teile vom lagermitarbeiter und gibt sie gleich wieder
@@ -54,15 +53,17 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		for (int i = 0; i < needParts.length; i++) {
 			//Wie viele Bestandteile dieser Art werden benötigt
 			int currentCount = this.sekretariat.getBauplan().getPartCount(needParts[i]);
-			//Holt si
+			//Holt sich alle Teile dieser Art
 			String[] currentParts = this.sekretariat.getLagermitarbeiter().getParts(needParts[i], currentCount);
 			//Falls Teile nicht mehr vorhanden sind 
 			if (currentParts == null) {
 				giveBack(gotParts);
 				return null;
 			}
+			//Die erhaltenen Parts der selben Art werden in gotParts gespeichert
 			gotParts.add(currentParts);
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(currentParts));
+				//Die Parts werden aber auch in das Attribut gespeichert
 				for(String s : gotParts.get(i)) {
 					for (int j = 0; j <this.parts.length;j++) {
 						if (this.parts[j] == null) {
@@ -84,7 +85,11 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		return this.parts;
 	}
 	
-	public void setNull() {
+	/**
+	 * Setzt alle Parts des Attributs auf null
+	 */
+	
+	private void setNull() {
 		for (int i = 0;i<this.parts.length;i++) {
 			this.parts[i] = null;
 		}
@@ -95,11 +100,14 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	private void giveBack(ArrayList<String[]> addParts) {
+		//Gibt alle Parts der gleichen Art dem Lagermitarbeiter zurück
 		for (int i = 0; i < addParts.size(); i++) {
 			this.sekretariat.getLagermitarbeiter().addParts(addParts.get(i)[0], addParts.get(i));
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(addParts.get(i)));
 		}
+		//Parts werden im Attribut gelöscht
 		setNull();
+		//Montagemitarbeiter tut für eine gewisse Zeit nichts. Diese ist im Bauplan hinterlegt
 		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
 		try {
 			Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
@@ -107,13 +115,6 @@ public class Montagemitarbeiter extends Mitarbeiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*
-		try {
-			this.sekretariat.getLagermitarbeiter().wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 	}
 
 	/**
@@ -124,11 +125,12 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	public String getConcatElements(String[] array) {
+		//Hängt alle Strings des Arrays zusammen und gibt dazwischen einen Tabulator
 		String concatParts = "";
 		if (array != null) {
 			for (int i = 0; i < array.length-1;i++) {
 				if (array[i] != null) {
-					concatParts += array[i] + "\n";
+					concatParts += array[i]+"\t";
 				}
 			}
 			concatParts += array[array.length-1];
@@ -143,6 +145,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	private void deliverProduct() {
+		//Neue Id für einen Threadee wird angefordert und das Produkt wird an den Lagermitarbeiter weitergegeben
 		int idThreadee = this.sekretariat.getNewProductId();
 		String addThreadee = this.sekretariat.getBauplan().getProduktName() + "-ID" + idThreadee + ", Mitarbeiter-ID" + this.getId()+ "\r\n" + getConcatElements(this.parts)+"\r\n";
 		auslagerung.addParts(this.sekretariat.getBauplan().getProduktName(), new String[]{addThreadee});
@@ -158,6 +161,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 
 	public String sortPart(String part) {
 		char delimiter = this.sekretariat.getBauplan().getDelimiter();
+		//Der Name des Parts wird gespeichert
 		String prefix = part.substring(0, part.indexOf(delimiter));
 		part = part.substring(part.indexOf(delimiter)+1, part.length());
 		ArrayList<Integer> parts = new ArrayList<Integer>();
