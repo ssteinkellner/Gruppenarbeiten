@@ -120,7 +120,7 @@ public class Bauplan {
 	/**
 	 * gibt den Dateinamen samt masterpfad fuer ein gewisses Teil zurueck
 	 * @param name name des teils
-	 * @return pfad & Dateiname fuer teile
+	 * @return pfad &amp; Dateiname fuer teile
 	 */
 	public String getFile(String name) {
 		if(files.containsKey(name)){
@@ -226,7 +226,7 @@ public class Bauplan {
 	
 	/**
 	 * stellt den logger so ein, dass er in den logpath schreibt
-	 * <br />jedes neue logfile wird mit aktuellem datum und uhrzeit erstellt
+	 * <br>jedes neue logfile wird mit aktuellem datum und uhrzeit erstellt
 	 */
 	public void setupLogger(){
 		Calendar c = Calendar.getInstance(new Locale("AT"));
@@ -248,8 +248,8 @@ public class Bauplan {
 	
 	/**
 	 * formatiert die eingegebene zahl folgendermaßen:
-	 * <br /> - input länger als 2: letzten 2 ziffern werden zurückgegeben
-	 * <br /> - input kürzer als 2: vorne wird mit 0 aufgefüllt
+	 * <br> - input länger als 2: letzten 2 ziffern werden zurückgegeben
+	 * <br> - input kürzer als 2: vorne wird mit 0 aufgefüllt
 	 * @param input
 	 * @return
 	 */

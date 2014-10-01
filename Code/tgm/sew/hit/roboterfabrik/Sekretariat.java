@@ -79,7 +79,7 @@ public class Sekretariat {
 	
 	/**
 	 * gibt den lagermitarbeiter zurück, der den dateizugriff verwaltet
-	 * @return lagermitarbeiter => dateizugriff
+	 * @return lagermitarbeiter =&gt; dateizugriff
 	 */
 	public Lagermitarbeiter getLagermitarbeiter(){
 		return storeWorker;
@@ -113,9 +113,9 @@ public class Sekretariat {
 	 * erstellt die lieferanten und monteure in einem threadpool und startet den watchdog
 	 * <h1>ACHUNG!</h1>
 	 * vorher <b>sollten</b> folgende Methoden aufgerufen werden:
-	 * <br /> - setRuntime(int)
-	 * <br /> - setMonteurCount(int)
-	 * <br /> - setLieferantCount(int)
+	 * <br> - setRuntime(int)
+	 * <br> - setMonteurCount(int)
+	 * <br> - setLieferantCount(int)
 	 */
 	public void start(){
 		buildingplan.checkPath();

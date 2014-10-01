@@ -21,7 +21,7 @@ public class TestSekretariat {
 	
 	/**
 	 * prüft die ID, die von {@link Sekretariat#getNewWorkerId()} zurückgegeben wird
-	 * <br />sollte eigentlich eine fortlaufende nummer sein, aber springt vom startwert(0)
+	 * <br>sollte eigentlich eine fortlaufende nummer sein, aber springt vom startwert(0)
 	 * auf 2 und dann auf 1, was für mich ein unerklärbares verhalten ist, da die id mit ++
 	 * bei jedem aufruf um genau 1 erweitert wird und die methode synchronized ist
 	 */
