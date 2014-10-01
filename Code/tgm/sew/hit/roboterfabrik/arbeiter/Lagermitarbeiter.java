@@ -47,34 +47,48 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	 */
 	
 	public synchronized String[] getParts(String part, int count) {
-		if (part == null) return null;
-		// gewuenschte Datei, in die Zeilen hinzugefuegt werden sollen, wird uebergeben
+		if (part == null) {
+			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": Der Part " + part + " konnte nicht gefunden werden");
+			return null;
+		}
+		//Es wird der Filename des dazugehörigen Parts gesucht
 		String fileName = Sekretariat.getBauplan().getFile(part);
 		
 		String[] lines = new String[count];
 		
 		try {
-			
+			//Es wird ein neues RandomAccessFile generiert
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
+			//Die Laenge des Files wird ermittelt
 			long length = f.length();
+			//Wenn nichts mehr in dem File steht, wird dies protokolliert und null zurueckgegeben
 			if (length <= 1) {
 				raf.close();
 				logger.log(Level.INFO, "Lagermitarbeiter " + this.getId() + ": Das File " + fileName + " ist leer");
 				return null;
 			}
+			//Der Zeiger des Files wird ganz am Ende plaziert
 			raf.seek(length);
 			String s = "";
 			int i = 0;
+			//Wird so oft ausgeführt, wie es Teile des gleichen Typs braucht
 			for (int j = 0; j < count;j++) {
-				length = f.length() - 1;
+				//Der Pointer wird auf eine Stelle gesetzt die sicher nach dem Namen des Parts ist.
+				//Damit kann solange zurückgegangen werden bis der Partname gefunden ist
+				length = f.length() - 2*Sekretariat.getBauplan().getPartLength();
 				raf.seek(length);
 				s="";
+				//Solange der gelesene String nicht den Namen des Parts beinhaltet wird der Pointer um eine
+				//stelle nach vorne gestellt
 				while (!s.contains(part)) {
 					i++;
 					raf.seek(length-i);
 					s = raf.readLine();
 				}
+				//Wenn der Name gefunden wurde, das heißt eine komplette Zeile gelesen wurde wird
+				//der String in lines geschrieben. Danach wird das Ende des Files vor dem Zeilenumbruch gesetzt
+				//setLength(urspruengliche Laenge - Laenge des gelesenen Strings - Zeilenumbruch
 				raf.seek(length-i);
 				lines[j] = raf.readLine();
 				raf.setLength(length-i-2);
@@ -110,21 +124,24 @@ public class Lagermitarbeiter extends Mitarbeiter {
 
 	public synchronized void addParts(String part, String[] parts) {
 		
-		// gewuenschte Datei, in die Zeilen hinzugefuegt werden sollen, wird uebergeben
+		//Es wird der Filename des dazugehörigen Parts gesucht
 		String fileName = Sekretariat.getBauplan().getFile(part);
+		//Fals es sich um den Namen Threadee handeln wird der notwendige Path gesetzt
 		if (Sekretariat.getBauplan().getProduktName()==part) {
 			fileName = Sekretariat.getBauplan().getDeliverPath();
 		}
 		int count = parts.length;
 		try {
-			
+			//Es wird ein neues RandomAccessFile generiert
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
-			
+			//Wenn die 
 			long length = f.length() - 1;
+			//Wenn schon Zeilen vorhanden sind, zum Schluss springen
 			if (length > 0) {
 				raf.seek(length);
 			}
+			//Schreiben der Parts und davor einen Zeilenumbruch
 			for (int i = 0; i<count; i++) {
 				raf.writeBytes("\r\n"+parts[i]);
 			}
