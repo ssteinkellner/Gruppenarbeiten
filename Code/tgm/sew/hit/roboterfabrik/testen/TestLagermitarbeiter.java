@@ -29,7 +29,7 @@ public class TestLagermitarbeiter {
 	
 	@Test
 	public void sortPart() {
-		assertEquals(lm1.getParts(auge,2), "0;1;5;6;10;56");
+		assertEquals(lm1.getParts("auge",2), "0;1;5;6;10;56");
 	}
 	
 }

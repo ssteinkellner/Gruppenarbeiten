@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 
@@ -58,29 +59,19 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
-			// Zeilen von der Datei werden durchgegangen
-			String line = raf.readLine();
-			while(line != null) {
-				line = raf.readLine();
-				// bestimmte Zeilen werden je nach Angabe der Anzahl des Bestandteils in ein String-Array geschrieben
-				for(int i=0; i < count; i++) {
-					lines[i] = line;
+			long length = f.length() - 1;
+			raf.seek(length);
+			String s = "";
+			int i = 0;
+			for (int j = 0; j < 2;j++) {
+				while (!s.contains("arm")) {
+					i++;
+					raf.seek(length-i);
+					s = raf.readLine();
 				}
-				// ansonsten wird die jeweilige Zeile zu einer LinkedList hinzugefuegt
-				/* wenn der Montagemitarbeiter eine hoehere Anzahl vom Bestandteil anfordert als von der 
-				verfuegbaren Anzahl des jeweiligen Bestandteils im Lager, wird null zurueckgeliefert */
-				if(line != null) {
-					writeBack.add(line);
-				} else {
-					raf.close();
-					return null;
-				}
-			}
-			
-			// der Inhalt der LinkedList wird in das RAF zurückgeschrieben
-			Iterator<String> it = writeBack.iterator();
-			while(it.hasNext()) {
-				raf.writeUTF(it.next() + "\r\n");
+				raf.seek(length-i);
+				lines[i] = raf.readLine();
+				raf.setLength(length-i-2);
 			}
 			
 			raf.close();
@@ -120,17 +111,11 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
-			// bis an das Ende der Datei laufen
-			String line = raf.readLine();
-			while(line != null) { 
-				line = raf.readLine(); 
+			long length = f.length() - 1;
+			raf.seek(length);
+			for (int i = 0; i<1; i++) {
+				raf.writeBytes("\r\n"+parts[i]);
 			}
-			
-			// Zeilen werden in die jeweilige Partdatei dazugeschrieben
-			for(int i=0;i<parts.length;i++) {
-				raf.writeUTF(parts[i] + "\r\n");
-			}
-			
 			raf.close();
 			
 			// Meldung ins Logfile hineinschreiben
