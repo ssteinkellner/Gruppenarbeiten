@@ -33,8 +33,8 @@ public class Simulation {
 			if(parameter[i].equalsIgnoreCase("--lager")){
 				stopIfNoValue(parameter, i);
 				i++;
-				Sekretariat.getBauplan().setPartPath(parameter[i]+"/");
-				Sekretariat.getBauplan().setDeliverPath(parameter[i]+"/auslieferung.csv");
+				Sekretariat.getBauplan().setPartPath(parameter[i]);
+				Sekretariat.getBauplan().setDeliverPath(parameter[i]+"auslieferung.csv");
 			}else if(parameter[i].equalsIgnoreCase("--logs")){
 				stopIfNoValue(parameter, i);
 				i++;
