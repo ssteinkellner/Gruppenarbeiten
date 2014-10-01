@@ -44,8 +44,8 @@ public class Bauplan {
 		retryTimeOut=60;
 		produktName="Threadee";
 		
-		logPath = path+"/log";
-		partPath = path+"/parts";
+		logPath = path+"/log/";
+		partPath = path+"/parts/";
 		deliverPath = path+"/auslieferung.csv";
 	}
 
