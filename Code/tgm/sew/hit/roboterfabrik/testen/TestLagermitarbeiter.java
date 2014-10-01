@@ -19,12 +19,17 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
 
 public class TestLagermitarbeiter {
 
+	private Sekretariat s;
 	private Lagermitarbeiter lm1;
-	private Sekretariat s1;
+	
+	/**
+	 * Sekretariat und Lagermitarbeiter werden initialisiert
+	 */
 	
 	@Before
-	public void doItBefore() {
-		this.lm1 = new Lagermitarbeiter(s1);
+	public void initialize() {
+		this.s = new Sekretariat();
+		this.lm1 = new Lagermitarbeiter(s);
 	}
 	
 	@Test
