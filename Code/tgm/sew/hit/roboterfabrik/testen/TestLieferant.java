@@ -21,7 +21,7 @@ public class TestLieferant {
 	public void doItBefore() {
 		this.s1 = new Sekretariat(1000, 1, 1);
 		this.l1 = new Lieferant(s1);
-		pattern = Pattern.compile("{eye, body, chain, arm}[{1-20};]*{1-20");
+		pattern = Pattern.compile("{eye, body, chain, arm}[{1-20};]*{1-20}");
 	}
 	
 	@Test
