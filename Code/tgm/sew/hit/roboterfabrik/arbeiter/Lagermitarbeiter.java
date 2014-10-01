@@ -46,50 +46,52 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	 * @return
 	 */
 	
-	public String[] getParts(String part, int count) {
-		
+	public synchronized String[] getParts(String part, int count) {
+		if (part == null) return null;
 		// gewuenschte Datei, in die Zeilen hinzugefuegt werden sollen, wird uebergeben
 		String fileName = Sekretariat.getBauplan().getFile(part);
 		
 		String[] lines = new String[count];
-		LinkedList<String> writeBack = new LinkedList<String>();
 		
 		try {
 			
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
-			
 			long length = f.length() - 1;
 			raf.seek(length);
 			String s = "";
 			int i = 0;
-			for (int j = 0; j < 2;j++) {
-				while (!s.contains("arm")) {
+			for (int j = 0; j < count;j++) {
+				length = f.length() - 1;
+				raf.seek(length);
+				s="";
+				while (!s.contains(part)) {
 					i++;
 					raf.seek(length-i);
 					s = raf.readLine();
 				}
 				raf.seek(length-i);
-				lines[i] = raf.readLine();
+				lines[j] = raf.readLine();
 				raf.setLength(length-i-2);
 			}
 			
 			raf.close();
 			
 			// Meldung ins Logfile hineinschreiben
-			logger.log(Level.INFO, "Der Part" + part + " wurde " + count + " mal hergegeben");
+			
+			logger.log(Level.INFO, "Lagermitarbeiter " + this.getId() + ": Der Part " + part + " wurde " + count + " mal hergegeben");
 			
 			return lines;
 			
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
-			logger.log(Level.ERROR, "Datei " + part + " wurde nicht gefunden");
+			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": Datei " + part + " wurde nicht gefunden");
 			return null;
 			
 		} catch (IOException ioe) {
 			
-			logger.log(Level.ERROR, "IO Fehler");
+			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": IO Fehler im File " + part);
 			return null;
 			
 		}
@@ -101,34 +103,39 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	 * @param parts Bestandteile, die ins Lager eingelagert werden sollen
 	 */
 
-	public void addParts(String part, String[] parts) {
+	public synchronized void addParts(String part, String[] parts) {
 		
 		// gewuenschte Datei, in die Zeilen hinzugefuegt werden sollen, wird uebergeben
 		String fileName = Sekretariat.getBauplan().getFile(part);
-		
+		if (Sekretariat.getBauplan().getProduktName()==part) {
+			fileName = Sekretariat.getBauplan().getDeliverPath();
+		}
+		int count = parts.length;
 		try {
 			
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
 			
 			long length = f.length() - 1;
-			raf.seek(length);
-			for (int i = 0; i<1; i++) {
+			if (length > 0) {
+				raf.seek(length);
+			}
+			for (int i = 0; i<count; i++) {
 				raf.writeBytes("\r\n"+parts[i]);
 			}
 			raf.close();
 			
 			// Meldung ins Logfile hineinschreiben
-			logger.log(Level.INFO, part + " wurde gelagert");
+			logger.log(Level.INFO, "Lagermitarbeiter " + this.getId() + ": Der Part " + part + " wurde " + count + " mal gelagert");
 		
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
-			logger.log(Level.ERROR, "Datei " + part + " wurde nicht gefunden");
+			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": Datei " + part + " wurde nicht gefunden");
 			
 		} catch (IOException ioe) {
 			
-			logger.log(Level.ERROR, "IO Fehler");
+			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": IO Fehler im File " + part);
 			
 		}
 	}

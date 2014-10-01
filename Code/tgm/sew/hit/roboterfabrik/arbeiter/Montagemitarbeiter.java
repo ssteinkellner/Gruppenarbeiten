@@ -34,6 +34,8 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		super(sekretariat);
 		this.auslagerung = new Lagermitarbeiter(sekretariat);
 		logger = Logger.getLogger(sekretariat.getBauplan().getLogPath());
+		this.parts = new String[6];
+		setNull();
 	}
 
 	/**Holt sich alle notwendigen Teile vom lagermitarbeiter und gibt sie gleich wieder
@@ -55,24 +57,19 @@ public class Montagemitarbeiter extends Mitarbeiter {
 			//Holt si
 			String[] currentParts = this.sekretariat.getLagermitarbeiter().getParts(needParts[i], currentCount);
 			//Falls Teile nicht mehr vorhanden sind 
-			/*
-			for (int j = 0; j < currentParts.length;j++) {
-				if (currentParts[j]!=null) {
-					gotParts.add(new String[]{currentParts[i]});
-				}
-				giveBack(gotParts);
-				return null;
-			}
-			*/
 			if (currentParts == null) {
 				giveBack(gotParts);
 				return null;
 			}
 			gotParts.add(currentParts);
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(currentParts));
-			for (int j = 0; j < gotParts.size(); j++) {
-				for(String s : gotParts.get(j))
-					this.parts[i+j] = s;
+				for(String s : gotParts.get(i)) {
+					for (int j = 0; j <this.parts.length;j++) {
+						if (this.parts[j] == null) {
+							this.parts[j] = s;
+							break;
+						}
+					}
 			}
 		}
 		return this.parts;
@@ -87,6 +84,12 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		return this.parts;
 	}
 	
+	public void setNull() {
+		for (int i = 0;i<this.parts.length;i++) {
+			this.parts[i] = null;
+		}
+	}
+	
 	/**
 	 * Gibt die Teile wieder an den Lagermitarbeiter zurück
 	 */
@@ -96,7 +99,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 			this.sekretariat.getLagermitarbeiter().addParts(addParts.get(i)[0], addParts.get(i));
 			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(addParts.get(i)));
 		}
-		this.parts = null;
+		setNull();
 		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
 		try {
 			Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
@@ -140,12 +143,11 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	private void deliverProduct() {
-		String[] addThreadee = new String[2];
-		addThreadee[0]=this.sekretariat.getBauplan().getProduktName() + "-ID" + this.sekretariat.getNewProductId() + ", Mitarbeiter-ID" + this.getId()+ "\r\n";
-		addThreadee[1]=getConcatElements(this.parts);
-		auslagerung.addParts(this.sekretariat.getBauplan().getDeliverPath(), addThreadee);
-		logger.log(Level.INFO, addThreadee); 
-		this.parts = null;
+		int idThreadee = this.sekretariat.getNewProductId();
+		String addThreadee = this.sekretariat.getBauplan().getProduktName() + "-ID" + idThreadee + ", Mitarbeiter-ID" + this.getId()+ "\r\n" + getConcatElements(this.parts)+"\r\n";
+		auslagerung.addParts(this.sekretariat.getBauplan().getProduktName(), new String[]{addThreadee});
+		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Threadee Nr. " + idThreadee + " abgeliefert");
+		setNull();
 	}
 	
 	/**Sortiert einen Part
@@ -187,7 +189,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 				for (int i = 0; i < this.parts.length;i++) {
 					parts[i] = sortPart(parts[i]);
 				}
-				deliverProduct();
+				this.deliverProduct();
 			}
 		}
 		
