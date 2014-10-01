@@ -41,7 +41,7 @@ public class Bauplan {
 		partCount=20;
 		randomMax=20;
 		randomMin=0;
-		retryTimeOut=5000;
+		retryTimeOut=60;
 		produktName="Threadee";
 		
 		logPath = path+"/log";
