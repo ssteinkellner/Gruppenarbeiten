@@ -22,9 +22,9 @@ public class Simulation {
 	
 	/**
 	 * übernimmt die parameter, erstellt ein neues sekretariat
-	 * <br />und setzt die werte in sekretariat und bauplan ein
+	 * <br>und setzt die werte in sekretariat und bauplan ein
 	 * @param parameter String[] mit parametern nach folgendem muster:
-	 * <br /> --prefix1 wert1 --prefix2 wert2 ...
+	 * <br> --prefix1 wert1 --prefix2 wert2 ...
 	 */
 	public Simulation(String[] parameter){
 		sekretariat = new Sekretariat();
@@ -94,7 +94,7 @@ public class Simulation {
 	
 	/**
 	 * schneidet durch eine regular expression alles aus einem text, was nicht [0-9] entspricht
-	 * <br /> => der text wird auf die enthaltenen Ziffern reduziert
+	 * <br> => der text wird auf die enthaltenen Ziffern reduziert
 	 * @param text text, der reduziert werden soll
 	 * @return alle ziffern, die in dem text vorkommen
 	 */
