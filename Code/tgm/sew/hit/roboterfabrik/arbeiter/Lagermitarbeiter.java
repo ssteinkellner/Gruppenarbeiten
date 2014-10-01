@@ -31,7 +31,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	
 	/**
 	 * Dem Lagermitarbeiter wird wie jedem anderen Mitarbeiter eine ID zugewiesen und der Logger wird initialisiert.
-	 * @param sekretariat sorgt fuer die Zuweisung der ID
+	 * @param Ein Sekretariat welches die notwendigen Objekte anderer Klassen beinhaltet
 	 */
 	
 	public Lagermitarbeiter(Sekretariat sekretariat) {
@@ -43,7 +43,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	 * liefert dem Lagermitarbeiter die angeforderten Teile
 	 * @param part Bestandteil, welcher angefordert wird
 	 * @param count Anzahl des Bestandteils
-	 * @return
+	 * @return einen String[] in dem die angeforderten Teile stehen
 	 */
 	
 	public synchronized String[] getParts(String part, int count) {
