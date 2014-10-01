@@ -16,7 +16,8 @@ import tgm.sew.hit.roboterfabrik.statisch.WatchDog;
  */
 public class Sekretariat {
 
-	private int lastWorkerId, lastProductId, runTime;
+	private static int lastWorkerId, lastProductId;
+	private int runTime;
 	private int[] count;
 
 	private ExecutorService employees;
