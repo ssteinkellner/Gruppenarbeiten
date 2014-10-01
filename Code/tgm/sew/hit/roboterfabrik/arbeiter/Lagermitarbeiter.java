@@ -48,7 +48,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 	
 	public synchronized String[] getParts(String part, int count) {
 		if (part == null) {
-			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": Der Part " + part + " konnte nicht gefunden werden");
+			logger.log(Level.ERROR, "Lagermitarbeiter ID" + this.getId() + ": Der Part " + part + " konnte nicht gefunden werden");
 			return null;
 		}
 		//Es wird der Filename des dazugehörigen Parts gesucht
@@ -63,9 +63,9 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			//Die Laenge des Files wird ermittelt
 			long length = f.length();
 			//Wenn nichts mehr in dem File steht, wird dies protokolliert und null zurueckgegeben
-			if (length <= 1) {
+			if (length == 0) {
 				raf.close();
-				logger.log(Level.INFO, "Lagermitarbeiter " + this.getId() + ": Das File " + fileName + " ist leer");
+				logger.log(Level.INFO, "Lagermitarbeiter ID" + this.getId() + ": Das File " + fileName + " ist leer");
 				return null;
 			}
 			//Der Zeiger des Files wird ganz am Ende plaziert
@@ -81,7 +81,7 @@ public class Lagermitarbeiter extends Mitarbeiter {
 				s="";
 				//Solange der gelesene String nicht den Namen des Parts beinhaltet wird der Pointer um eine
 				//stelle nach vorne gestellt
-				while (!s.contains(part)) {
+				while (!s.contains(part)&&length>0) {
 					i++;
 					raf.seek(length-i);
 					s = raf.readLine();
@@ -97,19 +97,19 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			
 			// Meldung ins Logfile hineinschreiben
 			
-			logger.log(Level.INFO, "Lagermitarbeiter " + this.getId() + ": Der Part " + part + " wurde " + count + " mal hergegeben");
+			logger.log(Level.INFO, "Lagermitarbeiter ID" + this.getId() + ": Der Part " + part + " wurde " + count + " mal hergegeben");
 			
 			return lines;
 			
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
-			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": Datei " + fileName + " wurde nicht gefunden");
+			logger.log(Level.ERROR, "Lagermitarbeiter ID" + this.getId() + ": Datei " + fileName + " wurde nicht gefunden");
 			return null;
 			
 		} catch (IOException ioe) {
 			
-			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": IO Fehler im File " + fileName);
+			logger.log(Level.ERROR, "Lagermitarbeiter ID" + this.getId() + ": IO Fehler im File " + fileName);
 			return null;
 			
 		}
@@ -134,7 +134,8 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			//Es wird ein neues RandomAccessFile generiert
 			File f = new File(fileName);
 			RandomAccessFile raf = new RandomAccessFile(f, "rw");
-			//Wenn die 
+			//Die laenge des Files wird um 1 verrringert da sonst ein seek(length) nicht möglich wäre
+			//sonst passiert eine IO-Exception
 			long length = f.length() - 1;
 			//Wenn schon Zeilen vorhanden sind, zum Schluss springen
 			if (length > 0) {
@@ -147,16 +148,16 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			raf.close();
 			
 			// Meldung ins Logfile hineinschreiben
-			logger.log(Level.INFO, "Lagermitarbeiter " + this.getId() + ": Der Part " + part + " wurde " + count + " mal gelagert");
+			logger.log(Level.INFO, "Lagermitarbeiter ID" + this.getId() + ": Der Part " + part + " wurde " + count + " mal gelagert");
 		
 		// falls eine Exception auftaucht, wird eine Fehlermeldung ins Logfile hineingeschrieben
 		} catch (FileNotFoundException fne) {
 			
-			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": Datei " + fileName + " wurde nicht gefunden");
+			logger.log(Level.ERROR, "Lagermitarbeiter ID" + this.getId() + ": Datei " + fileName + " wurde nicht gefunden");
 			
 		} catch (IOException ioe) {
 			
-			logger.log(Level.ERROR, "Lagermitarbeiter " + this.getId() + ": IO Fehler im File " + fileName);
+			logger.log(Level.ERROR, "Lagermitarbeiter ID" + this.getId() + ": IO Fehler im File " + fileName);
 			
 		}
 	}

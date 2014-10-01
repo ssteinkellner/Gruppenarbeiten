@@ -62,7 +62,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 			}
 			//Die erhaltenen Parts der selben Art werden in gotParts gespeichert
 			gotParts.add(currentParts);
-			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(currentParts));
+			logger.log(Level.INFO, "Montagemitarbeiter ID" + this.getId() + ": Habe folgende Parts erhalten: " + getConcatElements(currentParts));
 				//Die Parts werden aber auch in das Attribut gespeichert
 				for(String s : gotParts.get(i)) {
 					for (int j = 0; j <this.parts.length;j++) {
@@ -103,12 +103,12 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		//Gibt alle Parts der gleichen Art dem Lagermitarbeiter zurück
 		for (int i = 0; i < addParts.size(); i++) {
 			this.sekretariat.getLagermitarbeiter().addParts(addParts.get(i)[0], addParts.get(i));
-			logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(addParts.get(i)));
+			logger.log(Level.INFO, "Montagemitarbeiter ID" + this.getId() + ": Gebe folgende Parts zurueck: " + getConcatElements(addParts.get(i)));
 		}
 		//Parts werden im Attribut gelöscht
 		setNull();
 		//Montagemitarbeiter tut für eine gewisse Zeit nichts. Diese ist im Bauplan hinterlegt
-		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
+		logger.log(Level.INFO, "Montagemitarbeiter ID" + this.getId() + ": Frage in " + this.sekretariat.getBauplan().getTimeRetry() + "ms erneut nach Teilen");
 		try {
 			Thread.sleep(this.sekretariat.getBauplan().getTimeRetry());
 		} catch (InterruptedException e) {
@@ -149,7 +149,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		int idThreadee = this.sekretariat.getNewProductId();
 		String addThreadee = this.sekretariat.getBauplan().getProduktName() + "-ID" + idThreadee + ", Mitarbeiter-ID" + this.getId()+ "\r\n" + getConcatElements(this.parts)+"\r\n";
 		auslagerung.addParts(this.sekretariat.getBauplan().getProduktName(), new String[]{addThreadee});
-		logger.log(Level.INFO, "Montagemitarbeiter " + this.getId() + ": Threadee Nr. " + idThreadee + " abgeliefert");
+		logger.log(Level.INFO, "Montagemitarbeiter ID" + this.getId() + ": Threadee Nr. " + idThreadee + " abgeliefert");
 		setNull();
 	}
 	
@@ -163,22 +163,28 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		char delimiter = this.sekretariat.getBauplan().getDelimiter();
 		//Der Name des Parts wird gespeichert
 		String prefix = part.substring(0, part.indexOf(delimiter));
+		//Nur noch die Zahlen und die Trennzeichen sind enthalten
 		part = part.substring(part.indexOf(delimiter)+1, part.length());
 		ArrayList<Integer> parts = new ArrayList<Integer>();
-		try{
-			for (int i = 0; i < this.sekretariat.getBauplan().getPartLength()-1;i++){
-				parts.add(Integer.parseInt(part.substring(0, part.indexOf(delimiter))));
-				part = part.substring(part.indexOf(delimiter)+1, part.length());
+		//Der Part wird nach dem Trennzeichen gesplitet
+		String[] sPart=new String[this.sekretariat.getBauplan().getPartLength()+1];
+		sPart=part.split(""+delimiter);
+		//Zur ArrayList hinzugefügt und geparst
+		try {
+			for (int i = 0; i<sPart.length;i++) {
+				parts.add(Integer.parseInt(sPart[i]));
 			}
-			parts.add(Integer.parseInt(part.substring(0, part.length())));
 		} catch(NumberFormatException e) {
-			logger.log(Level.ERROR, "Montagemitarbeiter " + this.getId() + ": Fehlerhafter Part(NumberFormatException)");
+			logger.log(Level.ERROR, "Montagemitarbeiter ID" + this.getId() + ": Fehlerhafter Part(NumberFormatException)");
 		}
+		//Die Nummern werden sortiert
 		Collections.sort(parts);
+		//Der Name wird und die Nummern, getrennt mit dem Trennzeichen werden wieder geschrieben
 		String sortedPart = prefix + delimiter;
 		for (int number : parts) {
 			sortedPart += "" + number + delimiter;
 		}
+		//Trennzeichen am Ende wird entfernt
 		sortedPart = sortedPart.substring(0, sortedPart.lastIndexOf(delimiter));
  		return sortedPart;
 	}
@@ -188,10 +194,11 @@ public class Montagemitarbeiter extends Mitarbeiter {
 	 */
 	
 	public void run() {
+		//Wiederholt die Schleife so lange bis der Watchdog den Threadpool stoppt
 		while(!this.sekretariat.getEmployees().isShutdown()) {
 			if (this.getAllParts() != null) {
 				for (int i = 0; i < this.parts.length;i++) {
-					parts[i] = sortPart(parts[i]);
+					this.parts[i] = sortPart(this.parts[i]);
 				}
 				this.deliverProduct();
 			}

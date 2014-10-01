@@ -35,10 +35,12 @@ public class Lieferant extends Mitarbeiter {
 	 */
 
 	public String changePart() {
+		//Holt sich alle verfügbaren Part Typen vom Bauplan
 		String[] parts = this.sekretariat.getBauplan().getPartNames();
+		//Generiert eine Random zahl, welche entscheidet welcher Teil dran sein soll
 		int random = new Random().nextInt(parts.length);
 		this.currentPart = parts[random];
-		logger.log(Level.INFO, "Lieferant " + this.getId() + ": Habe Art des Teils auf " + this.currentPart + " geaendert");
+		logger.log(Level.INFO, "Lieferant ID" + this.getId() + ": Habe Art des Teils auf " + this.currentPart + " geaendert");
 		return this.currentPart;
 	}
 	
@@ -50,7 +52,7 @@ public class Lieferant extends Mitarbeiter {
 	 */
 	
 	public String getConcatElements(String[] array) {
-		//Hängt alle Strings des Arrays zusammen und gibt 
+		//Hängt alle Strings des Arrays zusammen und gibt dazwischen einen Tabulator 
 		String concatParts = "";
 		if (array != null) {
 			for (int i = 0; i < array.length-1;i++) {
@@ -74,8 +76,11 @@ public class Lieferant extends Mitarbeiter {
 	 */
 	
 	public String getRandomLine() {
+		//schreibt den Namen des Parts am Anfang
 		String part = this.currentPart;
+		//Erstellt so viele Zahlen wie es im Bauplan definiert ist
         for (int i = 0; i < this.sekretariat.getBauplan().getPartLength(); i++) {
+        	//haengt das Trennzeichen und eine random Zahl, die das im Bauplan definierte Maximum nicht überschreitet, an
             part += "" + this.sekretariat.getBauplan().getDelimiter() + new Random().nextInt(this.sekretariat.getBauplan().getMaxRandomNumber() + 1);  
         }
         return part;
@@ -85,16 +90,19 @@ public class Lieferant extends Mitarbeiter {
 	 * Fuegt staendig zufaellige Parts dem lagermitarbeiter hinzu
 	 */
 	public void run() {
+		//Hängt alle Strings des Arrays zusammen und gibt dazwischen einen Tabulator
 		while(!this.sekretariat.getEmployees().isShutdown()) {
+			//Die Art des Parts wird geaendert
 			changePart();
+			//Die anzahl der zu produzierenden Parts wird festgelegt
 			int anzahl = new Random().nextInt(20)+10;
 			String[] parts = new String[anzahl];
 			for (int i = 0;i<anzahl;i++) {
 				parts[i] = this.getRandomLine();
 			}
-			
+			//Die Parts werden dem Lagermitarbeiter uebergeben
 			this.sekretariat.getLagermitarbeiter().addParts(this.currentPart, parts);
-			logger.log(Level.INFO, "Lieferant " + this.getId() + ": Habe folgende Teile dem Lagermitarbeiter uebergeben: " + getConcatElements(parts));
+			logger.log(Level.INFO, "Lieferant ID" + this.getId() + ": Habe " + parts.length + " Teile dem Lagermitarbeiter uebergeben.");
 		}
 		
 	}
