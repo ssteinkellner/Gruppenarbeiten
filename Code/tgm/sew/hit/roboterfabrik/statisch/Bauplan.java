@@ -88,6 +88,14 @@ public class Bauplan {
 	public void setPartPath(String path) {
 		partPath = path;
 	}
+	
+	/**
+	 * setzt den deliverypath fuer fertige produkte
+	 * @param path pfad zur datei
+	 */
+	public void setDeliverPath(String path){
+		deliverPath = path;
+	}
 
 	/**
 	 * gibt die Anzahl des angefragten Teils zurueck, die fuer <u>einen</u> Roboter gebraucht wird
@@ -119,6 +127,14 @@ public class Bauplan {
 	 */
 	public String getLogPath() {
 		return logPath;
+	}
+	
+	/**
+	 * gibt den Pfad der datei, in die die auszuliefernden roboter geschrieben werden sollen zurück
+	 * @return auslieferungsdateipfad
+	 */
+	public String getDeliverPath(){
+		return deliverPath;
 	}
 	
 	/**
@@ -181,13 +197,5 @@ public class Bauplan {
 			namen[i] = (String)keys[i];
 		}
 		return namen;
-	}
-	
-	/**
-	 * gibt den Pfad der datei, in die die auszuliefernden roboter geschrieben werden sollen zurück
-	 * @return auslieferungsdateipfad
-	 */
-	public String getDeliverPath(){
-		return deliverPath;
 	}
 }

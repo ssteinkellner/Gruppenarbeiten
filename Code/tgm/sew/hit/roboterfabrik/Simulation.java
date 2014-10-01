@@ -16,9 +16,13 @@ public class Simulation {
 		new Simulation(args);
 	}
 	
+	/**
+	 * übernimmt die parameter, erstellt ein neues sekretariat
+	 * <br />und setzt die werte in sekretariat und bauplan ein
+	 * @param parameter String[] mit parametern nach folgendem muster:
+	 * <br /> --prefix1 wert1 --prefix2 wert2 ...
+	 */
 	public Simulation(String[] parameter){
-/*		int[] tempi = {0,0,0};
-		String[] temps = new String[2];*/
 		sekretariat = new Sekretariat();
 		
 		for(int i=0;i<parameter.length;i++){
@@ -26,34 +30,26 @@ public class Simulation {
 				stopIfNoValue(parameter, i);
 				i++;
 				Sekretariat.getBauplan().setPartPath(parameter[i]);
-//				temps[0] = parameter[i];
 			}else if(parameter[i].equalsIgnoreCase("--logs")){
 				stopIfNoValue(parameter, i);
 				i++;
 				Sekretariat.getBauplan().setLogPath(parameter[i]);
-//				temps[1] = parameter[i];
 			}else if(parameter[i].equalsIgnoreCase("--laufzeit")){
 				stopIfNoValue(parameter, i);
 				i++;
 				sekretariat.setRuntime(Integer.parseInt(cutNumbers(parameter[i])));
-//				tempi[0] = Integer.parseInt(cutNumbers(parameter[i]));
 			}else if(parameter[i].equalsIgnoreCase("--lieferanten")){
 				stopIfNoValue(parameter, i);
 				i++;
 				sekretariat.setLieferantCount(Integer.parseInt(cutNumbers(parameter[i])));
-//				tempi[1] = Integer.parseInt(cutNumbers(parameter[i]));
 			}else if(parameter[i].equalsIgnoreCase("--monteure")){
 				stopIfNoValue(parameter, i);
 				i++;
 				sekretariat.setMonteurCount(Integer.parseInt(cutNumbers(parameter[i])));
-//				tempi[2] = Integer.parseInt(cutNumbers(parameter[i]));
 			}
 		}
 		
 		sekretariat.start();
-/*		sekretariat = new Sekretariat(tempi[0], tempi[1], tempi[2]);
-		sekretariat.getBauplan().setPartPath(temps[0]);
-		sekretariat.getBauplan().setLogPath(temps[1]);*/
 	}
 
 	/**

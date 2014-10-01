@@ -120,10 +120,12 @@ public class Sekretariat {
 	public void start(){
 		employees = Executors.newFixedThreadPool(count[0]+count[1]);
 		
+		// lieferanten erzeugen und starten
 		for(int i=0; i<count[0]; i++){
 			employees.execute(new Lieferant(this));
 		}
 		
+		// monteure erstellen und starten
 		for(int i=0; i<count[1]; i++){
 			employees.execute(new Montagemitarbeiter(this));
 		}
