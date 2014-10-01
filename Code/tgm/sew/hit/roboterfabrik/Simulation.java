@@ -30,6 +30,7 @@ public class Simulation {
 				stopIfNoValue(parameter, i);
 				i++;
 				Sekretariat.getBauplan().setPartPath(parameter[i]);
+				Sekretariat.getBauplan().setDeliverPath(parameter[i]);
 			}else if(parameter[i].equalsIgnoreCase("--logs")){
 				stopIfNoValue(parameter, i);
 				i++;
