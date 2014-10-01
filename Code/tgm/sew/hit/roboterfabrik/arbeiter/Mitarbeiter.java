@@ -37,21 +37,25 @@ public abstract class Mitarbeiter implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * Haengt mehrere Strings eines Arrays zusammen
 	 * @param array Ein array gefuellt mit Strings
-	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit dem im Bauplan
-	 * 			festgelegten Trennzeichen, beeinhaltet
+	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit einem Tabulator, beeinhaltet
 	 */
 	
-	protected String getConcatElements(String[] array) {
+	public String getConcatElements(String[] array) {
+		//Hängt alle Strings des Arrays zusammen und gibt dazwischen einen Tabulator 
 		String concatParts = "";
-		for (int i = 0; i < array.length-1;i++) {
-			if (array[i] != null) {
-				concatParts += array[i] + this.sekretariat.getBauplan().getDelimiter();
+		if (array != null) {
+			for (int i = 0; i < array.length-1;i++) {
+				if (array[i] != null) {
+					concatParts += array[i]+"\t";
+				}
 			}
+			concatParts += array[array.length-1];
+			return concatParts;
+		} else {
+			return null;
 		}
-		//concatParts += this.parts[this.parts.length-1];
-		return concatParts;
 	}
 	
 }
