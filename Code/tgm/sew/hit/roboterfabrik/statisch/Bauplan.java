@@ -2,8 +2,9 @@ package tgm.sew.hit.roboterfabrik.statisch;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.FileAppender;
@@ -85,12 +86,6 @@ public class Bauplan {
 	 * @param path pfad zur datei
 	 */
 	public void setLogPath(String path) {
-		try {
-			String fileName = path;
-			BasicConfigurator.configure(new FileAppender(new SimpleLayout(),fileName));
-		} catch (IOException e) {
-			System.err.println("Bauplan: IOException when configurating Logger!\n "+e.getMessage());
-		}
 		logPath = path;
 	}
 
@@ -227,5 +222,44 @@ public class Bauplan {
 		checkDir(partPath);
 		checkDir(logPath);
 		checkDir(deliverPath);
+	}
+	
+	/**
+	 * stellt den logger so ein, dass er in den logpath schreibt
+	 * <br />jedes neue logfile wird mit aktuellem datum und uhrzeit erstellt
+	 */
+	public void setupLogger(){
+		Calendar c = Calendar.getInstance(new Locale("AT"));
+		String path = logPath
+				+format(c.get(Calendar.YEAR))
+				+format(c.get(Calendar.MONTH)+1)
+				+format(c.get(Calendar.DAY_OF_MONTH))
+				+"-"
+				+format(c.get(Calendar.HOUR_OF_DAY))
+				+format(c.get(Calendar.MINUTE))
+				+format(c.get(Calendar.SECOND))
+				+".log";
+		try {
+			BasicConfigurator.configure(new FileAppender(new SimpleLayout(),path));
+		} catch (IOException e) {
+			System.err.println("Bauplan: IOException when configurating Logger!\n "+e.getMessage());
+		}
+	}
+	
+	/**
+	 * formatiert die eingegebene zahl folgendermaßen:
+	 * <br /> - input länger als 2: letzten 2 ziffern werden zurückgegeben
+	 * <br /> - input kürzer als 2: vorne wird mit 0 aufgefüllt
+	 * @param input
+	 * @return
+	 */
+	private String format(int input){
+		String output=""+input;
+		if(output.length()>2){
+			return output.substring(output.length()-2);
+		}else if(output.length()<2){
+			return "0"+output;
+		}
+		return output;
 	}
 }

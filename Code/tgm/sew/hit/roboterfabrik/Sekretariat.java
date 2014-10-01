@@ -119,6 +119,7 @@ public class Sekretariat {
 	 */
 	public void start(){
 		buildingplan.checkPath();
+		buildingplan.setupLogger();
 		
 		employees = Executors.newFixedThreadPool(count[0]+count[1]);
 		
