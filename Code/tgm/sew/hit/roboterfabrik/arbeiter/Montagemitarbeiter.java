@@ -10,12 +10,13 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
 import tgm.sew.hit.roboterfabrik.statisch.Bauplan;
 
 
-/**
+/**Ist fuer die Sortierung der Parts und dadurch die Produktion der Threadees verantwortlich.
+ * Dazu holt sich der Montagemitarbeiter vom Lagermitarbeiter die notwendigen Teile, die im
+ * Bauplan definiert sind, und sortiert diese und gibt das fertige Produk wieder dem Lagermitarbeiter
  * 
  * @author Martin Kritzl
- * @version 20140925
- * 
- * Ist fuer die Sortierung der Parts und dadurch die Produktion der Threadees verantwortlich
+ * @version 20141001
+ *  
  */
 public class Montagemitarbeiter extends Mitarbeiter {
 
@@ -27,7 +28,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 
 	/**Erzeugt einen neuen Montagemitarbeiter
 	 * 
-	 * @param sekretariat
+	 * @param Ein Sekretariat welches die notwendigen Objekte anderer Klassen beinhaltet
 	 */
 	
 	public Montagemitarbeiter(Sekretariat sekretariat) {
@@ -76,14 +77,6 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		return this.parts;
 	}
 	
-	/**Gibt die Teile zurück die gerade im Besitz des Montagemitarbeiters sind
-	 * 
-	 * @return Die Teile die gerade verarbeitet werden
-	 */
-	
-	public String[] getParts() {
-		return this.parts;
-	}
 	
 	/**
 	 * Setzt alle Parts des Attributs auf null
@@ -117,7 +110,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		}
 	}
 
-	/**
+	/**Haengt mehrere Strings eines Arrays zusammen
 	 * 
 	 * @param array Ein array gefuellt mit Strings
 	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit dem im Bauplan
@@ -153,7 +146,7 @@ public class Montagemitarbeiter extends Mitarbeiter {
 		setNull();
 	}
 	
-	/**Sortiert einen Part
+	/**Sortiert einen Part. Die Nummern des Parts werden aufsteigend sortiert
 	 * 
 	 * @param part Ein String der einen Part repraesentiert
 	 * @return Einen String der einen sortierten/fertigen Part repraesentiert

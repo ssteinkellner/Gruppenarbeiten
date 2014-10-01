@@ -7,12 +7,13 @@ import org.apache.log4j.Logger;
 
 import tgm.sew.hit.roboterfabrik.Sekretariat;
 
-/**
+/**Ist fuer die Lieferung der einzelnen Teile zustaendig. Dazu werden Parts generiert deren Namen, Groesse der Nummern,
+ * Anzahl der Nummern und Trennzeichen des Parts, im Bauplan festgelegt ist. Die Zahlen und die Art der Parts wird mit
+ * einem PRNG bestimmt
  * 
  * @author Martin Kritzl
- * @version 20140925
+ * @version 20141001
  * 
- * Ist fuer die Lieferung der einzelnen Teile zustaendig
  */
 public class Lieferant extends Mitarbeiter {
 
@@ -22,7 +23,7 @@ public class Lieferant extends Mitarbeiter {
 
 	/**Erzeugt einen neuen Lieferanten und legt einen zufaelligen zu erzeugenden Part fest
 	 * 
-	 * @param sekretariat
+	 * @param Ein Sekretariat welches die notwendigen Objekte anderer Klassen beinhaltet
 	 */
 	public Lieferant(Sekretariat sekretariat) {
 		super(sekretariat);
@@ -44,11 +45,10 @@ public class Lieferant extends Mitarbeiter {
 		return this.currentPart;
 	}
 	
-	/**
+	/**Haengt mehrere Strings eines Arrays zusammen
 	 * 
 	 * @param array Ein array gefuellt mit Strings
-	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit dem im Bauplan
-	 * 			festgelegten Trennzeichen, beeinhaltet
+	 * @return  Ein String der alle Elemente des Eingabearrays, getrennt mit einem Tabulator, beeinhaltet
 	 */
 	
 	public String getConcatElements(String[] array) {

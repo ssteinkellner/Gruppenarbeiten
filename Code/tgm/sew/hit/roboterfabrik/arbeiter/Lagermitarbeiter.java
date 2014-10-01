@@ -20,7 +20,7 @@ import tgm.sew.hit.roboterfabrik.Sekretariat;
  * dem Montagemitarbeiter erneut Teile uebergeben.
  * 
  * @author Martin Kritzl, Stefan Erceg
- * @version 20140927
+ * @version 20141001
  *
  */
 
