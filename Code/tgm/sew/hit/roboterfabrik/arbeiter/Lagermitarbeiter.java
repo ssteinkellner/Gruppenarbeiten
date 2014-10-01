@@ -52,7 +52,6 @@ public class Lagermitarbeiter extends Mitarbeiter {
 		
 		String[] lines = new String[count];
 		LinkedList<String> writeBack = new LinkedList<String>();
-		int i=0;
 		
 		try {
 			
@@ -64,19 +63,17 @@ public class Lagermitarbeiter extends Mitarbeiter {
 			while(line != null) {
 				line = raf.readLine();
 				// bestimmte Zeilen werden je nach Angabe der Anzahl des Bestandteils in ein String-Array geschrieben
-				if(i<lines.length) {
+				for(int i=0; i < count; i++) {
 					lines[i] = line;
-					i++;
+				}
 				// ansonsten wird die jeweilige Zeile zu einer LinkedList hinzugefuegt
+				/* wenn der Montagemitarbeiter eine hoehere Anzahl vom Bestandteil anfordert als von der 
+				verfuegbaren Anzahl des jeweiligen Bestandteils im Lager, wird null zurueckgeliefert */
+				if(line != null) {
+					writeBack.add(line);
 				} else {
-					/* wenn der Montagemitarbeiter eine hoehere Anzahl vom Bestandteil anfordert als von der 
-					verfuegbaren Anzahl des jeweiligen Bestandteils im Lager, wird null zurueckgeliefert */
-					if(line != null) {
-						writeBack.add(line);
-					} else {
-						raf.close();
-						return null;
-					}
+					raf.close();
+					return null;
 				}
 			}
 			
