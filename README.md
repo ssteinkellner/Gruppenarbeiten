@@ -1,4 +1,4 @@
-SEW
-===
+Gruppenarbeiten
+===============
 
-repository für alle einzelarbeit sew-projekte
+Gruppenarbeiten
