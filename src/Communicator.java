@@ -6,8 +6,8 @@
  */
 public class Communicator implements Recieveable, Sendable {
 
-	private Sendable translator;
-	private Recieveable badWordFilter;
+	private Translator translator;
+	private BadWordFilter badWordFilter;
 
 	/**
 	 * @see Recieveable#recieve()
