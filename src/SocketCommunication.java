@@ -38,4 +38,11 @@ public class SocketCommunication implements Sendable, Recieveable, Connection {
 	public void close() {
 
 	}
+	
+	/**
+	 * @see Connection#isOpen()
+	 */
+	public boolean isOpen(){
+		return false;
+	}
 }
