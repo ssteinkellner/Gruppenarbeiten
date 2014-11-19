@@ -5,21 +5,25 @@
  * @version 2014.11.19
  */
 public class Communicator implements Recieveable, Sendable {
+	private Sendable sender;
+	private Recievable reciever;
 
-	private Translator translator;
-	private BadWordFilter badWordFilter;
-
+	public Communicator(Sendable sender, Recievable reciever){
+		this.sender = sender;
+		this.reciever = reciever;
+	}
+	
 	/**
 	 * @see Recievable#recieve()
 	 */
 	public String recieve() {
-		return badWordFilter.recieve();
+		return reciever.recieve();
 	}
 
 	/**
 	 * @see Sendable#send(java.lang.String)
 	 */
 	public void send(String text) {
-		translator.send(text);
+		sender.send(text);
 	}
 }
