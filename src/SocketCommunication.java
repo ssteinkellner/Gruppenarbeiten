@@ -15,14 +15,11 @@ import java.util.List;
  * @version 2014.11.19
  */
 public class SocketCommunication implements Connection {
-	private boolean isOpen;
 	private LinkedList<Socket> partners;
 	private ServerSocket serverSocket;
-	private Socket clientSocket;
 	
 	public SocketCommunication(){
 		partners = new LinkedList<Socket>();
-		isOpen = false;
 	}
 	
 	/**
@@ -30,7 +27,7 @@ public class SocketCommunication implements Connection {
 	 */
 	 @Override
 	public void send(String text) {
-		if(serverSocket!=null && isOpen){
+//		if(serverSocket!=null && !serverSocket.isClosed()){
 			Iterator<Socket> i = partners.iterator();
 			while(i.hasNext()){
 				Socket temp = i.next();
@@ -47,16 +44,7 @@ public class SocketCommunication implements Connection {
 					partners.remove(temp);
 				}
 			}
-		}else if(clientSocket!=null){
-			try{
-				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);	//leitung zum client
-			
-				out.write(text);
-			}catch(Exception e){
-				System.err.println("ERROR when sending text to Socket: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+//		}
 	}
 
 	/**
@@ -64,29 +52,19 @@ public class SocketCommunication implements Connection {
 	 */
 	public String recieve() {
 		String text = null;
-		if(serverSocket!=null && isOpen){
+		if(serverSocket!=null && !serverSocket.isClosed()){
 			try {
 				Socket clientSocket = serverSocket.accept();	//verbindung öffnen, wenn ein client sich meldet
 				BufferedReader in = new BufferedReader(
 						new InputStreamReader(clientSocket.getInputStream()));	//leitung vom client
 				
 				text = in.readLine();
-				in.close();
+//				in.close();
 
 				//wenn die ip noch nicht bekannt, dann socket speichern
 				if(!containsSocket(partners, clientSocket)){
 					partners.add(clientSocket);
 				}
-			}catch(Exception e){
-				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}else if(clientSocket!=null){
-			try{
-				BufferedReader in = new BufferedReader(
-						new InputStreamReader(clientSocket.getInputStream()));	//leitung vom client
-				
-				text = in.readLine();
 			}catch(Exception e){
 				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
 				e.printStackTrace();
@@ -102,7 +80,6 @@ public class SocketCommunication implements Connection {
 		if(ip.contains("-1")){
 			try {
 				serverSocket = new ServerSocket(port);
-				isOpen=true;
 			} catch (IOException e) {
 				serverSocket = null;
 				System.err.println("ERROR when opening ServerSocket: " + e.getMessage());
@@ -110,7 +87,8 @@ public class SocketCommunication implements Connection {
 			}
 		}else{
 			try{
-				clientSocket = new Socket(ip, port);
+				Socket clientSocket = new Socket(ip, port);
+				partners.add(clientSocket);
 			}catch (IOException e) {
 				System.err.println("ERROR when opening ClientSocket: " + e.getMessage());
 				e.printStackTrace();
@@ -132,15 +110,13 @@ public class SocketCommunication implements Connection {
 			System.err.println("ERROR when closing ServerSocket: " + e.getMessage());
 			e.printStackTrace();
 		}
-		
-		isOpen=false;
 	}
 	
 	/**
 	 * @see Connection#isOpen()
 	 */
 	public boolean isOpen(){
-		return isOpen;
+		return !serverSocket.isClosed();
 	}
 	
 	/**
