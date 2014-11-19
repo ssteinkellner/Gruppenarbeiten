@@ -1,3 +1,8 @@
+/**
+ * 
+ * @author Alex
+ *
+ */
 public class Translator implements Sendable, Activatable {
 
 	private Sendable sendable;
