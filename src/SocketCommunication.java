@@ -18,6 +18,7 @@ public class SocketCommunication implements Connection {
 	private boolean isOpen;
 	private LinkedList<Socket> partners;
 	private ServerSocket serverSocket;
+	private Socket clientSocket;
 	
 	public SocketCommunication(){
 		partners = new LinkedList<Socket>();
@@ -33,17 +34,27 @@ public class SocketCommunication implements Connection {
 			Iterator<Socket> i = partners.iterator();
 			while(i.hasNext()){
 				Socket temp = i.next();
-				if(temp.isConnected()){
-					try(
+				if(temp.isConnected() && !temp.isClosed()){
+					try{
 						PrintWriter out = new PrintWriter(temp.getOutputStream(), true);	//leitung zum client
-					){
+					
 						out.write(text);
 					}catch(Exception e){
 						System.err.println("ERROR when sending text to Socket: " + e.getMessage());
+						e.printStackTrace();
 					}
 				}else{
 					partners.remove(temp);
 				}
+			}
+		}else if(clientSocket!=null){
+			try{
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);	//leitung zum client
+			
+				out.write(text);
+			}catch(Exception e){
+				System.err.println("ERROR when sending text to Socket: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -68,6 +79,17 @@ public class SocketCommunication implements Connection {
 				}
 			}catch(Exception e){
 				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}else if(clientSocket!=null){
+			try{
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(clientSocket.getInputStream()));	//leitung vom client
+				
+				text = in.readLine();
+			}catch(Exception e){
+				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return text;
@@ -84,12 +106,14 @@ public class SocketCommunication implements Connection {
 			} catch (IOException e) {
 				serverSocket = null;
 				System.err.println("ERROR when opening ServerSocket: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}else{
 			try{
-				Socket clientSocket = new Socket(ip, port);
+				clientSocket = new Socket(ip, port);
 			}catch (IOException e) {
-				System.err.println("ERROR when opening ServerSocket: " + e.getMessage());
+				System.err.println("ERROR when opening ClientSocket: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -106,6 +130,7 @@ public class SocketCommunication implements Connection {
 			}
 		} catch (IOException e) {
 			System.err.println("ERROR when closing ServerSocket: " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		isOpen=false;
