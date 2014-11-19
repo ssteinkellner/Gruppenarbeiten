@@ -1,10 +1,10 @@
-public class BadWordFilter implements Recieveable, Activatable {
+public class BadWordFilter implements Recievable, Activatable {
 
-	private Recieveable recieveable;
+	private Recievable recievable;
 
 
 	/**
-	 * @see Recieveable#recieve()
+	 * @see Recievable#recieve()
 	 */
 	public String recieve() {
 		return null;

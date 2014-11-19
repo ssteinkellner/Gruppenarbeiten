@@ -3,7 +3,7 @@
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
-public class JRMCommunication implements Sendable, Recieveable, Connection {
+public class JRMCommunication implements Sendable, Recievable, Connection {
 	
 	/**
 	 * @see Sendable#send(java.lang.String)
@@ -13,7 +13,7 @@ public class JRMCommunication implements Sendable, Recieveable, Connection {
 	}
 
 	/**
-	 * @see Recieveable#recieve()
+	 * @see Recievable#recieve()
 	 */
 	public String recieve() {
 		return null;

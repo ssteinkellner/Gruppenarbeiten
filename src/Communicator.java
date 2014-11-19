@@ -4,9 +4,13 @@
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
+<<<<<<< HEAD
 public class Communicator implements Recieveable, Sendable {
 	private Sendable sender;
 	private Recievable reciever;
+=======
+public class Communicator implements Recievable, Sendable {
+>>>>>>> origin/chat
 
 	public Communicator(Sendable sender, Recievable reciever){
 		this.sender = sender;
