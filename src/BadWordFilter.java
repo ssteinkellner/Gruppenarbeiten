@@ -1,6 +1,8 @@
 public class BadWordFilter implements Recievable, Activatable {
 
 	private Recievable recievable;
+	
+	private boolean enabled;
 
 
 	/**
@@ -15,7 +17,7 @@ public class BadWordFilter implements Recievable, Activatable {
 	 * @see Activatable#setEnabled(boolean)
 	 */
 	public void setEnabled(boolean active) {
-
+		this.enabled = active;
 	}
 
 }

@@ -6,6 +6,8 @@
 public class Translator implements Sendable, Activatable {
 
 	private Sendable sendable;
+	
+	private boolean enabled;
 
 
 	/**
@@ -20,7 +22,7 @@ public class Translator implements Sendable, Activatable {
 	 * @see Activatable#setEnabled(boolean)
 	 */
 	public void setEnabled(boolean active) {
-
+		this.enabled = active;
 	}
 
 }
