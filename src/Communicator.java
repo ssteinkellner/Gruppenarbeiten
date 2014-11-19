@@ -4,7 +4,7 @@
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
-public class Communicator implements Recieveable, Sendable {
+public class Communicator implements Recievable, Sendable {
 
 	private Translator translator;
 	private BadWordFilter badWordFilter;
