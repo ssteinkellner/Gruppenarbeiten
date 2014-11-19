@@ -3,7 +3,7 @@
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
-public class JRMCommunication implements Sendable, Recievable, Connection {
+public class JRMCommunication implements Connection {
 	private boolean isOpen;
 	
 	/**

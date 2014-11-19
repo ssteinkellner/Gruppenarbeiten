@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
-public class SocketCommunication implements Sendable, Recievable, Connection {
+public class SocketCommunication implements Connection {
 	private boolean isOpen;
 	private LinkedList<Socket> partners;
 	private ServerSocket serverSocket;

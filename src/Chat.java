@@ -35,8 +35,8 @@ public class Chat {
 		activeConnection = connection;
 		activeConnection.open("", 25555);
 		
-		sendables.put("t",new Translator());
-		recievables.put("bwf",new BadWordFilter());
+		sendables.put("t",new Translator(connection));
+		recievables.put("bwf",new BadWordFilter(connection));
 		
 		communicator = new Communicator(sendables.get("t"), recievables.get("bwf"));
 	}
