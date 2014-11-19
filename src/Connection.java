@@ -1,6 +1,6 @@
 public interface Connection {
 
-	public void open(int ip port);
+	public void open(String ip, int port);
 
 	public void close();
 

@@ -18,9 +18,9 @@ public class SocketCommunication implements Sendable, Recieveable, Connection {
 
 
 	/**
-	 * @see Connection#open(int)
+	 * @see Connection#open(String, int)
 	 */
-	public void open(int ip port) {
+	public void open(String ip, int port) {
 
 	}
 
