@@ -17,6 +17,7 @@ import java.util.List;
 public class SocketCommunication implements Connection {
 	private LinkedList<Socket> partners;
 	private ServerSocket serverSocket;
+	private int port;
 	
 	public SocketCommunication(){
 		partners = new LinkedList<Socket>();
@@ -63,6 +64,7 @@ public class SocketCommunication implements Connection {
 				//wenn die ip noch nicht bekannt, dann socket speichern
 				if(!containsSocket(partners, clientSocket)){
 					partners.add(clientSocket);
+//					new SocketCommunicationThread(clientSocket,this);
 				}
 			}catch(Exception e){
 				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
@@ -84,6 +86,7 @@ public class SocketCommunication implements Connection {
 				System.err.println("ERROR when opening ServerSocket: " + e.getMessage());
 				e.printStackTrace();
 			}
+			this.port = port;
 		}else{
 			try{
 				Socket clientSocket = new Socket(ip, port);
