@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -10,8 +11,12 @@ import java.util.LinkedList;
 public class Chat {
 	private Communicator communicator;
 	private LinkedList<String> messages;
-	private ArrayList<Connection> connections;
+
 	private Connection activeConnection;
+	private ArrayList<Connection> connections;
+	private HashMap<String,Sendable> sendables;
+	private HashMap<String,Recievable> recievables;
+	private HashMap<String,Activatable> activatables;
 	
 	public Chat(){
 		messages = new LinkedList<String>();
@@ -23,12 +28,17 @@ public class Chat {
 			connections.add(connection);
 		}
 		
-		if(activeConnection!=null /*|| activeConnection.isOpen()*/){
+		if(activeConnection!=null || activeConnection.isOpen()){
 			activeConnection.close();
 		}
 		
 		activeConnection = connection;
 		activeConnection.open("", 25555);
+		
+		sendables.put("t",new Translator());
+		recievables.put("bwf",new BadWordFilter());
+		
+		communicator = new Communicator(sendables.get("t"), recievables.get("bwf"));
 	}
 	
 	public ArrayList<Connection> getConnections(){
