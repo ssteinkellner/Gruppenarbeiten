@@ -1,13 +1,16 @@
+/**
+ * 
+ * @author Steinkellner Sebastian
+ * @version 2014.11.19
+ */
 public class JRMCommunication implements Sendable, Recieveable, Connection {
-
-
+	
 	/**
 	 * @see Sendable#send(java.lang.String)
 	 */
 	public void send(String test) {
 
 	}
-
 
 	/**
 	 * @see Recieveable#recieve()
@@ -16,7 +19,6 @@ public class JRMCommunication implements Sendable, Recieveable, Connection {
 		return null;
 	}
 
-
 	/**
 	 * @see Connection#open(String, int)
 	 */
@@ -24,12 +26,10 @@ public class JRMCommunication implements Sendable, Recieveable, Connection {
 
 	}
 
-
 	/**
 	 * @see Connection#close()
 	 */
 	public void close() {
 
 	}
-
 }

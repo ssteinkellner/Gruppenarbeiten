@@ -10,12 +10,11 @@ public class Communicator implements Recieveable, Sendable {
 	private BadWordFilter badWordFilter;
 
 	/**
-	 * @see Recieveable#recieve()
+	 * @see Recievable#recieve()
 	 */
 	public String recieve() {
 		return badWordFilter.recieve();
 	}
-
 
 	/**
 	 * @see Sendable#send(java.lang.String)
@@ -23,5 +22,4 @@ public class Communicator implements Recieveable, Sendable {
 	public void send(String text) {
 		translator.send(text);
 	}
-
 }

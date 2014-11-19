@@ -1,5 +1,9 @@
+/**
+ * Eine klasse, die eine Socketverbindung aufbaut und eine Kommunikation ermöglicht
+ * @author Steinkellner Sebastian
+ * @version 2014.11.19
+ */
 public class SocketCommunication implements Sendable, Recieveable, Connection {
-
 
 	/**
 	 * @see Sendable#send(java.lang.String)
@@ -8,7 +12,6 @@ public class SocketCommunication implements Sendable, Recieveable, Connection {
 
 	}
 
-
 	/**
 	 * @see Recieveable#recieve()
 	 */
@@ -16,14 +19,18 @@ public class SocketCommunication implements Sendable, Recieveable, Connection {
 		return null;
 	}
 
-
 	/**
 	 * @see Connection#open(String, int)
 	 */
 	public void open(String ip, int port) {
-
+		if(ip.contains("-1")){
+			
+			
+		}else{
+			
+			
+		}
 	}
-
 
 	/**
 	 * @see Connection#close()
@@ -31,5 +38,4 @@ public class SocketCommunication implements Sendable, Recieveable, Connection {
 	public void close() {
 
 	}
-
 }
