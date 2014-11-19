@@ -3,7 +3,7 @@ import java.util.Iterator;
 
 /**
  * 
- * @author Alex
+ * @author Alexander Koelbl
  *
  */
 public class Translator implements Sendable, Activatable {
@@ -14,7 +14,8 @@ public class Translator implements Sendable, Activatable {
 	
 	private ArrayList<String[]> ersetzen;
 	
-	public Translator(){
+	public Translator(Sendable sendable){
+		this.sendable = sendable;
 		ersetzen= new ArrayList<String[]>();
 		ersetzen.add(new String[]{"lächeln","LOL"});
 		ersetzen.add(new String[]{"laecheln","LOL"});

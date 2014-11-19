@@ -3,7 +3,7 @@
  * @author Alexander Koelbl
  * @version 2014.11.19
  */
-public interface Connection {
+public interface Connection extends Sendable, Recievable {
 	/**
 	 * Methode, welche die Kommunikation startet
 	 * @param ip IP-Adresse, mit der man sich verbinden will (vom Empfaenger)

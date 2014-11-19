@@ -34,16 +34,15 @@ public class BadWordFilter implements Recievable, Activatable {
 		String text = recievable.recieve();
 		if(enabled == true){
 			Iterator<String> i = ersetzen.iterator();
-			String temp,temp2;
-			String sterne;
-			while(i.hasNext()){
+			String temp,temp2,sterne;
+			while(i.hasNext()){ //Durch jedes unerwuenschte Wort durchiterieren
 				temp = i.next();
 				sterne = "";
-				for(int j = 0; j < (temp.length()-2); j++){
+				for(int j = 0; j < (temp.length()-2); j++){ //
 					sterne = sterne + "*";
 				}
-				temp2 = temp.charAt(0) + sterne + temp.charAt(temp.length());
-				text = text.replaceAll(temp, temp2);
+				temp2 = temp.charAt(0) + sterne + temp.charAt(temp.length()); //Erster und letzter Buchstabe bleiben erhalten, die restlichen Buchstaben werden durch Sterne ersetzt
+				text = text.replaceAll(temp, temp2); //Woerter, die unerwuenscht sind werden durch die zensierte Version ersetzt
 			}
 		}
 		return text;
