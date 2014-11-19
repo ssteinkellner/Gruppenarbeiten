@@ -8,6 +8,6 @@ public interface Recievable {
 	 * Methode, um den gesendet Text zu bekommen
 	 * @return empfangener Text
 	 */
-	public String recieve();
+	public abstract String recieve();
 
 }

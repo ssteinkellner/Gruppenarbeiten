@@ -9,10 +9,15 @@ public interface Connection {
 	 * @param ip IP-Adresse, mit der man sich verbinden will (vom Empfaenger)
 	 * @param port Port, ueber dem kommuniziert wird (vom Empfaenger)
 	 */
-	public void open(String ip, int port);
+	public abstract void open(String ip, int port);
 	/**
 	 * Methode, welche die Kommunikation beendet
 	 */
-	public void close();
+	public abstract void close();
+	/**
+	 * Methode kontrolliert, ob eine Verbindung geoeffnet ist
+	 * @return true, wenn die Verbindung offen ist, false, wenn die Verbindung geschlossen ist 
+	 */
+	public abstract boolean isOpen();
 
 }

@@ -8,6 +8,6 @@ public interface Sendable {
 	 * Methode zum Senden von Texten
 	 * @param text Text, der gesendet werden soll
 	 */
-	public void send(String text);
+	public abstract void send(String text);
 
 }
