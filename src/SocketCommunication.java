@@ -27,24 +27,23 @@ public class SocketCommunication implements Connection {
 	 */
 	 @Override
 	public void send(String text) {
-//		if(serverSocket!=null && !serverSocket.isClosed()){
-			Iterator<Socket> i = partners.iterator();
-			while(i.hasNext()){
-				Socket temp = i.next();
-				if(temp.isConnected() && !temp.isClosed()){
-					try{
-						PrintWriter out = new PrintWriter(temp.getOutputStream(), true);	//leitung zum client
-					
-						out.write(text);
-					}catch(Exception e){
-						System.err.println("ERROR when sending text to Socket: " + e.getMessage());
-						e.printStackTrace();
-					}
-				}else{
-					partners.remove(temp);
+		Iterator<Socket> i = partners.iterator();
+		while(i.hasNext()){
+			Socket temp = i.next();
+			if(temp.isConnected() && !temp.isClosed()){
+				try{
+					PrintWriter out = new PrintWriter(temp.getOutputStream(), true);	//leitung zum client
+				
+					out.write(text);
+					out.close();
+				}catch(Exception e){
+					System.err.println("ERROR when sending text to Socket: " + e.getMessage());
+					e.printStackTrace();
 				}
+			}else{
+				partners.remove(temp);
 			}
-//		}
+		}
 	}
 
 	/**
@@ -133,6 +132,8 @@ public class SocketCommunication implements Connection {
 				return true;
 			}
 		}
+		
+//		System.out.println(socket.getRemoteSocketAddress());
 		return false;
 	}
 }

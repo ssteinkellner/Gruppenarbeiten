@@ -43,7 +43,6 @@ public class Chat {
 		}
 		
 		activeConnection = connection;
-		activeConnection.open(ip, 25555);
 		
 		sendables.put("t",new Translator(activeConnection));
 		recievables.put("bwf",new BadWordFilter(activeConnection));
