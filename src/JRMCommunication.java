@@ -4,6 +4,7 @@
  * @version 2014.11.19
  */
 public class JRMCommunication implements Sendable, Recievable, Connection {
+	private boolean isOpen;
 	
 	/**
 	 * @see Sendable#send(java.lang.String)
@@ -24,6 +25,7 @@ public class JRMCommunication implements Sendable, Recievable, Connection {
 	 */
 	public void open(String ip, int port) {
 
+		isOpen=true;
 	}
 
 	/**
@@ -31,5 +33,14 @@ public class JRMCommunication implements Sendable, Recievable, Connection {
 	 */
 	public void close() {
 
+		isOpen=false;
+	}
+	
+
+	/**
+	 * @see Connection#isOpen()
+	 */
+	public boolean isOpen(){
+		return isOpen;
 	}
 }
