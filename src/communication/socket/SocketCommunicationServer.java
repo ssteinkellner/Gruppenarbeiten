@@ -22,9 +22,9 @@ public class SocketCommunicationServer extends Thread{
 		lauf = true;
 		while(lauf){
 			try {
-				Output.println("accepting ...");
+				Output.debug("accepting ...");
 				clientSocket = serverSocket.accept();
-				Output.println("accepted!");
+				Output.debug("accepted!");
 				socketCommunication.createSocketCommunicationThread(clientSocket);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -38,7 +38,7 @@ public class SocketCommunicationServer extends Thread{
 			serverSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println("ERROR when closing ServerSocket: " + e.getMessage());
+			Output.error("ERROR when closing ServerSocket: " + e.getMessage());
 		}
 	}
 	

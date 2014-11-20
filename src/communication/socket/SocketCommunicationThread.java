@@ -40,36 +40,39 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 			while(lauf){
 				try{
 					if(!clientSocket.isConnected()){
-						lauf=false;
-						Output.println("breaking!");
+						Output.debug("lost a Socket. breaking!");
+						exit();
 						break;
 					}
-					Output.println("reading ...");
+					Output.debug("reading ...");
 					text = in.readLine();
-					Output.println("read!");
-					synchronized(socketCommunication){
-						socketCommunication.setLastMessage(text);
-						socketCommunication.notify();
-					}
-				}catch(Exception e){
-					System.err.println("ERROR when reading text from Socket: " + e.getMessage());
-					if(e.getMessage().toLowerCase().contains("connection reset")){
+					Output.debug("read!");
+					if(text=="bye."){
+						text=clientSocket.getInetAddress()+" disconnected!";
+						clientSocket.close();
 						exit();
 					}
-					e.printStackTrace();
+					socketCommunication.setLastMessage(text);
+				}catch(Exception e){
+					Output.error("ERROR when reading text from Socket: " + e.getMessage());
+					if(e.getMessage().toLowerCase().contains("connection reset")){
+						exit();
+					}else{
+						e.printStackTrace();
+					}
 				}
 			}
 		}catch(Exception e){
-			System.err.println("ERROR when opening Socket: " + e.getMessage());
+			Output.error("can't open Socket: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	public void send(String text){
-		Output.println("writing ...");
-		out.write(text);
-		Output.println("written!");
+		Output.debug("writing ...");
+		out.println(text);
+		Output.debug("written!");
 	}
 	
 	public boolean isOpen(){
@@ -83,7 +86,7 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 			out.close();
 			clientSocket.close();
 		} catch (IOException e) {
-			System.err.println("ERROR when closing Socket: " + e.getMessage());
+			Output.error("can't close Socket: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

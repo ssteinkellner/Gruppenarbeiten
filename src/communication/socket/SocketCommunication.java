@@ -20,9 +20,11 @@ public class SocketCommunication implements Connection {
 	private LinkedList<SocketCommunicationThread> partners;
 	private SocketCommunicationServer server;
 	private String lastMessage;
+	private Object waitObject;
 	
 	public SocketCommunication(){
 		partners = new LinkedList<SocketCommunicationThread>();
+		waitObject = new Object();
 	}
 	
 	/**
@@ -46,13 +48,13 @@ public class SocketCommunication implements Connection {
 	 */
 	public String recieve() {
 		try {
-			synchronized(this){
-				Output.println("waiting ...");
-				this.wait();
-				Output.println("waited!");
+			synchronized(waitObject){
+				Output.debug("waiting ...");
+				waitObject.wait();
+				Output.debug("waited!");
 			}
 		} catch (InterruptedException e) {
-			System.err.println("ERROR when waiting for Input: " + e.getMessage());
+			Output.error("ERROR when waiting for Input: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return lastMessage;
@@ -68,7 +70,7 @@ public class SocketCommunication implements Connection {
 				server = new SocketCommunicationServer(serverSocket, this);
 				server.start();
 			} catch (IOException e) {
-				System.err.println("ERROR when opening ServerSocket: " + e.getMessage());
+				Output.error("ERROR when opening ServerSocket: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}else{
@@ -76,7 +78,7 @@ public class SocketCommunication implements Connection {
 				Socket clientSocket = new Socket(ip, port);
 				createSocketCommunicationThread(clientSocket);
 			}catch (IOException e) {
-				System.err.println("ERROR when opening ClientSocket: " + e.getMessage());
+				Output.error("ERROR when opening ClientSocket: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -100,9 +102,11 @@ public class SocketCommunication implements Connection {
 		return server.isOpen();
 	}
 	
-	protected void setLastMessage(String text){
+	protected  synchronized void setLastMessage(String text){
 		lastMessage = text;
-		this.notify();
+		synchronized(waitObject){
+			waitObject.notifyAll();
+		}
 	}
 
 	public void createSocketCommunicationThread(Socket clientSocket) {
