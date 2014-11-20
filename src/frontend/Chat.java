@@ -49,14 +49,18 @@ public class Chat{
 		
 		activeConnection = connection;
 		
+		sendables.clear();
+		recievables.clear();
+		activatables.clear();
+		
 		{	// kapselung für temporäre benennungen
-			Translator temp = new Translator(activeConnection);
-			sendables.put("t",temp);
-			activatables.put("t", temp);
-		}{	// kapselung für temporäre benennungen
-			Caps temp = new Caps(sendables.get("t"));
+			Caps temp = new Caps(activeConnection);
 			sendables.put("c",temp);
 			activatables.put("c", temp);
+		}{	// kapselung für temporäre benennungen
+			Translator temp = new Translator(sendables.get("c"));
+			sendables.put("t",temp);
+			activatables.put("t", temp);
 		}{	// kapselung für temporäre benennungen
 			BadWordFilter b = new BadWordFilter(activeConnection);
 			recievables.put("bwf",b);
@@ -97,5 +101,12 @@ public class Chat{
 	
 	public String getLastMessage(){
 		return messages.getLast();
+	}
+	
+	public void enableFilters(boolean active){
+		Iterator<Activatable> i = activatables.values().iterator();
+		while(i.hasNext()){
+			i.next().setEnabled(active);
+		}
 	}
 }

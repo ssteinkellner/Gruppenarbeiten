@@ -1,4 +1,6 @@
 package frontend;
+import interfaces.Connection;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -9,8 +11,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,7 +26,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import common.Output;
-
 
 public class GUI extends JFrame implements ActionListener{
 
@@ -32,6 +38,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JScrollPane chatScrollPane;
 	
 	private JPanel oben, unten;
+	private JCheckBox box;
 	
 	public GUI(Chat chat){
 		c = chat;
@@ -54,31 +61,30 @@ public class GUI extends JFrame implements ActionListener{
 
 		input = new JTextField();
 		{	//kapselung des Textes
-			final String temp = "Insert your text here";
-			input.setText(temp);
+			final String text = "Insert your text here";
+			input.setText(text);
 			input.addFocusListener(new FocusListener(){
 				@Override
 				public void focusGained(FocusEvent fe) {
-					if(input.getText().equalsIgnoreCase(temp)){
+					if(input.getText().equalsIgnoreCase(text)){
 						input.setText("");
-					}else{
-						input.removeFocusListener(this);
 					}
+					input.removeFocusListener(this);	//der Listener wird nur ein einziges mal gebraucht
 				}
 				public void focusLost(FocusEvent fe) {}
 			});
-			input.addKeyListener(new KeyListener(){
-				@Override
-				public void keyReleased(KeyEvent ke) {
-//					Output.debug(ke.getKeyCode());
-					if(ke.getKeyCode()==10){
-						send();
-					}
-				}
-				public void keyPressed(KeyEvent ke) {}
-				public void keyTyped(KeyEvent ke) {}
-			});
 		}
+		input.addKeyListener(new KeyListener(){
+			@Override
+			public void keyReleased(KeyEvent ke) {
+//				Output.debug(ke.getKeyCode());
+				if(ke.getKeyCode()==10){
+					send();
+				}
+			}
+			public void keyPressed(KeyEvent ke) {}
+			public void keyTyped(KeyEvent ke) {}
+		});
 		
 		send = new JButton("Send");
 		send.setBounds(30, 320, 150, 36);
@@ -91,6 +97,8 @@ public class GUI extends JFrame implements ActionListener{
 		connect = new JButton("Connect");
 		connect.setBounds(230, 320, 150, 36);
 		connect.addActionListener(this);
+		
+		box = new JCheckBox("Filter aktiv");
 		
 		Container cp = this.getContentPane();
 		
@@ -140,7 +148,36 @@ public class GUI extends JFrame implements ActionListener{
 				Output.error("Illegal Port: '" + port.getText() + "' !");
 			}
 		}else if(src.equals(options)){
+			String[] connectionNames;
+			List<Connection> connections = c.getConnections();
+			int l = connections.size();
+			connectionNames = new String[l];
+			for(int i=0;i<l;i++){
+				connectionNames[i]=connections.get(i).getClass().getSimpleName();
+			}
 			
+			JComboBox<String> jcb = new JComboBox<String>(connectionNames);
+			
+			String[] options = new String[]{"SPEICHERN","ABBRECHEN"};
+			Object[] objects = new Object[]{box,"Kommunikationsart",jcb};
+			int wahl = JOptionPane.showOptionDialog(null, objects, "Chat | Options",
+					JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+					null, options, options[1]);
+			if(wahl==0){
+				c.enableFilters(box.isSelected());
+				
+				String selected = jcb.getSelectedItem().toString();
+				if(!c.getActiveConection().getClass().getSimpleName().equals(selected)){
+					Iterator<Connection> i = connections.iterator();
+					while(i.hasNext()){
+						Connection temp = i.next();
+						if(temp.getClass().getSimpleName().equals(selected)){
+							c.setActiveConnection(temp);
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 	
