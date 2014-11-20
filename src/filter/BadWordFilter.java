@@ -19,6 +19,7 @@ public class BadWordFilter implements Recievable, Activatable {
 	
 	/**
 	 * Konstruktor, der die Worte definiert, die nicht erlaubt sind
+	 * @param recievable objekt, von dem man die nachrichten bekommt
 	 */
 	public BadWordFilter(Recievable recievable){
 		this.recievable = recievable;

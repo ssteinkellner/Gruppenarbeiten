@@ -73,25 +73,44 @@ public class Chat{
 		communicator = new Communicator(sendables.get("c"), recievables.get("bwf"));
 	}
 	
+	/**
+	 * gibt eine liste der bereits vorhandenen verbindungen zurueck
+	 * @return liste der verbindungen
+	 */
 	public ArrayList<Connection> getConnections(){
 		return connections;
 	}
 
+	/**
+	 * gibt die derzeit aktive verbindung zurueck
+	 * @return derzeit aktive verbindung
+	 */
 	public Connection getActiveConection(){
 		return activeConnection;
 	}
 
+	/**
+	 * methode um nachrichten zu empfangen und verarbeiten
+	 */
 	public void recieve(){
 		String text = communicator.recieve();
 		messages.add(text);
 		Output.debug("Added '"+text+"' to messages!");
 	}
 
+	/**
+	 * methode um eine nachricht zu senden
+	 * @param text nachricht die gesendet werden soll
+	 */
 	public void send(String text) {
 		messages.add("You: "+text);
 		communicator.send(text);
 	}
 	
+	/**
+	 * haengt alle nachrichten zusammen und trennt sie durch \n
+	 * @return alle nachrichten
+	 */
 	public String messagesToString(){
 		String text="";
 		Iterator<String> i = messages.iterator();
@@ -103,10 +122,18 @@ public class Chat{
 		return text;
 	}
 	
+	/**
+	 * gibt die letzte nachrichte zurueck
+	 * @return letzte nachricht
+	 */
 	public String getLastMessage(){
 		return messages.getLast();
 	}
 	
+	/**
+	 * schaltet alle filter an oder aus
+	 * @param active wenn true, werden die filter aktiviert, ansonsten deaktiviert
+	 */
 	public void enableFilters(boolean active){
 		Iterator<Activatable> i = activatables.values().iterator();
 		while(i.hasNext()){
