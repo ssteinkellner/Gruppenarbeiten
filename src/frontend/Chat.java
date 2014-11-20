@@ -6,6 +6,7 @@ import interfaces.Activatable;
 import interfaces.Connection;
 import interfaces.Recievable;
 import interfaces.Sendable;
+import interfaces.Updatable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ public class Chat {
 	private HashMap<String,Sendable> sendables;
 	private HashMap<String,Recievable> recievables;
 	private HashMap<String,Activatable> activatables;
+	
+	private Updatable updatable;
 	
 	public Chat(){
 		this("-1");

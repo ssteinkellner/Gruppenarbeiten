@@ -4,29 +4,35 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener, Updatable{
 
+	private Chat c;
+	
 	private JButton send, connect, options;
 	private JTextField text;
 
-	private Label chatverlauf;
+	private JLabel chatverlauf;
 	private JScrollPane chatScrollPane;
 	
 	private JComboBox<String> comboBox;
 	
 	private JPanel oben, unten;
 	
-	public GUI(){
-
+	public GUI(Chat chat){
+		c = chat;
+		
 		this.setTitle("Chat | SSteinkellner, AKoelbl");
 		this.setSize(600,400);
 		this.setResizable(false);
@@ -35,7 +41,7 @@ public class GUI extends JFrame {
 		oben = new JPanel();
 		unten = new JPanel();
 		
-		chatverlauf = new Label();
+		chatverlauf = new JLabel();
 		chatverlauf.setText("Chatverlauf");
 		chatverlauf.setMinimumSize(new Dimension(540, 250));
 		chatScrollPane = new JScrollPane(chatverlauf);
@@ -50,7 +56,7 @@ public class GUI extends JFrame {
 		options = new JButton("Options");
 		options.setBounds(420, 320, 150, 36);
 		
-		JButton connect = new JButton("Connect");
+		connect = new JButton("Connect");
 		connect.setBounds(230, 320, 150, 36);
 
 		Container cp = this.getContentPane();
@@ -72,9 +78,8 @@ public class GUI extends JFrame {
 		this.setVisible(true);
 	}
 
-	
-	public static void main(String[] args){
-		new GUI();
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		
 	}
-
 }
