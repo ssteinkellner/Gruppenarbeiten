@@ -1,3 +1,12 @@
+package frontend;
+import filter.BadWordFilter;
+import filter.Caps;
+import filter.Translator;
+import interfaces.Activatable;
+import interfaces.Connection;
+import interfaces.Recievable;
+import interfaces.Sendable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,16 +53,20 @@ public class Chat {
 		
 		activeConnection = connection;
 		
-		{
+		{	// kapselung für temporäre benennungen
 			Translator temp = new Translator(activeConnection);
 			sendables.put("t",temp);
 			activatables.put("t", temp);
-		}{
-			BadWordFilter temp = new BadWordFilter(activeConnection);
-			recievables.put("bwf",temp);
-			activatables.put("bwf", temp);
+		}{	// kapselung für temporäre benennungen
+			Caps temp = new Caps(sendables.get("t"));
+			sendables.put("c",temp);
+			activatables.put("c", temp);
+		}{	// kapselung für temporäre benennungen
+			BadWordFilter b = new BadWordFilter(activeConnection);
+			recievables.put("bwf",b);
+			activatables.put("bwf", b);
 		}
-		communicator = new Communicator(sendables.get("t"), recievables.get("bwf"));
+		communicator = new Communicator(sendables.get("c"), recievables.get("bwf"));
 	}
 	
 	public ArrayList<Connection> getConnections(){

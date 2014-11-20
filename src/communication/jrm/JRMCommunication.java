@@ -1,3 +1,8 @@
+package communication.jrm;
+import interfaces.Connection;
+import interfaces.Recievable;
+import interfaces.Sendable;
+
 /**
  * 
  * @author Steinkellner Sebastian

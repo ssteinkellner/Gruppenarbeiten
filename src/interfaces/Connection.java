@@ -1,3 +1,4 @@
+package interfaces;
 /**
  * Interface, welches Methode zum starten und beenden der Kommunikation zur Verfuegung stellt
  * @author Alexander Koelbl

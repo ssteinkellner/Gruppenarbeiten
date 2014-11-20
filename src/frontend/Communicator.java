@@ -1,3 +1,7 @@
+package frontend;
+import interfaces.Recievable;
+import interfaces.Sendable;
+
 /**
  * Eine Klasse, die das letzte glied der Decorator kette darstellt,
  * um für die 2 Richtungen verschiedene längen zu ermöglichen

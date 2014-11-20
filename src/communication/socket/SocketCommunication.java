@@ -1,3 +1,8 @@
+package communication.socket;
+import interfaces.Connection;
+import interfaces.Recievable;
+import interfaces.Sendable;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
