@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import common.Output;
+
 
 public class SocketCommunicationServer extends Thread{
 	private SocketCommunication socketCommunication;
@@ -20,9 +22,9 @@ public class SocketCommunicationServer extends Thread{
 		lauf = true;
 		while(lauf){
 			try {
-				System.out.println("accepting ...");
+				Output.println("accepting ...");
 				clientSocket = serverSocket.accept();
-				System.out.println("accepted!");
+				Output.println("accepted!");
 				socketCommunication.createSocketCommunicationThread(clientSocket);
 			} catch (IOException e) {
 				e.printStackTrace();

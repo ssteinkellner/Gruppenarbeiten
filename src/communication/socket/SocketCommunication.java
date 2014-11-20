@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import common.Output;
+
 /**
  * Eine klasse, die eine Socketverbindung aufbaut und eine Kommunikation ermöglicht
  * @author Steinkellner Sebastian
@@ -45,9 +47,9 @@ public class SocketCommunication implements Connection {
 	public String recieve() {
 		try {
 			synchronized(this){
-				System.out.println("waiting ...");
+				Output.println("waiting ...");
 				this.wait();
-				System.out.println("waited!");
+				Output.println("waited!");
 			}
 		} catch (InterruptedException e) {
 			System.err.println("ERROR when waiting for Input: " + e.getMessage());

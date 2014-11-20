@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import common.Output;
+
 /**
  * 
  * @author Steinkellner Sebastian
@@ -17,8 +19,8 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 	private Socket clientSocket;
 	private String text;
 	private boolean lauf;
-	BufferedReader in;
-	PrintWriter out;
+	private BufferedReader in;
+	private PrintWriter out;
 	
 	public SocketCommunicationThread(Socket clientSocket, SocketCommunication socketCommunication){
 		this.clientSocket = clientSocket;
@@ -39,12 +41,12 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 				try{
 					if(!clientSocket.isConnected()){
 						lauf=false;
-						System.out.println("breaking!");
+						Output.println("breaking!");
 						break;
 					}
-					System.out.println("reading ...");
+					Output.println("reading ...");
 					text = in.readLine();
-					System.out.println("read!");
+					Output.println("read!");
 					synchronized(socketCommunication){
 						socketCommunication.setLastMessage(text);
 						socketCommunication.notify();
@@ -65,9 +67,9 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 	
 	@Override
 	public void send(String text){
-		System.out.println("writing ...");
+		Output.println("writing ...");
 		out.write(text);
-		System.out.println("written!");
+		Output.println("written!");
 	}
 	
 	public boolean isOpen(){
