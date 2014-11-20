@@ -39,23 +39,18 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 			
 			while(lauf){
 				try{
-					if(!clientSocket.isConnected()){
-						Output.debug("lost a Socket. breaking!");
-						exit();
-						break;
-					}
 					Output.debug("reading ...");
 					text = in.readLine();
 					Output.debug("read!");
-					if(text=="bye."){
-						text=clientSocket.getInetAddress()+" disconnected!";
+					if(text.equalsIgnoreCase("bye.")){
 						clientSocket.close();
 						exit();
+					}else{
+						text = clientSocket.getInetAddress() + ": " + text;
 					}
 					socketCommunication.setLastMessage(text);
 				}catch(Exception e){
 					if(e.getMessage().toLowerCase().contains("connection reset")){
-						text=clientSocket.getInetAddress()+" disconnected!";
 						exit();
 					}else{
 						Output.error("ERROR when reading text from Socket: " + e.getMessage());
@@ -63,6 +58,7 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 					}
 				}
 			}
+			socketCommunication.setLastMessage(clientSocket.getInetAddress()+" disconnected!");
 		}catch(Exception e){
 			Output.error("can't open Socket: " + e.getMessage());
 			e.printStackTrace();

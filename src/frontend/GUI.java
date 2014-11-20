@@ -5,14 +5,18 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import common.Output;
 
 
 public class GUI extends JFrame implements ActionListener{
@@ -20,12 +24,10 @@ public class GUI extends JFrame implements ActionListener{
 	private Chat c;
 	
 	private JButton send, connect, options;
-	private JTextField text;
+	private JTextField input;
 
-	private JLabel chatverlauf;
+	private JTextArea chatverlauf;
 	private JScrollPane chatScrollPane;
-	
-	private JComboBox<String> comboBox;
 	
 	private JPanel oben, unten;
 	
@@ -41,24 +43,42 @@ public class GUI extends JFrame implements ActionListener{
 		oben = new JPanel();
 		unten = new JPanel();
 		
-		chatverlauf = new JLabel();
+		chatverlauf = new JTextArea();
 		chatverlauf.setText("Chatverlauf");
 		chatverlauf.setMinimumSize(new Dimension(540, 250));
+		chatverlauf.setEditable(false);
 		chatScrollPane = new JScrollPane(chatverlauf);
 		chatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		text = new JTextField();
-		text.setText("Insert your text here");
+		input = new JTextField();
+		{	//kapselung des Textes
+			final String temp = "Insert your text here";
+			input.setText(temp);
+			input.addFocusListener(new FocusListener(){
+				@Override
+				public void focusGained(FocusEvent fe) {
+					if(input.getText().equalsIgnoreCase(temp)){
+						input.setText("");
+					}else{
+						input.removeFocusListener(this);
+					}
+				}
+				public void focusLost(FocusEvent fe) {}
+			});
+		}
 		
 		send = new JButton("Send");
 		send.setBounds(30, 320, 150, 36);
+		send.addActionListener(this);
 		
 		options = new JButton("Options");
 		options.setBounds(420, 320, 150, 36);
+		options.addActionListener(this);
 		
 		connect = new JButton("Connect");
 		connect.setBounds(230, 320, 150, 36);
-
+		connect.addActionListener(this);
+		
 		Container cp = this.getContentPane();
 		
 		cp.setLayout(new BorderLayout());
@@ -72,19 +92,21 @@ public class GUI extends JFrame implements ActionListener{
 		oben.add(options);
 		oben.add(connect);
 		
-		unten.add(text);
+		unten.add(input);
 		unten.add(send, BorderLayout.EAST);
 
 		this.setVisible(true);
 		
 		while(true){
-			c.receive();
+			c.recieve();
 			this.update();
 		}
 	}
 
-	public void update(){
-		chatverlauf.setText("<html>"+c.messagesToString().replaceAll("\n", "<br />")+"</html>");
+	public synchronized void update(){
+		String text = c.getLastMessage();
+		Output.debug(text);
+		chatverlauf.append("\n"+text);
 	}
 	
 	@Override
@@ -92,9 +114,14 @@ public class GUI extends JFrame implements ActionListener{
 		Object src = ae.getSource();
 		
 		if(src.equals(send)){
-			
+			c.send(input.getText());
+			input.setText("");
+			update();
 		}else if(src.equals(connect)){
-			
+			JTextField ip = new JTextField(), port = new JTextField();
+			Object[] options = new Object[]{"IP",ip,"Port",port};
+			JOptionPane.showMessageDialog(null, options);
+			c.getActiveConection().open(ip.getText(), Integer.parseInt(port.getText()));
 		}else if(src.equals(options)){
 			
 		}

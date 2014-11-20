@@ -20,7 +20,7 @@ import common.Output;
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
-public class Chat {
+public class Chat{
 	private Communicator communicator;
 	private LinkedList<String> messages;
 
@@ -69,14 +69,19 @@ public class Chat {
 		return connections;
 	}
 
-	public Communicator getCommunicator(){
-		return communicator;
+	public Connection getActiveConection(){
+		return activeConnection;
 	}
 
-	public void receive(){
+	public void recieve(){
 		String text = communicator.recieve();
 		messages.add(text);
 		Output.debug("Added '"+text+"' to messages!");
+	}
+
+	public void send(String text) {
+		messages.add("You: "+text);
+		communicator.send(text);
 	}
 	
 	public String messagesToString(){
@@ -88,5 +93,9 @@ public class Chat {
 		}
 		
 		return text;
+	}
+	
+	public String getLastMessage(){
+		return messages.getLast();
 	}
 }
