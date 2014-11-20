@@ -50,7 +50,9 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 					}
 					socketCommunication.setLastMessage(text);
 				}catch(Exception e){
-					if(!e.getMessage().toLowerCase().contains("connection reset")){
+					if(e.getMessage().toLowerCase().contains("connection reset")){
+						lauf=false;
+					}else{
 						Output.error("ERROR when reading text from Socket: " + e.getMessage());
 						e.printStackTrace();
 					}
