@@ -11,6 +11,7 @@ import java.util.LinkedList;
 public class Chat {
 	private Communicator communicator;
 	private LinkedList<String> messages;
+	private String ip;
 
 	private Connection activeConnection;
 	private ArrayList<Connection> connections;
@@ -19,8 +20,17 @@ public class Chat {
 	private HashMap<String,Activatable> activatables;
 	
 	public Chat(){
+		this("-1");
+	}
+	
+	public Chat(String ip){
+		this.ip = ip;
+		
 		messages = new LinkedList<String>();
 		connections = new ArrayList<Connection>();
+		sendables = new HashMap<String,Sendable>();
+		recievables = new HashMap<String,Recievable>();
+		activatables = new HashMap<String,Activatable>();
 	}
 	
 	public void setActiveConnection(Connection connection){
@@ -28,20 +38,33 @@ public class Chat {
 			connections.add(connection);
 		}
 		
-		if(activeConnection!=null || activeConnection.isOpen()){
+		if(activeConnection!=null && activeConnection.isOpen()){
 			activeConnection.close();
 		}
 		
 		activeConnection = connection;
-		activeConnection.open("", 25555);
 		
-		sendables.put("t",new Translator(connection));
-		recievables.put("bwf",new BadWordFilter(connection));
-		
+		{
+			Translator temp = new Translator(activeConnection);
+			sendables.put("t",temp);
+			activatables.put("t", temp);
+		}{
+			BadWordFilter temp = new BadWordFilter(activeConnection);
+			recievables.put("bwf",temp);
+			activatables.put("bwf", temp);
+		}
 		communicator = new Communicator(sendables.get("t"), recievables.get("bwf"));
 	}
 	
 	public ArrayList<Connection> getConnections(){
 		return connections;
+	}
+	
+	public Communicator getCommunicator(){
+		return communicator;
+	}
+	
+	public void setIp(String ip){
+		this.ip = ip;
 	}
 }
