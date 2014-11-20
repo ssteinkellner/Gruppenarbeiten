@@ -102,6 +102,10 @@ public class SocketCommunication implements Connection {
 		return server.isOpen();
 	}
 	
+	/**
+	 * setzt eine nachricht, die dann nach oben weitergegeben werden kann
+	 * @param text text der nachricht
+	 */
 	protected synchronized void setLastMessage(String text){
 		lastMessage = text;
 		synchronized(waitObject){
@@ -109,6 +113,10 @@ public class SocketCommunication implements Connection {
 		}
 	}
 
+	/**
+	 * erstellt einen neuen thread für eine verbindung
+	 * @param clientSocket socket, ueber den kommuniziert werden soll
+	 */
 	public void createSocketCommunicationThread(Socket clientSocket) {
 		SocketCommunicationThread temp = new SocketCommunicationThread(clientSocket, this);
 		temp.start();

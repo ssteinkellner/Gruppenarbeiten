@@ -38,6 +38,10 @@ public class Chat{
 		activatables = new HashMap<String,Activatable>();
 	}
 	
+	/**
+	 * setzt die aktive verbindung
+	 * @param connection verbindung, die verwendet werden soll
+	 */
 	public void setActiveConnection(Connection connection){
 		if(!connections.contains(connection)){
 			connections.add(connection);

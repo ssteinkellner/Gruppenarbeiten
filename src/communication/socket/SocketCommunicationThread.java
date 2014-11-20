@@ -65,17 +65,28 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 		}
 	}
 	
+	/**
+	 * um eine nachricht zu uebertragen
+	 * @param text nachricht die uebertragen werden soll
+	 */
 	@Override
 	public void send(String text){
 		Output.debug("writing ...");
 		out.println(text);
 		Output.debug("written!");
 	}
-	
+
+	/**
+	 * um zu pruefen, ob der socket offen ist
+	 * @return true, wenn der socket offen ist, ansonsten false
+	 */
 	public boolean isOpen(){
 		return !clientSocket.isClosed();
 	}
 	
+	/**
+	 * stopp den thread und schliesst die verbindung
+	 */
 	public void exit(){
 		lauf = false;
 		try {

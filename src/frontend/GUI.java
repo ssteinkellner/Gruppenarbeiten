@@ -124,6 +124,9 @@ public class GUI extends JFrame implements ActionListener{
 		}
 	}
 
+	/**
+	 * wenn sich die daten des chats geaendert haben (zb: neue nachricht)
+	 */
 	public synchronized void update(){
 		String text = c.getLastMessage();
 		Output.debug(text);
@@ -181,6 +184,9 @@ public class GUI extends JFrame implements ActionListener{
 		}
 	}
 	
+	/**
+	 * um eine nachricht zu senden
+	 */
 	private void send(){
 		c.send(input.getText());
 		input.setText("");

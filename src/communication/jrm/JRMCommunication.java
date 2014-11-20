@@ -4,7 +4,7 @@ import interfaces.Recievable;
 import interfaces.Sendable;
 
 /**
- * 
+ * Eine noch nicht fertig implementierte Klasse fuer die Kommunikation ueber JRM
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */

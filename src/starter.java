@@ -5,7 +5,11 @@ import communication.socket.SocketCommunication;
 import frontend.Chat;
 import frontend.GUI;
 
-
+/**
+ * eine klasse, die einen port erfragt und die gui aufbaut
+ * @author Steinkellner Sebastian
+ * @verion 2014.11.20
+ */
 public class starter {
 	
 	public static void main(String[] args){

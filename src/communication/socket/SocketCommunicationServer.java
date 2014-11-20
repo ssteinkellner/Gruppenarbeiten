@@ -32,6 +32,9 @@ public class SocketCommunicationServer extends Thread{
 		}
 	}
 	
+	/**
+	 * stoppt den thread
+	 */
 	public void exit(){
 		lauf = false;
 		try {
@@ -42,6 +45,10 @@ public class SocketCommunicationServer extends Thread{
 		}
 	}
 	
+	/**
+	 * um zu pruefen, ob der socket offen ist
+	 * @return true, wenn der socket offen ist, ansonsten false
+	 */
 	public boolean isOpen(){
 		return !serverSocket.isClosed();
 	}
