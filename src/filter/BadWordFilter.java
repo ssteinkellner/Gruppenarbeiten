@@ -22,12 +22,14 @@ public class BadWordFilter implements Recievable, Activatable {
 	 */
 	public BadWordFilter(Recievable recievable){
 		this.recievable = recievable;
-		ersetzen= new ArrayList<String>();
+		ersetzen = new ArrayList<String>();
+		
+		//alle woerter sollten klein geschrieben sein!
 		ersetzen.add("ficken");
-		ersetzen.add("Arschloch");
-		ersetzen.add("Faggot");
-		ersetzen.add("Hurensohn");
-		ersetzen.add("Hure");
+		ersetzen.add("arschloch");
+		ersetzen.add("faggot");
+		ersetzen.add("hurensohn");
+		ersetzen.add("hure");
 	}
 
 	/**
@@ -38,15 +40,17 @@ public class BadWordFilter implements Recievable, Activatable {
 		String text = recievable.recieve();
 		if(enabled == true){
 			Iterator<String> i = ersetzen.iterator();
-			String temp,temp2,sterne;
+			String temp, temp2, sterne;
 			while(i.hasNext()){ //Durch jedes unerwuenschte Wort durchiterieren
 				temp = i.next();
-				sterne = "";
-				for(int j = 0; j < (temp.length()-2); j++){ 
-					sterne = sterne + "*";
+				if(text.toLowerCase().contains(temp)){
+					sterne = "";
+					for(int j = 0; j < (temp.length()-2); j++){
+						sterne = sterne + "*";
+					}
+					temp2 = temp.charAt(0) + sterne + temp.charAt(temp.length()-1); //Erster und letzter Buchstabe bleiben erhalten, die restlichen Buchstaben werden durch Sterne ersetzt
+					text = text.replaceAll("(?i)" + temp, temp2); //Woerter im Text, die unerwuenscht sind, werden durch die zensierte Version ersetzt
 				}
-				temp2 = temp.charAt(0) + sterne + temp.charAt(temp.length()); //Erster und letzter Buchstabe bleiben erhalten, die restlichen Buchstaben werden durch Sterne ersetzt
-				text = text.replaceAll(temp, temp2); //Woerter im Text, die unerwuenscht sind, werden durch die zensierte Version ersetzt
 			}
 		}
 		return text;

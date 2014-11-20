@@ -36,7 +36,7 @@ public class Translator implements Sendable, Activatable {
 			String[] temp;
 			while(i.hasNext()){ //Durch jedes Wort der List ersetzen durchiterieren
 				temp = i.next();
-				text = text.replaceAll(temp[0], temp[1]); //Text aendern
+				text = text.replaceAll("(?i)" + temp[0], temp[1]); //Text aendern
 			}
 		}
 		sendable.send(text);
