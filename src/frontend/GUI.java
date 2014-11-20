@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -65,6 +67,17 @@ public class GUI extends JFrame implements ActionListener{
 				}
 				public void focusLost(FocusEvent fe) {}
 			});
+			input.addKeyListener(new KeyListener(){
+				@Override
+				public void keyReleased(KeyEvent ke) {
+//					Output.debug(ke.getKeyCode());
+					if(ke.getKeyCode()==10){
+						send();
+					}
+				}
+				public void keyPressed(KeyEvent ke) {}
+				public void keyTyped(KeyEvent ke) {}
+			});
 		}
 		
 		send = new JButton("Send");
@@ -114,16 +127,26 @@ public class GUI extends JFrame implements ActionListener{
 		Object src = ae.getSource();
 		
 		if(src.equals(send)){
-			c.send(input.getText());
-			input.setText("");
-			update();
+			send();
 		}else if(src.equals(connect)){
 			JTextField ip = new JTextField(), port = new JTextField();
 			Object[] options = new Object[]{"IP",ip,"Port",port};
-			JOptionPane.showMessageDialog(null, options);
-			c.getActiveConection().open(ip.getText(), Integer.parseInt(port.getText()));
+			JOptionPane.showMessageDialog(null, options, "Chat | open new Connection", JOptionPane.PLAIN_MESSAGE);
+			if(ip.getText().isEmpty() || port.getText().isEmpty()){ return; }
+			try{
+				int convertedPort = Integer.parseInt(port.getText());
+				c.getActiveConection().open(ip.getText(), convertedPort);
+			}catch(Exception e){
+				Output.error("Illegal Port: '" + port.getText() + "' !");
+			}
 		}else if(src.equals(options)){
 			
 		}
+	}
+	
+	private void send(){
+		c.send(input.getText());
+		input.setText("");
+		update();
 	}
 }
