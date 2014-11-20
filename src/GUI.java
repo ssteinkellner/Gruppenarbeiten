@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 
 import java.awt.Label;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -10,8 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+
 public class GUI extends JFrame {
-public JButton send;
+	public JButton send;
 	
 	public JButton connect;
 	
@@ -66,5 +68,4 @@ public JButton send;
 		f.setResizable(false);
 		f.setVisible(true);
 	}
-	
 }
