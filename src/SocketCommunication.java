@@ -18,6 +18,7 @@ public class SocketCommunication implements Connection {
 	private LinkedList<Socket> partners;
 	private ServerSocket serverSocket;
 	private int port;
+	private String lastMessage;
 	
 	public SocketCommunication(){
 		partners = new LinkedList<Socket>();
@@ -51,7 +52,7 @@ public class SocketCommunication implements Connection {
 	 * @see Recievable#recieve()
 	 */
 	public String recieve() {
-		String text = null;
+/*		String text = null;
 		if(serverSocket!=null && !serverSocket.isClosed()){
 			try {
 				Socket clientSocket = serverSocket.accept();	//verbindung öffnen, wenn ein client sich meldet
@@ -70,8 +71,14 @@ public class SocketCommunication implements Connection {
 				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
 				e.printStackTrace();
 			}
+		}*/
+		try {
+			this.wait();
+		} catch (InterruptedException e) {
+			System.err.println("ERROR when waiting for Input: " + e.getMessage());
+			e.printStackTrace();
 		}
-		return text;
+		return lastMessage;
 	}
 
 	/**
@@ -138,5 +145,9 @@ public class SocketCommunication implements Connection {
 		
 //		System.out.println(socket.getRemoteSocketAddress());
 		return false;
+	}
+	
+	protected void setLastMessage(String text){
+		lastMessage = text;
 	}
 }

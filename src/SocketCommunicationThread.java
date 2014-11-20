@@ -22,17 +22,25 @@ public class SocketCommunicationThread extends Thread{
 	
 	@Override
 	public void run(){
-		while(lauf){
-			try{
-				BufferedReader in = new BufferedReader(
-						new InputStreamReader(clientSocket.getInputStream()));
-				
-				text = in.readLine();
-				socketCommunication.notify();
-			}catch(Exception e){
-				System.err.println("ERROR when reading text from Socket: " + e.getMessage());
-				e.printStackTrace();
+		try(
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(clientSocket.getInputStream()));
+		){
+			while(lauf){
+				try{
+					text = in.readLine();
+					synchronized(socketCommunication){
+						socketCommunication.setLastMessage();
+						socketCommunication.notify();
+					}
+				}catch(Exception e){
+					System.err.println("ERROR when reading text from Socket: " + e.getMessage());
+					e.printStackTrace();
+				}
 			}
+		}catch(Exception e){
+			System.err.println("ERROR when opening SocketReader: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
