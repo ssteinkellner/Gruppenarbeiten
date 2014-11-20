@@ -1,3 +1,7 @@
+import javax.swing.JOptionPane;
+
+import common.Output;
+import communication.socket.SocketCommunication;
 import frontend.Chat;
 import frontend.GUI;
 
@@ -6,6 +10,23 @@ public class starter {
 	
 	public static void main(String[] args){
 		Chat c = new Chat();
-		GUI g = new GUI(c);
+		SocketCommunication scon = new SocketCommunication();
+		
+		String input = JOptionPane.showInputDialog(null,
+				"Bitte den Lokalen port eingeben!\n(fuer neue Verbindungen)",
+				"Chat | setup", JOptionPane.PLAIN_MESSAGE
+		);
+		if(input==null || input.isEmpty()){ return; }
+		int port = 0;
+		try{
+			port = Integer.parseInt(input);
+		}catch(Exception e){
+			Output.error("Illegal Port: '" + input + "' !");
+			return;
+		}
+		scon.open("-1",port);
+		c.setActiveConnection(scon);
+		try { Thread.sleep(1000); } catch (Exception e) {}
+		new GUI(c);
 	}
 }
