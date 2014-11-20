@@ -44,9 +44,15 @@ public class Chat {
 		
 		activeConnection = connection;
 		
-		sendables.put("t",new Translator(activeConnection));
-		recievables.put("bwf",new BadWordFilter(activeConnection));
-		
+		{
+			Translator temp = new Translator(activeConnection);
+			sendables.put("t",temp);
+			activatables.put("t", temp);
+		}{
+			BadWordFilter temp = new BadWordFilter(activeConnection);
+			recievables.put("bwf",temp);
+			activatables.put("bwf", temp);
+		}
 		communicator = new Communicator(sendables.get("t"), recievables.get("bwf"));
 	}
 	
