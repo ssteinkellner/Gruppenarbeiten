@@ -42,7 +42,7 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 					Output.debug("reading ...");
 					text = in.readLine();
 					Output.debug("read!");
-					if(text=="bye."){
+					if(text.equalsIgnoreCase("bye.")){
 						clientSocket.close();
 						exit();
 					}else{

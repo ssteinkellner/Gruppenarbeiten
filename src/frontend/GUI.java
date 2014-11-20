@@ -103,10 +103,10 @@ public class GUI extends JFrame implements ActionListener{
 		}
 	}
 
-	public void update(){
+	public synchronized void update(){
 		String text = c.getLastMessage();
 		Output.debug(text);
-		chatverlauf.append(text+"\n");
+		chatverlauf.append("\n"+text);
 	}
 	
 	@Override

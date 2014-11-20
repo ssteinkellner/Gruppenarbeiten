@@ -102,7 +102,7 @@ public class SocketCommunication implements Connection {
 		return server.isOpen();
 	}
 	
-	protected  synchronized void setLastMessage(String text){
+	protected synchronized void setLastMessage(String text){
 		lastMessage = text;
 		synchronized(waitObject){
 			waitObject.notifyAll();
