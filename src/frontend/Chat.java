@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import common.Output;
+
 /**
  * Die hauptklasse des Programms
  * Sie speichert die nachrichten, lässt sie abrufen und neue senden
@@ -72,7 +74,9 @@ public class Chat {
 	}
 
 	public void receive(){
-		messages.add(communicator.recieve());
+		String text = communicator.recieve();
+		messages.add(text);
+		Output.debug("Added '"+text+"' to messages!");
 	}
 	
 	public String messagesToString(){

@@ -54,10 +54,11 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 					}
 					socketCommunication.setLastMessage(text);
 				}catch(Exception e){
-					Output.error("ERROR when reading text from Socket: " + e.getMessage());
 					if(e.getMessage().toLowerCase().contains("connection reset")){
+						text=clientSocket.getInetAddress()+" disconnected!";
 						exit();
 					}else{
+						Output.error("ERROR when reading text from Socket: " + e.getMessage());
 						e.printStackTrace();
 					}
 				}

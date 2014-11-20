@@ -33,8 +33,9 @@ public class GUI extends JFrame implements ActionListener{
 		c = chat;
 		
 		this.setTitle("Chat | SSteinkellner, AKoelbl");
-		this.setSize(600,400);
-		this.setResizable(false);
+		this.setSize(new Dimension(600,400));
+		this.setMinimumSize(new Dimension(250,150));
+		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		oben = new JPanel();
@@ -83,7 +84,7 @@ public class GUI extends JFrame implements ActionListener{
 	}
 
 	public void update(){
-		chatverlauf.setText(c.messagesToString());
+		chatverlauf.setText("<html>"+c.messagesToString().replaceAll("\n", "<br />")+"</html>");
 	}
 	
 	@Override
