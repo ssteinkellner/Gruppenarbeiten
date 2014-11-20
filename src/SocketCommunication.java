@@ -1,10 +1,8 @@
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Eine klasse, die eine Socketverbindung aufbaut und eine Kommunikation ermöglicht
@@ -42,7 +40,9 @@ public class SocketCommunication implements Connection {
 	public String recieve() {
 		try {
 			synchronized(this){
+				System.out.println("waiting ...");
 				this.wait();
+				System.out.println("waited!");
 			}
 		} catch (InterruptedException e) {
 			System.err.println("ERROR when waiting for Input: " + e.getMessage());
@@ -95,6 +95,7 @@ public class SocketCommunication implements Connection {
 	
 	protected void setLastMessage(String text){
 		lastMessage = text;
+		this.notify();
 	}
 
 	public void createSocketCommunicationThread(Socket clientSocket) {
