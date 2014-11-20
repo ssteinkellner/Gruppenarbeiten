@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 
-public class GUI extends JFrame implements ActionListener, Updatable{
+public class GUI extends JFrame implements ActionListener{
 
 	private Chat c;
 	
@@ -76,10 +75,27 @@ public class GUI extends JFrame implements ActionListener, Updatable{
 		unten.add(send, BorderLayout.EAST);
 
 		this.setVisible(true);
+		
+		while(true){
+			c.receive();
+			this.update();
+		}
 	}
 
+	public void update(){
+		chatverlauf.setText(c.messagesToString());
+	}
+	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent ae) {
+		Object src = ae.getSource();
 		
+		if(src.equals(send)){
+			
+		}else if(src.equals(connect)){
+			
+		}else if(src.equals(options)){
+			
+		}
 	}
 }

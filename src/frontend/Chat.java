@@ -6,10 +6,10 @@ import interfaces.Activatable;
 import interfaces.Connection;
 import interfaces.Recievable;
 import interfaces.Sendable;
-import interfaces.Updatable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -21,7 +21,6 @@ import java.util.LinkedList;
 public class Chat {
 	private Communicator communicator;
 	private LinkedList<String> messages;
-	private String ip;
 
 	private Connection activeConnection;
 	private ArrayList<Connection> connections;
@@ -29,15 +28,7 @@ public class Chat {
 	private HashMap<String,Recievable> recievables;
 	private HashMap<String,Activatable> activatables;
 	
-	private Updatable updatable;
-	
 	public Chat(){
-		this("-1");
-	}
-	
-	public Chat(String ip){
-		this.ip = ip;
-		
 		messages = new LinkedList<String>();
 		connections = new ArrayList<Connection>();
 		sendables = new HashMap<String,Sendable>();
@@ -75,12 +66,23 @@ public class Chat {
 	public ArrayList<Connection> getConnections(){
 		return connections;
 	}
-	
+
 	public Communicator getCommunicator(){
 		return communicator;
 	}
+
+	public void receive(){
+		messages.add(communicator.recieve());
+	}
 	
-	public void setIp(String ip){
-		this.ip = ip;
+	public String messagesToString(){
+		String text="";
+		Iterator<String> i = messages.iterator();
+		while(i.hasNext()){
+			if(text!=""){ text+="\n"; }
+			text += i.next();
+		}
+		
+		return text;
 	}
 }
