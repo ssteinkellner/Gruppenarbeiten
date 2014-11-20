@@ -19,7 +19,9 @@ public class SocketCommunicationServer extends Thread{
 		lauf = true;
 		while(lauf){
 			try {
+				System.out.println("accepting ...");
 				clientSocket = serverSocket.accept();
+				System.out.println("accepted!");
 				socketCommunication.createSocketCommunicationThread(clientSocket);
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -36,15 +36,21 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 				try{
 					if(!clientSocket.isConnected()){
 						lauf=false;
+						System.out.println("breaking!");
 						break;
 					}
+					System.out.println("reading ...");
 					text = in.readLine();
+					System.out.println("read!");
 					synchronized(socketCommunication){
 						socketCommunication.setLastMessage(text);
 						socketCommunication.notify();
 					}
 				}catch(Exception e){
 					System.err.println("ERROR when reading text from Socket: " + e.getMessage());
+					if(e.getMessage().toLowerCase().contains("connection reset")){
+						exit();
+					}
 					e.printStackTrace();
 				}
 			}
@@ -56,7 +62,9 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 	
 	@Override
 	public void send(String text){
+		System.out.println("writing ...");
 		out.write(text);
+		System.out.println("written!");
 	}
 	
 	public boolean isOpen(){
