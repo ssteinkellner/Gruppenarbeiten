@@ -36,6 +36,8 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			
 			lauf=true;
+
+			socketCommunication.setLastMessage(getIP()+" connected!");
 			
 			while(lauf){
 				try{
@@ -43,14 +45,17 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 					text = in.readLine();
 					Output.debug("read!");
 					if(text.equalsIgnoreCase("bye.")){
-						clientSocket.close();
 						exit();
+						break;
 					}else{
-						text = clientSocket.getInetAddress() + ": " + text;
+						text = getIP() + ": " + text;
 					}
 					socketCommunication.setLastMessage(text);
 				}catch(Exception e){
-					if(e.getMessage().toLowerCase().contains("connection reset")){
+					if(clientSocket==null || clientSocket.isClosed()){
+						Output.error("lost a Socket Socket!");
+						lauf=false;
+					}else if(e.getMessage().toLowerCase().contains("connection reset")){
 						lauf=false;
 					}else{
 						Output.error("ERROR when reading text from Socket: " + e.getMessage());
@@ -58,7 +63,7 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 					}
 				}
 			}
-			socketCommunication.setLastMessage(clientSocket.getInetAddress()+" disconnected!");
+			socketCommunication.setLastMessage(getIP()+" disconnected!");
 		}catch(Exception e){
 			Output.error("can't open Socket: " + e.getMessage());
 			e.printStackTrace();
@@ -73,6 +78,9 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 	public void send(String text){
 		Output.debug("writing ...");
 		out.println(text);
+		if(text.equalsIgnoreCase("bye.")){
+			exit();
+		}
 		Output.debug("written!");
 	}
 
@@ -89,6 +97,7 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 	 */
 	public void exit(){
 		lauf = false;
+		Output.debug("closing Socket...");
 		try {
 			in.close();
 			out.close();
@@ -97,5 +106,14 @@ public class SocketCommunicationThread extends Thread implements Sendable{
 			Output.error("can't close Socket: " + e.getMessage());
 			e.printStackTrace();
 		}
+		Output.debug("Socket cloesd!");
+	}
+	
+	/**
+	 * gibt die IP des partners zurueck
+	 * @return IP des partners
+	 */
+	private String getIP(){
+		return clientSocket.getInetAddress().getHostAddress();
 	}
 }

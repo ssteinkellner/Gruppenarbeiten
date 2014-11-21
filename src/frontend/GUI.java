@@ -54,8 +54,8 @@ public class GUI extends JFrame implements ActionListener{
 		
 		chatverlauf = new JTextArea();
 		chatverlauf.setText("Chatverlauf");
-		chatverlauf.setMinimumSize(new Dimension(540, 250));
 		chatverlauf.setEditable(false);
+		chatverlauf.setMinimumSize(new Dimension(540, 250));
 		chatScrollPane = new JScrollPane(chatverlauf);
 		chatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
@@ -131,6 +131,7 @@ public class GUI extends JFrame implements ActionListener{
 		String text = c.getLastMessage();
 		Output.debug(text);
 		chatverlauf.append("\n"+text);
+//		chatverlauf.s
 	}
 	
 	@Override

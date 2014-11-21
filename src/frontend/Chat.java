@@ -58,13 +58,13 @@ public class Chat{
 		activatables.clear();
 		
 		{	// kapselung für temporäre benennungen
-			Caps temp = new Caps(activeConnection);
-			sendables.put("c",temp);
-			activatables.put("c", temp);
-		}{	// kapselung für temporäre benennungen
-			Translator temp = new Translator(sendables.get("c"));
+			Translator temp = new Translator(activeConnection);
 			sendables.put("t",temp);
 			activatables.put("t", temp);
+		}{	// kapselung für temporäre benennungen
+			Caps temp = new Caps(sendables.get("t"));
+			sendables.put("c",temp);
+			activatables.put("c", temp);
 		}{	// kapselung für temporäre benennungen
 			BadWordFilter b = new BadWordFilter(activeConnection);
 			recievables.put("bwf",b);

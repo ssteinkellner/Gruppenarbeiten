@@ -22,7 +22,7 @@ public class Translator implements Sendable, Activatable {
 		this.sendable = sendable;
 		ersetzen= new ArrayList<String[]>();
 		ersetzen.add(new String[]{"laecheln","LOL"});
-		ersetzen.add(new String[]{"Hallo","Hi"});
+		ersetzen.add(new String[]{"Hallo","HI"});
 		ersetzen.add(new String[]{"lustig","XD"});
 	}
 
