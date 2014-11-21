@@ -1,7 +1,9 @@
 import javax.swing.JOptionPane;
 
 import common.Output;
+import communication.jrm.JRMCommunication;
 import communication.socket.SocketCommunication;
+
 import frontend.Chat;
 import frontend.GUI;
 
@@ -15,6 +17,7 @@ public class starter {
 	public static void main(String[] args){
 		Chat c = new Chat();
 		SocketCommunication scon = new SocketCommunication();
+		JRMCommunication jrmcon = new JRMCommunication("", "");
 		
 		String input = JOptionPane.showInputDialog(null,
 				"Bitte den Lokalen port eingeben!\n(fuer neue Verbindungen)",
