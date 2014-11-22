@@ -1,4 +1,4 @@
-package communication.jrm;
+package communication.jms;
 import common.Output;
 import interfaces.Connection;
 import interfaces.Recievable;
@@ -20,7 +20,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
-public class JRMCommunication implements Connection {
+public class JMSCommunication implements Connection {
 	private boolean isOpen;
 	private String user, password, subject;
 
@@ -30,12 +30,12 @@ public class JRMCommunication implements Connection {
 	MessageProducer producer;
 	Destination destination;
 
-	public JRMCommunication(String user, String password){
+	public JMSCommunication(String user, String password){
 		this(user,password,"localhost","VSDBChat");
 		//setzt den default chatroom, falls er nicht angegeben wird
 	}
 
-	public JRMCommunication(String user, String password, String url, String subject){
+	public JMSCommunication(String user, String password, String url, String subject){
 		this.user = user;
 		this.password = password;
 		this.subject = subject;
