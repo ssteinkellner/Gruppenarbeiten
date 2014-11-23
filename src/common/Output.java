@@ -1,5 +1,7 @@
 package common;
 
+import frontend.GUI;
+
 /**
  * eine klasse für die verschiedenen ausgaben
  * erleichtert die einbindung von anderen ausgabemedien (zb. eine loglibrary)
@@ -14,6 +16,7 @@ public class Output {
 	 */
 	public static void println(String text){
 		System.out.println("[OUTPUT]\t" + text);
+		GUI.printInfo(text);
 	}
 
 	/**

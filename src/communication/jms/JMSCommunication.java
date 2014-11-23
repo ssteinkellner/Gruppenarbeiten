@@ -52,13 +52,26 @@ public class JMSCommunication implements Connection {
 	 * @see Sendable#send(java.lang.String)
 	 */
 	public void send(String text) {
-		TextMessage message;
-		try {
-			message = session.createTextMessage( text );
-			producer.send(message);
-		} catch (JMSException e) {
-			Output.error("Caught: " + e);
-			e.printStackTrace();
+		String cmd = "switch:";
+		if(text.toLowerCase().startsWith(cmd)){
+			text = text.substring(cmd.length(), text.length());
+			this.closeDestination();
+			try {
+				this.openDestination(text);
+			} catch (Exception e) {
+				Output.error("Caught: " + e);
+				e.printStackTrace();
+			}
+			Output.println("switched to "+text);
+		}else{
+			TextMessage message;
+			try {
+				message = session.createTextMessage( text );
+				producer.send(message);
+			} catch (JMSException e) {
+				Output.error("Caught: " + e);
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -94,12 +107,13 @@ public class JMSCommunication implements Connection {
 
 			// Create the session
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			openDestination();
+			openDestination(subject);
+			
+			isOpen=true;
 		} catch (Exception e) {
 			Output.error("Caught: " + e);
 			e.printStackTrace();
 		}
-		isOpen=true;
 	}
 
 	/**
@@ -120,12 +134,12 @@ public class JMSCommunication implements Connection {
 		return isOpen;
 	}
 	
-	private void openDestination() throws JMSException{
+	private void openDestination(String subject) throws JMSException{
 		destination = session.createTopic( subject );
 
 		consumer = session.createConsumer( destination );
 		
-		producer = session.createProducer(destination);
+		producer = session.createProducer( destination );
 		producer.setDeliveryMode( DeliveryMode.NON_PERSISTENT );
 	}
 	
