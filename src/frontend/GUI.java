@@ -12,7 +12,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -34,7 +33,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JButton send, connect, options;
 	private JTextField input;
 
-	private JTextArea chatverlauf;
+	private static JTextArea chatverlauf;
 	private JScrollPane chatScrollPane;
 	
 	private JPanel oben, unten;
@@ -119,8 +118,18 @@ public class GUI extends JFrame implements ActionListener{
 		this.setVisible(true);
 		
 		while(true){
-			c.recieve();
-			this.update();
+			if(c.getActiveConection().isOpen()){
+				c.recieve();
+				this.update();
+			}else{
+				send.setEnabled(false);
+				input.setEditable(false);
+				input.setText("No open connection to send messages!");
+				for(KeyListener l : input.getKeyListeners()){
+					input.removeKeyListener(l);
+				}
+				break;
+			}
 		}
 	}
 
@@ -131,7 +140,11 @@ public class GUI extends JFrame implements ActionListener{
 		String text = c.getLastMessage();
 		Output.debug(text);
 		chatverlauf.append("\n"+text);
-//		chatverlauf.s
+//		chatverlauf.scrollTo();
+	}
+	
+	public static synchronized void printInfo(String text){
+		chatverlauf.append("\n"+text);
 	}
 	
 	@Override

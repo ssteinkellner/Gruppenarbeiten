@@ -28,10 +28,15 @@ public class starter {
 					|| args[i].equalsIgnoreCase("-h")){
 				System.out.println(
 					  "Possible arguments:"
-					+ "\n --protocol\t-p\tset the protocol to use"
-					+ "\n --server  \t-s\tset the server (in case of JMS)"
-					+ "\n --port    \t  \tset the port (in case of sockets)"
-					+ "\n --nogui   \t  \tdisables the GUI"
+					+ "\n --protocol\t-p  \tset the protocol to use"
+//					+ "\n --nogui   \t    \tdisables the GUI"	//not completely implemented
+					+ "\nIn case of Sockets:"
+					+ "\n --port    \t-pt  \tset the port"
+					+ "\nIn case of JMS:"
+					+ "\n --server  \t-s  \tset the server"
+					+ "\n --user    \t-u  \tinput the username of the server"
+					+ "\n --password\t-pwd\tinput the password of the server"
+					+ "\n --nickname\t-n  \tset the nickname you want to use on the server"
 				);
 				System.out.println(
 					  "\nPossible protocols:"
@@ -49,9 +54,18 @@ public class starter {
 			}else if(args[i].equalsIgnoreCase("--server") || args[i].equalsIgnoreCase("-s")){
 				i++;
 				arguments.put("server", args[i]);
-			}else if(args[i].equalsIgnoreCase("--port")){
+			}else if(args[i].equalsIgnoreCase("--port") || args[i].equalsIgnoreCase("-pt")){
 				i++;
 				arguments.put("port", args[i]);
+			}else if(args[i].equalsIgnoreCase("--user") || args[i].equalsIgnoreCase("-u")){
+				i++;
+				arguments.put("user", args[i]);
+			}else if(args[i].equalsIgnoreCase("--password") || args[i].equalsIgnoreCase("-pwd")){
+				i++;
+				arguments.put("password", args[i]);
+			}else if(args[i].equalsIgnoreCase("--nickname") || args[i].equalsIgnoreCase("-n")){
+				i++;
+				arguments.put("nickname", args[i]);
 			}
 		}
 		
@@ -69,7 +83,7 @@ public class starter {
 		}
 		Connection con = null;
 		if(protocol.equalsIgnoreCase(protocols[0])){	//sockets
-			SocketCommunication scon = new SocketCommunication();
+			con = new SocketCommunication();
 			String port = "";
 			if(arguments.containsKey("port")){
 				port = arguments.get("port");
@@ -83,25 +97,55 @@ public class starter {
 			}
 			try{
 				int temp = Integer.parseInt(port);
-				scon.open("-1", temp);
+				con.open("-1", temp);
 			}catch(Exception e){
 				abort("illegal Port: '" + port + "' !");
 			}
 		}else if(protocol.equalsIgnoreCase(protocols[1])){	//jms
-			con = new JMSCommunication("", "");
+			String server="";
+			if(arguments.containsKey("user")){
+				server = arguments.get("user");
+			}else{
+				while(server.isEmpty()){
+					server = input("Please input the serveradress!");
+					if(server==null){
+						abort();
+					}
+				}
+			}
+			
+			String[] user = new String[]{"",""};
+			if(arguments.containsKey("user")){
+				user[0] = arguments.get("user");
+			}else{
+				while(user[0].isEmpty()){
+					user[0] = input("Please input the server username!");
+					if(user[0]==null){
+						abort();
+					}
+				}
+			}
+			if(arguments.containsKey("password")){
+				user[1] = arguments.get("password");
+			}else{
+				while(user[1].isEmpty()){
+					user[1] = input("Please input the server password!");
+					if(user[1]==null){
+						abort();
+					}
+				}
+			}
+			
+			con = new JMSCommunication(user[0], user[1]);
+			con.open(server, 0);
 		}
 		
-		
-		
-		
-		
-		System.exit(0);
-		
-		Chat c = new Chat();
-		
-		c.setActiveConnection(con);
-		try { Thread.sleep(1000); } catch (Exception e) {}
-		new GUI(c);
+		if(con!=null){
+			Chat c = new Chat();
+			c.setActiveConnection(con);
+			try { Thread.sleep(1000); } catch (Exception e) {}
+			new GUI(c);
+		}
 	}
 	
 	private static void abort(){
