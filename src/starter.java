@@ -151,21 +151,40 @@ public class starter {
 		}
 	}
 	
+	/**
+	 * aborts the setup and exits the programm
+	 */
 	private static void abort(){
 		System.err.println("User aborted setup!");
 		System.exit(0);
 	}
 	
+	/**
+	 * aborts the setup with a specific message and exits the programm
+	 * @param text message to print before exiting
+	 */
 	private static void abort(String text){
 		System.err.println(text + "\naborting setup!");
 		System.exit(0);
 	}
 	
+	/**
+	 * opens a JOptionPane with an input field for the user
+	 * @param text text to display in the window (maybe question)
+	 * @return text that the user inputted
+	 */
 	private static String input(String text){
 		if(nogui){ System.err.println(text); System.exit(0); }
 		return JOptionPane.showInputDialog(null, text, title, JOptionPane.PLAIN_MESSAGE);
 	}
 	
+	/**
+	 * opens a JOptionPane with a selection dropdown box for the user
+	 * @param text text to display in the window (maybe question)
+	 * @param options all possible selection values
+	 * @param defaultIndex index of the default selected value
+	 * @return selected text
+	 */
 	private static Object select(String text, String[] options, int defaultIndex){
 		if(nogui){ System.err.println(text); System.exit(0); }
 		return JOptionPane.showInputDialog(null,

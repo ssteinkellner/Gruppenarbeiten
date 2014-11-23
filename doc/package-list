@@ -1,6 +1,8 @@
 
 common
+communication.jms
 communication.socket
 filter
 frontend
 interfaces
+testing

@@ -17,7 +17,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import common.Output;
 
 /**
- * Eine noch nicht fertig implementierte Klasse fuer die Kommunikation ueber JRM
+ * Eine Klasse fuer die Kommunikation ueber JRM
  * @author Steinkellner Sebastian
  * @version 2014.11.19
  */
@@ -135,6 +135,11 @@ public class JMSCommunication implements Connection {
 		return isOpen;
 	}
 	
+	/**
+	 * opens a new JMS destination (chatroom)
+	 * @param subject name of the destination (chatroom name)
+	 * @throws JMSException if the messageconsumer or messageproducer can't be created
+	 */
 	private void openDestination(String subject) throws JMSException{
 		destination = session.createTopic( subject );
 
@@ -144,6 +149,9 @@ public class JMSCommunication implements Connection {
 		producer.setDeliveryMode( DeliveryMode.NON_PERSISTENT );
 	}
 	
+	/**
+	 * closes the momentarily opened destination (chatroom)
+	 */
 	private void closeDestination(){
 		try { consumer.close(); } catch ( Exception e ) {}
 		try { producer.close(); } catch ( Exception e ) {}

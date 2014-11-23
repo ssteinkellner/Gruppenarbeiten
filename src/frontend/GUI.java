@@ -148,6 +148,10 @@ public class GUI extends JFrame implements ActionListener{
 //		chatverlauf.scrollTo();
 	}
 	
+	/**
+	 * prints some info in the message history
+	 * @param text text to be printed
+	 */
 	public static synchronized void printInfo(String text){
 		chatverlauf.append("\n"+text);
 	}
