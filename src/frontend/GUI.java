@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import common.Output;
+import communication.socket.SocketCommunication;
 
 public class GUI extends JFrame implements ActionListener{
 
@@ -95,7 +96,11 @@ public class GUI extends JFrame implements ActionListener{
 		
 		connect = new JButton("Connect");
 		connect.setBounds(230, 320, 150, 36);
-		connect.addActionListener(this);
+		if(c.getActiveConection() instanceof SocketCommunication){
+			connect.addActionListener(this);
+		}else{
+			connect.setEnabled(false);
+		}
 		
 		box = new JCheckBox("Filter aktiv");
 		

@@ -1,5 +1,4 @@
 package communication.jms;
-import common.Output;
 import interfaces.Connection;
 import interfaces.Recievable;
 import interfaces.Sendable;
@@ -14,6 +13,8 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+
+import common.Output;
 
 /**
  * Eine noch nicht fertig implementierte Klasse fuer die Kommunikation ueber JRM
@@ -52,9 +53,9 @@ public class JMSCommunication implements Connection {
 	 * @see Sendable#send(java.lang.String)
 	 */
 	public void send(String text) {
-		String cmd = "switch:";
+		String cmd = "switch";
 		if(text.toLowerCase().startsWith(cmd)){
-			text = text.substring(cmd.length(), text.length());
+			text = text.substring(cmd.length()+1, text.length());
 			this.closeDestination();
 			try {
 				this.openDestination(text);

@@ -135,7 +135,10 @@ public class starter {
 					}
 				}
 			}
-			
+
+			for(int i=0;i<user.length;i++){
+				if(user[i].equalsIgnoreCase("null")){ user[i]=null; }
+			}
 			con = new JMSCommunication(user[0], user[1]);
 			con.open(server, 0);
 		}
