@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 import javax.swing.JOptionPane;
 
 import common.Output;
@@ -14,15 +16,39 @@ import frontend.GUI;
 public class starter {
 	
 	public static void main(String[] args){
-		if(args.length>2){
-			System.out.println("Usage: (...).jar [communicationprotocoll[localport][user password]|help]");
+		HashMap<String, String> temp = new HashMap<String, String>();
+		
+		for(int i=0;i<args.length;i++){
+			if(args[i].equalsIgnoreCase("help")
+					|| args[i].equalsIgnoreCase("--help")
+					|| args[i].equalsIgnoreCase("-h")){
+				System.out.println(
+					  "Possible arguments:"
+					+ "\n --protocol\t-p\tset the protocol to use"
+					+ "\n --server  \t-s\tset the server (in case of JMS)"
+					+ "\n --port    \t  \tset the port (in case of sockets)"
+				);
+				System.out.println(
+					  "\nPossible protocols:"
+					+ "\n'sockets' => peer to peer communication over sockets.\n\tyou are:"
+					+ "\n\t - a server that can accepts connections"
+					+ "\n\t - a client that can connect to other chat servers"
+					+ "\n'JMS' => querry communication over a server.\n\tyou are only a client"
+				);
+				System.exit(0);
+			}else if(args[i].equalsIgnoreCase("--protocol") || args[i].equalsIgnoreCase("-p")){
+				i++;
+				temp.put("protocol", args[i]);
+			}else if(args[i].equalsIgnoreCase("--server") || args[i].equalsIgnoreCase("-s")){
+				i++;
+				temp.put("server", args[i]);
+			}else if(args[i].equalsIgnoreCase("--port")){
+				i++;
+				temp.put("port", args[i]);
+			}
 		}
-		if(args[0].equals("help")){
-			System.out.println("Usage: (...).jar [communicationprotocoll[localport]|help]");
-			System.out.println("Possible communicationprotocolls: socket, jms");
-			System.out.println("Example1: (...).jar socket 4444");
-			System.out.println("Example2: (...).jar jms user password");
-		}
+		
+		
 		
 		
 		Chat c = new Chat();
