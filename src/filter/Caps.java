@@ -2,8 +2,6 @@ package filter;
 import interfaces.Activatable;
 import interfaces.Sendable;
 
-import java.util.Iterator;
-
 /**
  * Schreibt den Text des Chats nur in Grossbuchstaben
  * @author Alexander Koelbl

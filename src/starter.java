@@ -1,14 +1,13 @@
+import frontend.Chat;
+import frontend.GUI;
 import interfaces.Connection;
 
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import common.Output;
 import communication.jms.JMSCommunication;
 import communication.socket.SocketCommunication;
-import frontend.Chat;
-import frontend.GUI;
 
 /**
  * eine klasse, die einen port erfragt und die gui aufbaut
