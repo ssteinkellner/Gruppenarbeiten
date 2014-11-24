@@ -2,6 +2,8 @@
 ~$* #opened windows files
 *_old #no longer used files
 
+.classpath
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
