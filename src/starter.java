@@ -102,8 +102,8 @@ public class starter {
 			}
 		}else if(protocol.equalsIgnoreCase(protocols[1])){	//jms
 			String server="";
-			if(arguments.containsKey("user")){
-				server = arguments.get("user");
+			if(arguments.containsKey("server")){
+				server = arguments.get("server");
 			}else{
 				while(server.isEmpty()){
 					server = input("Please input the serveradress!");

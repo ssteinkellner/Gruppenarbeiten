@@ -153,7 +153,9 @@ public class GUI extends JFrame implements ActionListener{
 	 * @param text text to be printed
 	 */
 	public static synchronized void printInfo(String text){
-		chatverlauf.append("\n"+text);
+		if(chatverlauf!=null){
+			chatverlauf.append("\n"+text);
+		}
 	}
 	
 	@Override

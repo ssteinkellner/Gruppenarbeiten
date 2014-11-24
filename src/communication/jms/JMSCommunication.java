@@ -12,6 +12,7 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import common.Output;
@@ -102,7 +103,7 @@ public class JMSCommunication implements Connection {
 	 */
 	public void open(String url, int port) {
 		try {
-			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(user, password, url);
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(user, password, "tcp://"+url);
 			connection = connectionFactory.createConnection();
 			connection.start();
 
