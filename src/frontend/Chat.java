@@ -32,6 +32,7 @@ public class Chat{
 	
 	public Chat(){
 		messages = new LinkedList<String>();
+		messages.add("No Message");
 		connections = new ArrayList<Connection>();
 		sendables = new HashMap<String,Sendable>();
 		recievables = new HashMap<String,Recievable>();
@@ -103,7 +104,7 @@ public class Chat{
 	 * @param text nachricht die gesendet werden soll
 	 */
 	public void send(String text) {
-		messages.add("You: "+text);
+//		messages.add("You: "+text);
 		communicator.send(text);
 	}
 	

@@ -41,6 +41,7 @@ public class SocketCommunication implements Connection {
 				partners.remove(temp);
 			}
 		}
+		this.setLastMessage("You: " + text);
 	}
 
 	/**

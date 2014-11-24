@@ -215,6 +215,6 @@ public class GUI extends JFrame implements ActionListener{
 	private void send(){
 		c.send(input.getText());
 		input.setText("");
-		update();
+//		update();
 	}
 }
