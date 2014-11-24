@@ -12,7 +12,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import common.Output;
@@ -56,15 +55,19 @@ public class JMSCommunication implements Connection {
 	public void send(String text) {
 		String cmd = "switch";
 		if(text.toLowerCase().startsWith(cmd)){
+			if(text.length()<=cmd.length()+1){
+				Output.error("no Chatroom spezified\nUsage: "+cmd+" <Chatroom>");
+				return;
+			}
 			text = text.substring(cmd.length()+1, text.length());
 			this.closeDestination();
 			try {
 				this.openDestination(text);
+				Output.println("switched to "+text);
 			} catch (Exception e) {
 				Output.error("Caught: " + e);
 				e.printStackTrace();
 			}
-			Output.println("switched to "+text);
 		}else{
 			TextMessage message;
 			try {
