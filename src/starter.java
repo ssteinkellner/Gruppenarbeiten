@@ -84,17 +84,6 @@ public class starter {
 		if(protocol.equalsIgnoreCase(protocols[0])){	//sockets
 			con = new SocketCommunication();
 			String port = checkValue(arguments, "port", "Please input a local port!\n(used for new Connections)");
-/*			String port = "";
-			if(arguments.containsKey("port")){
-				port = arguments.get("port");
-			}else{
-				while(port.isEmpty()){
-					port = input("Please input a local port!\n(used for new Connections)");
-					if(port==null){
-						abort();
-					}
-				}
-			}*/
 			try{
 				int temp = Integer.parseInt(port);
 				con.open("-1", temp);
@@ -102,51 +91,25 @@ public class starter {
 				abort("illegal Port: '" + port + "' !");
 			}
 		}else if(protocol.equalsIgnoreCase(protocols[1])){	//jms
-			String server = checkValue(arguments, "server", "Please input the serveradress!");
-/*			String server="";
-			if(arguments.containsKey("server")){
-				server = arguments.get("server");
-			}else{
-				while(server.isEmpty()){
-					server = input("Please input the serveradress!");
-					if(server==null){
-						abort();
-					}
-				}
-			}
-*/
+			String[] server = new String[]{
+					checkValue(arguments, "server", "Please input the serveradress!"),
+					checkValue(arguments, "port", "Please input the serverport! (Default: 61616)")
+			};
 			String[] user = new String[]{
 				checkValue(arguments, "user", "Please input the server username!"),
 				checkValue(arguments, "password", "Please input the server password!")
 			};
-/*			String[] user = new String[]{"",""};
-			if(arguments.containsKey("user")){
-				user[0] = arguments.get("user");
-			}else{
-				while(user[0].isEmpty()){
-					user[0] = input("Please input the server username!");
-					if(user[0]==null){
-						abort();
-					}
-				}
-			}
-			if(arguments.containsKey("password")){
-				user[1] = arguments.get("password");
-			}else{
-				while(user[1].isEmpty()){
-					user[1] = input("Please input the server password!");
-					if(user[1]==null){
-						abort();
-					}
-				}
-			}
-			*/
 
 			for(int i=0;i<user.length;i++){
 				if(user[i].equalsIgnoreCase("null")){ user[i]=null; }
 			}
 			con = new JMSCommunication(user[0], user[1]);
-			con.open(server, 0);
+			try{
+				int temp = Integer.parseInt(server[1]);
+				con.open(server[0], temp);
+			}catch(Exception e){
+				abort("illegal Port: '" + server[1] + "' !");
+			}
 		}
 		
 		if(con!=null){

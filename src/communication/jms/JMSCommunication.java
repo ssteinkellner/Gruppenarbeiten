@@ -98,12 +98,12 @@ public class JMSCommunication implements Connection {
 
 	/**
 	 * @param url url of the server to connect to
-	 * @param port UNUSED
+	 * @param port port of the server (Default: 61616)
 	 * @see Connection#open(String, int)
 	 */
 	public void open(String url, int port) {
 		try {
-			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(user, password, "tcp://"+url);
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(user, password, "tcp://"+url+":"+port);
 			connection = connectionFactory.createConnection();
 			connection.start();
 
