@@ -83,7 +83,8 @@ public class starter {
 		Connection con = null;
 		if(protocol.equalsIgnoreCase(protocols[0])){	//sockets
 			con = new SocketCommunication();
-			String port = "";
+			String port = checkValue(arguments, "port", "Please input a local port!\n(used for new Connections)");
+/*			String port = "";
 			if(arguments.containsKey("port")){
 				port = arguments.get("port");
 			}else{
@@ -93,7 +94,7 @@ public class starter {
 						abort();
 					}
 				}
-			}
+			}*/
 			try{
 				int temp = Integer.parseInt(port);
 				con.open("-1", temp);
@@ -101,7 +102,8 @@ public class starter {
 				abort("illegal Port: '" + port + "' !");
 			}
 		}else if(protocol.equalsIgnoreCase(protocols[1])){	//jms
-			String server="";
+			String server = checkValue(arguments, "server", "Please input the serveradress!");
+/*			String server="";
 			if(arguments.containsKey("server")){
 				server = arguments.get("server");
 			}else{
@@ -112,8 +114,12 @@ public class starter {
 					}
 				}
 			}
-			
-			String[] user = new String[]{"",""};
+*/
+			String[] user = new String[]{
+				checkValue(arguments, "user", "Please input the server username!"),
+				checkValue(arguments, "password", "Please input the server password!")
+			};
+/*			String[] user = new String[]{"",""};
 			if(arguments.containsKey("user")){
 				user[0] = arguments.get("user");
 			}else{
@@ -134,6 +140,7 @@ public class starter {
 					}
 				}
 			}
+			*/
 
 			for(int i=0;i<user.length;i++){
 				if(user[i].equalsIgnoreCase("null")){ user[i]=null; }
@@ -189,5 +196,30 @@ public class starter {
 		return JOptionPane.showInputDialog(null,
 				text, title, JOptionPane.PLAIN_MESSAGE,
 				null, options, options[defaultIndex]);
+	}
+	
+	/**
+	 * prüft, ob ein parameter per commandozeile eingegeben wurde. 
+	 * <br>falls dies nicht der fall ist, so wird per GUI die eingabe verlangt
+	 * <br>drueckt der User auf "Abbrechen" wird das progeamm beendet
+	 * @param arguments liste der eingegebenen kommandozeilenargumente
+	 * @param name name des arguments
+	 * @param text text, der dem user angezeigt wird,
+	 * falls er aufgefordert wird, einen parameter zu ergaenzen
+	 * @return gibt den per startparameter definierten oder vom user eingegebenen text zurueck
+	 */
+	private static String checkValue(HashMap<String, String> arguments, String name, String text){
+		if(arguments.containsKey(name)){
+			return arguments.get(name);
+		}else{
+			String output = "";
+			while(output.isEmpty()){
+				output = input(text);
+				if(output==null){
+					abort();
+				}
+			}
+			return output;
+		}
 	}
 }
