@@ -118,6 +118,8 @@ public class JMSCommunication implements Connection {
 			if ( message != null ) {
 				text = message.getText();
 				message.acknowledge();
+			}else {
+				text = "empty";
 			}
 		} catch (JMSException e) {
 			Output.error("Caught: " + e);
@@ -199,17 +201,18 @@ public class JMSCommunication implements Connection {
 		try {
 			Destination tempDestination = session.createQueue( mailBoxPrefix+toUser );
 			tempProducer = session.createProducer( tempDestination );
+			tempProducer.setDeliveryMode( DeliveryMode.NON_PERSISTENT );
 			
 			TextMessage message = session.createTextMessage( text );
 			tempProducer.send(message);
+			
+			Output.println("[MAIL] sent!");
 		} catch (JMSException e) {
 			Output.error("Caught: " + e);
 			e.printStackTrace();
 		}finally{
 			try { tempProducer.close(); } catch ( Exception e ) {}
 		}
-		
-		Output.println("[MAIL] sent!");
 	}
 	
 	/**

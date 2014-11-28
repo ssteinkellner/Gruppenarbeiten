@@ -95,8 +95,14 @@ public class Chat{
 	 */
 	public void recieve(){
 		String text = communicator.recieve();
-		messages.add(text);
-//		Output.debug("Added '"+text+"' to messages!");
+		if(text.equalsIgnoreCase("empty")){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) { }
+		}else{
+			messages.add(text);
+//			Output.debug("Added '"+text+"' to messages!");
+		}
 	}
 
 	/**
