@@ -104,6 +104,9 @@ public class starter {
 				if(user[i].equalsIgnoreCase("null")){ user[i]=null; }
 			}
 			con = new JMSCommunication(user[0], user[1]);
+			if(arguments.containsKey("nickname")){
+				((JMSCommunication) con).setNickName(arguments.get("nickname"));
+			}
 			try{
 				int temp = Integer.parseInt(server[1]);
 				con.open(server[0], temp);

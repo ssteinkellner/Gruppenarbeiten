@@ -96,7 +96,7 @@ public class Chat{
 	public void recieve(){
 		String text = communicator.recieve();
 		messages.add(text);
-		Output.debug("Added '"+text+"' to messages!");
+//		Output.debug("Added '"+text+"' to messages!");
 	}
 
 	/**

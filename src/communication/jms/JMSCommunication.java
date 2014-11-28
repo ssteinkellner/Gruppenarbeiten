@@ -23,7 +23,8 @@ import common.Output;
  */
 public class JMSCommunication implements Connection {
 	private boolean isOpen;
-	private String user, password, subject;
+	private String user, nick, password, subject;
+	protected String mailBoxPrefix="mailBox_";
 
 	Session session;
 	javax.jms.Connection connection;
@@ -47,19 +48,33 @@ public class JMSCommunication implements Connection {
 		consumer = null;
 		producer = null;
 		destination = null;
+		
+		if(nick==null){
+			nick=user;
+		}
 	}
 
+	/**
+	 * setzt den nicknamen
+	 * @param nickName neuer nickname
+	 */
+	public void setNickName(String nickName){
+		nick = nickName;
+	}
+	
 	/**
 	 * @see Sendable#send(java.lang.String)
 	 */
 	public void send(String text) {
-		String cmd = "switch";
-		if(text.toLowerCase().startsWith(cmd)){
-			if(text.length()<=cmd.length()+1){
-				Output.error("no Chatroom spezified\nUsage: "+cmd+" <Chatroom>");
+		String[] cmd = new String[]{"switch","mailbox","mail"};
+		if(text.toLowerCase().startsWith(cmd[0])){
+			String[] temp = text.split(" ");
+			if(temp.length<=1){
+				Output.error("no Chatroom spezified\n");
+				Output.println("Usage: "+cmd[0]+" <Chatroom>");
 				return;
 			}
-			text = text.substring(cmd.length()+1, text.length());
+			text = text.substring(temp[0].length()+1, text.length());	//ein abstand nach dem command
 			this.closeDestination();
 			try {
 				this.openDestination(text);
@@ -68,10 +83,22 @@ public class JMSCommunication implements Connection {
 				Output.error("Caught: " + e);
 				e.printStackTrace();
 			}
+		}else if(text.toLowerCase().startsWith(cmd[1])){
+			mailBox(nick);
+		}else if(text.toLowerCase().startsWith(cmd[2])){
+			String[] temp = text.split(" ");
+			if(temp.length<=2){
+				Output.error("no Message spezified");
+				Output.println("Usage: "+cmd[2]+" <To> <Message>");
+				return;
+			}
+			text = text.substring(temp[0].length()+temp[1].length()+2, text.length());
+			//1 abstand nach dem command und einer nach dem namen
+			mail(temp[1],"["+nick+"] "+text);
 		}else{
 			TextMessage message;
 			try {
-				message = session.createTextMessage( text );
+				message = session.createTextMessage( "["+nick+"] "+text );
 				producer.send(message);
 			} catch (JMSException e) {
 				Output.error("Caught: " + e);
@@ -160,5 +187,66 @@ public class JMSCommunication implements Connection {
 		try { consumer.close(); } catch ( Exception e ) {}
 		try { producer.close(); } catch ( Exception e ) {}
 	}
-
+	
+	/**
+	 * sends the text to the mailbox of the spezified user
+	 * @param toUser
+	 * @param test
+	 */
+	private void mail(String toUser, String text){
+		MessageProducer tempProducer = null;
+		
+		try {
+			Destination tempDestination = session.createQueue( mailBoxPrefix+toUser );
+			tempProducer = session.createProducer( tempDestination );
+			
+			TextMessage message = session.createTextMessage( text );
+			tempProducer.send(message);
+		} catch (JMSException e) {
+			Output.error("Caught: " + e);
+			e.printStackTrace();
+		}finally{
+			try { tempProducer.close(); } catch ( Exception e ) {}
+		}
+		
+		Output.println("[MAIL] sent!");
+	}
+	
+	/**
+	 * reads the mailbox of the user
+	 * @param userName
+	 */
+	private void mailBox(String userName){
+		MessageConsumer tempConsumer = null;
+		String text = "";
+		
+		try {
+			Destination tempDestination = session.createQueue( mailBoxPrefix+userName );
+			tempConsumer = session.createConsumer( tempDestination );
+			
+			TextMessage message;
+			try {
+				message = (TextMessage) tempConsumer.receiveNoWait();
+				while ( message != null ) {
+					if(!text.isEmpty()){ text+= "\n"; }
+					text += message.getText();
+					message.acknowledge();
+					message = (TextMessage) tempConsumer.receive();
+				}
+				if(text.isEmpty()){ text="Your Mailbox is Empty!"; }
+			} catch (JMSException e) {
+				Output.error("Caught: " + e);
+				e.printStackTrace();
+			}
+			
+			
+		} catch (JMSException e) {
+			Output.error("Caught: " + e);
+			e.printStackTrace();
+		}finally{
+			try { tempConsumer.close(); } catch ( Exception e ) {}
+		}
+//		return text;
+		Output.println("[MAIL] "+text);
+	}
 }
