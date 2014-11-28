@@ -3,12 +3,18 @@ import interfaces.Connection;
 import interfaces.Recievable;
 import interfaces.Sendable;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
@@ -94,11 +100,11 @@ public class JMSCommunication implements Connection {
 			}
 			text = text.substring(temp[0].length()+temp[1].length()+2, text.length());
 			//1 abstand nach dem command und einer nach dem namen
-			mail(temp[1],"["+nick+"] "+text);
+			mail(temp[1],"["+nick+"@"+getIp()+"|"+getDate()+" "+getTime()+"] "+text);
 		}else{
 			TextMessage message;
 			try {
-				message = session.createTextMessage( "["+nick+"] "+text );
+				message = session.createTextMessage( "["+nick+"@"+getIp()+"|"+getTime()+"] "+text );
 				producer.send(message);
 			} catch (JMSException e) {
 				Output.error("Caught: " + e);
@@ -199,9 +205,9 @@ public class JMSCommunication implements Connection {
 		MessageProducer tempProducer = null;
 		
 		try {
-			Destination tempDestination = session.createQueue( mailBoxPrefix+toUser );
+			Queue tempDestination = session.createQueue( mailBoxPrefix+toUser );
+			Output.debug( mailBoxPrefix+toUser );
 			tempProducer = session.createProducer( tempDestination );
-			tempProducer.setDeliveryMode( DeliveryMode.NON_PERSISTENT );
 			
 			TextMessage message = session.createTextMessage( text );
 			tempProducer.send(message);
@@ -224,17 +230,18 @@ public class JMSCommunication implements Connection {
 		String text = "";
 		
 		try {
-			Destination tempDestination = session.createQueue( mailBoxPrefix+userName );
+			Queue tempDestination = session.createQueue( mailBoxPrefix+userName );
+			Output.debug( mailBoxPrefix+userName );
 			tempConsumer = session.createConsumer( tempDestination );
 			
 			TextMessage message;
 			try {
-				message = (TextMessage) tempConsumer.receiveNoWait();
+				message = (TextMessage) tempConsumer.receive(1000);
 				while ( message != null ) {
-					if(!text.isEmpty()){ text+= "\n"; }
+					text += "\n[MAIL]";
 					text += message.getText();
 					message.acknowledge();
-					message = (TextMessage) tempConsumer.receive();
+					message = (TextMessage) tempConsumer.receive(1000);
 				}
 				if(text.isEmpty()){ text="Your Mailbox is Empty!"; }
 			} catch (JMSException e) {
@@ -249,7 +256,44 @@ public class JMSCommunication implements Connection {
 		}finally{
 			try { tempConsumer.close(); } catch ( Exception e ) {}
 		}
+		
 //		return text;
-		Output.println("[MAIL] "+text);
+		Output.println("[MAILBOX] "+text);
+	}
+	
+	/**
+	 * gibt den aktuellen Timestamp zurueck
+	 * @return timestamp
+	 */
+	private String getTime(){
+		Calendar calendar = Calendar.getInstance();
+		String temp = ""+calendar.get(Calendar.HOUR_OF_DAY);
+		temp += ":"+calendar.get(Calendar.MINUTE);
+		return temp;
+	}
+	
+	/**
+	 * gibt den aktuellen Timestamp zurueck
+	 * @return timestamp
+	 */
+	private String getDate(){
+		Calendar calendar = Calendar.getInstance();
+		String temp = ""+calendar.get(Calendar.YEAR);
+		temp +="."+(calendar.get(Calendar.MONTH)+1);
+		temp +="."+calendar.get(Calendar.DAY_OF_MONTH);
+		return temp;
+	}
+	
+	/**
+	 * gibt die IP zureuck
+	 * @return ip
+	 */
+	private String getIp(){
+		try {
+			return ""+InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return "IPError";
 	}
 }
