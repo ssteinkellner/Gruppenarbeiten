@@ -1,4 +1,4 @@
 
-public class Beobachter {
-
+public interface Beobachter {
+	public void aktualisieren(QuackBeobachtungsSubjekt ente);
 }
