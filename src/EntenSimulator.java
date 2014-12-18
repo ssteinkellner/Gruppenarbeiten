@@ -1,11 +1,22 @@
-
+/**
+ * Simulator, der die verschiedenen objekte erzeugt und die methoden ausfuehrt
+ * @author TLins
+ */
 public class EntenSimulator {
+	/**
+	 * programmeinstiegspunkt
+	 * @param args UNUSED
+	 */
 	public static void main(String[] args) {
 		EntenSimulator simulator = new EntenSimulator();
 		AbstraktEntenFabrik entenFabrik = new ZaehlendeEntenFabrik();
 		simulator.simulieren(entenFabrik);
 	}
 
+	/**
+	 * simuliert einen programmablauf
+	 * @param entenfabrik konkrete entenfabrik, die verwendet werden soll
+	 */
 	void simulieren(AbstraktEntenFabrik entenfabrik) {
 		Quakfaehig moorEnte = entenfabrik.erzeugeMoorEnte();
 		Quakfaehig lockPfeife = entenfabrik.erzeugeLockPfeife();
@@ -42,6 +53,10 @@ public class EntenSimulator {
 				"-mal gequakt.");
 		}
 
+	/**
+	 * simuliert eine einzelne ente
+	 * @param ente konkrete ente, die simuliert werden soll
+	 */
 	void simulieren(Quakfaehig ente) {
 		ente.quaken();
 	}
