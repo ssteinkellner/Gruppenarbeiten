@@ -17,7 +17,7 @@ public class Test_QuakZaehler {
 	QuakZaehler z;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setup() throws Exception {
 		e = new GummiEnte();
 		z = new QuakZaehler(e);
 	}
@@ -32,6 +32,12 @@ public class Test_QuakZaehler {
 		z.quaken();
 		z.quaken();
 		assertEquals(2, QuakZaehler.getQuaks());
+	}
+	
+	@Test
+	public void test_toString(){
+		String text = z.toString();
+		assertEquals("Gummiente",text);
 	}
 
 }
