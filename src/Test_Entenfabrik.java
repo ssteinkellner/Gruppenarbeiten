@@ -3,8 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-
-public class Test_Entenfabrik {
+public class Test_EntenFabrik {
 	AbstraktEntenFabrik entenFabrik;
 
 	
