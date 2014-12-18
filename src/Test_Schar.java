@@ -19,7 +19,11 @@ public class Test_Schar {
 	
 	private ByteArrayOutputStream outContent;
 	private PrintStream original;
-
+	
+	/**
+	 * Schar und Gummiente werden initialisiert
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		s = new Schar();
@@ -30,17 +34,23 @@ public class Test_Schar {
 		original = System.out;
 		System.setOut(new PrintStream(outContent));
 	}
-
+	
 	@After
 	public void tearDown() throws Exception {
 		System.setOut(original);
 	}
 	
+	/**
+	 * Kontrolle, ob die Methode toString() den richtigen Text zurueckgibt
+	 */
 	@Test
 	public void test_getName() {
 		assertEquals("Entenschar", s.toString());
 	}
-
+	
+	/**
+	 * Kontrolle, ob die Methode quaken() den richtigen Text ausgibt
+	 */
 	@Test
 	public void test_quacken(){
 		s.quaken();

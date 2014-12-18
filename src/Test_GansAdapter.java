@@ -7,13 +7,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Test-Cases fuer die Klasse GansAdapter
+ * @author Alexander Koelbl
+ *
+ */
 public class Test_GansAdapter {
 	GansAdapter adapter;
 	Gans gans;
 	private ByteArrayOutputStream outContent;
 	private PrintStream original;
 	
+	/**
+	 * Gans und GansAdapter werden initalisiert
+	 */
 	@Before
 	public void setup() {
 		 gans = new Gans();
@@ -23,12 +30,19 @@ public class Test_GansAdapter {
 		 System.setOut(new PrintStream(outContent));
 	}
 	
+	/**
+	 * Kontrolle, ob die Methode toString() den richtigen Text fuer den GansAdapter zurueckgibt.
+	 *
+	 */
 	@Test
 	public void test_toString(){
 		String text = adapter.toString();
 		assertEquals("sich als Ente ausgebende Gans",text);
 	}
 	
+	/**
+	 * Kontrolle, ob bei ausfueher der Methode quaken() der richtige Text ausgegeben wird.
+	 */
 	@Test
 	public void test_quaken(){
 		adapter.quaken();

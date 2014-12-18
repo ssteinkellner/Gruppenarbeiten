@@ -17,6 +17,10 @@ public class Test_LockPfeife {
 	private ByteArrayOutputStream outContent;
 	private PrintStream original;
 	
+	/**
+	 * Lockpfeife wird initialisierts
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		lp = new LockPfeife();
@@ -30,12 +34,18 @@ public class Test_LockPfeife {
 	public void tearDown() throws Exception {
 		System.setOut(original);
 	}
-
+	
+	/**
+	 * Kontrolle, ob die Methode toString() den richtigen Text zurueckgibt
+	 */
 	@Test
 	public void test_getName() {
 		Assert.assertEquals("Lockpfeife",lp.toString());
 	}
-
+	
+	/**
+	 * Kontrolle, ob die Methode quaken() den richtigen Text ausgibt
+	 */
 	@Test
 	public void test_quaken() {
 		lp.quaken();

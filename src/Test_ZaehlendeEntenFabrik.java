@@ -2,7 +2,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * Fuehrt alle Test-cases aus
+ * @author Sebastian Steinkellner, Alexander Koelbl
+ *
+ */
 public class Test_ZaehlendeEntenFabrik {
 	ZaehlendeEntenFabrik entenFabrik;
 	Quakfaehig ente;

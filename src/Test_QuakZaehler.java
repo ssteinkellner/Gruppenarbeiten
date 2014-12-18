@@ -15,18 +15,26 @@ import org.junit.Test;
 public class Test_QuakZaehler {
 	Quakfaehig e;
 	QuakZaehler z;
-
+	
+	/**
+	 * Gummiente und Quakzaehler werden initialisiert
+	 * @throws Exception
+	 */
 	@Before
 	public void setup() throws Exception {
 		e = new GummiEnte();
 		z = new QuakZaehler(e);
 	}
-
+	
+	
 	@Test
 	public void TestNoQuaks() {
 		assertEquals(0, QuakZaehler.getQuaks());
 	}
 
+	/**
+	 * Kontrolle, ob die Methode getQuaks() die richtige Anzahl der Quaks zaehlt
+	 */
 	@Test
 	public void TestTwoQuaks() {
 		z.quaken();
@@ -34,6 +42,9 @@ public class Test_QuakZaehler {
 		assertEquals(2, QuakZaehler.getQuaks());
 	}
 	
+	/**
+	 * Kontorlle, ob die Methode toString() den richtigen Text zurueckgibt
+	 */
 	@Test
 	public void test_toString(){
 		String text = z.toString();
