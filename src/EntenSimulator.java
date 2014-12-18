@@ -25,10 +25,10 @@ public class EntenSimulator {
 
 		Schar EntenSchar = new Schar();
 
-		EntenSchar.hinzufügen(moorEnte);
-		EntenSchar.hinzufügen(lockPfeife);
-		EntenSchar.hinzufügen(gummiEnte);
-		EntenSchar.hinzufügen(gansEnte);
+		EntenSchar.hinzufuegen(moorEnte);
+		EntenSchar.hinzufuegen(lockPfeife);
+		EntenSchar.hinzufuegen(gummiEnte);
+		EntenSchar.hinzufuegen(gansEnte);
 
 		Schar stockEntenSchar = new Schar();
 
@@ -37,11 +37,11 @@ public class EntenSimulator {
 		Quakfaehig stockEnte3 = entenfabrik.erzeugeStockEnte();
 		Quakfaehig stockEnte4 = entenfabrik.erzeugeStockEnte();
 
-		stockEntenSchar.hinzufügen(stockEnte1);
-		stockEntenSchar.hinzufügen(stockEnte2);
-		stockEntenSchar.hinzufügen(stockEnte3);
-		stockEntenSchar.hinzufügen(stockEnte4);
-		EntenSchar.hinzufügen(stockEntenSchar);
+		stockEntenSchar.hinzufuegen(stockEnte1);
+		stockEntenSchar.hinzufuegen(stockEnte2);
+		stockEntenSchar.hinzufuegen(stockEnte3);
+		stockEntenSchar.hinzufuegen(stockEnte4);
+		EntenSchar.hinzufuegen(stockEntenSchar);
 
 		System.out.println("\nEntensimulator: mit Observer");
 		

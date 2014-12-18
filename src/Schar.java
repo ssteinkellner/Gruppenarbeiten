@@ -13,7 +13,7 @@ public class Schar implements Quakfaehig {
 	 * fuegt ein quakfaehiges objekt zur schar hinzu
 	 * @param quaker
 	 */
-	public void hinzufügen(Quakfaehig quaker) {
+	public void hinzufuegen(Quakfaehig quaker) {
 		quakende.add(quaker);
 	}
 
