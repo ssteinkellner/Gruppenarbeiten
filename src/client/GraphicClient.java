@@ -1,6 +1,6 @@
 package client;
 
-import factory.interfaces.Createable;
+import interfaces.Createable;
 
 public class GraphicClient implements Createable {
 

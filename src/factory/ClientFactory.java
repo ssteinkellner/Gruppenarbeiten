@@ -1,12 +1,12 @@
 package factory;
 
-import factory.interfaces.Factory;
+import interfaces.Factory;
 
 public class ClientFactory implements Factory {
 
 
 	/**
-	 * @see factory.interfaces.Factory#create(java.lang.String)
+	 * @see interfaces.Factory#create(java.lang.String)
 	 */
 	public Creatable create(String name) {
 		return null;
@@ -14,7 +14,7 @@ public class ClientFactory implements Factory {
 
 
 	/**
-	 * @see factory.interfaces.Factory#getTypeList()
+	 * @see interfaces.Factory#getTypeList()
 	 */
 	public String getTypeList() {
 		return null;
