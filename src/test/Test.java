@@ -1,6 +1,6 @@
 package test;
 
-import java.math.BigDecimal;
+import java.lang.Math;
 
 /**
  * Created by rene on 07.01.15.
@@ -10,13 +10,13 @@ public class Test {
 
     public static void main(String[] args) {
 
-        int sum = 0;
+         double sum = 0;
+         double temp =0;
 
-        for (double i = 0; i < 10; i++) {
-            if (i % 2 == 0) // if the remainder of `i/2` is 0
-                sum += -1 / (2 * i - 1);
-            else
-                sum += 1 / (2 * i - 1);
+        for (double i = 0; i < 50000; i++) {
+            temp = Math.pow(16,i);
+            temp = 1/temp;
+            sum = (temp* ( 4/(8*i+1) - 2/(8*i+4) - 1/(8*i+5) - 1/(8*i+6)))+sum;
         }
 
 
