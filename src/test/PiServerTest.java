@@ -13,7 +13,7 @@ public class PiServerTest {
     @Test
     public void testPi() throws Exception {
         PiServer test = new PiServer();
-        BigDecimal ret = test.pi(2);
+        BigDecimal ret = test.pi(5);
         BigDecimal testc = new BigDecimal(3.14);
         assertEquals(testc,ret);
     }
