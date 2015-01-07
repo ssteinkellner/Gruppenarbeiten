@@ -1,9 +1,25 @@
 package server;
 
-import interfaces.Calculator;
 import interfaces.CalculationBalancer;
+import interfaces.Calculator;
 import interfaces.Createable;
 
-public class Balancer {
+import java.math.BigDecimal;
 
+public class Balancer implements Calculator, Createable, CalculationBalancer {
+
+    @Override
+    public void registerCalculator(Calculator calculator) {
+
+    }
+
+    @Override
+    public void remove() {
+
+    }
+
+    @Override
+    public BigDecimal pi(int anzahl_nachkommastellen) {
+        return null;
+    }
 }
