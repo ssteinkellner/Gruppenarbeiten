@@ -1,5 +1,6 @@
 package factory;
 
+import interfaces.Createable;
 import interfaces.Factory;
 
 public class ClientFactory implements Factory {
@@ -8,7 +9,7 @@ public class ClientFactory implements Factory {
 	/**
 	 * @see interfaces.Factory#create(java.lang.String)
 	 */
-	public Creatable create(String name) {
+	public Createable create(String name) {
 		return null;
 	}
 
