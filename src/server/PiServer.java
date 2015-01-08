@@ -12,27 +12,15 @@ public class PiServer implements Calculator, Createable {
 	 * @see interfaces.Calculator#pi(int)
 	 */
 	public BigDecimal pi(int anzahl_nachkommastellen) {
-		BigDecimal two = new BigDecimal (2);
-		BigDecimal one = new BigDecimal (1);
-		BigDecimal minone = new BigDecimal (-1);
-		BigDecimal temp, bd;
 
 
-		BigDecimal sum = new BigDecimal (0);
-		for(int i=0; i<anzahl_nachkommastellen; i++){
-			bd = new BigDecimal (i);
-			temp = new BigDecimal(0);
-
-			temp = bd.multiply(two);
-			temp = temp.subtract(one);
-			if(i%2 == 0) {
-				temp = minone.divide(temp);
-			} else {
-				temp = one.divide(temp);
-			}
-			sum = sum.add(temp);
+		BigDecimal sum2=new BigDecimal(0);
+		for (int i = 0; i < 100; i++) {
+			BigDecimal j = new BigDecimal(i);
+			BigDecimal x = new BigDecimal(0);
+			x=(new BigDecimal(1).divide(new BigDecimal(16).pow(i),anzahl_nachkommastellen,BigDecimal.ROUND_DOWN)).multiply(new BigDecimal(4).divide(new BigDecimal(8).multiply(j).add(new BigDecimal(1)),anzahl_nachkommastellen,BigDecimal.ROUND_DOWN).subtract(new BigDecimal(2).divide(new BigDecimal(8).multiply(j).add(new BigDecimal(4)),anzahl_nachkommastellen,BigDecimal.ROUND_DOWN)).subtract(new BigDecimal(1).divide(new BigDecimal(8).multiply(j).add(new BigDecimal(5)),anzahl_nachkommastellen,BigDecimal.ROUND_DOWN)).subtract(new BigDecimal(1).divide(new BigDecimal(8).multiply(j).add(new BigDecimal(6)),anzahl_nachkommastellen,BigDecimal.ROUND_DOWN)));
+			sum2=x.add(sum2);
 		}
-		return sum;
 	}
 
 }
