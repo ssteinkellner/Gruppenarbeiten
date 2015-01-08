@@ -4,10 +4,13 @@ import interfaces.Calculator;
 import interfaces.Server;
 
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class PiServer implements Calculator, Server {
+public class PiServer extends UnicastRemoteObject implements Calculator, Server {
 
-
+	public PiServer () throws RemoteException { super(); }
+	
 	/**
 	 * @see interfaces.Calculator#pi(int)
 	 */
