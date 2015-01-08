@@ -61,18 +61,19 @@ public class CLI {
 	private void useArguments(Map<String, String> values){
 		if(values.containsKey("server")){
 			String name = ((values.containsKey("name"))?values.get("name"):"PiServer");
-			Output.debug(name);
 
 			ServerFactory f = new ServerFactory();
 			try {
+				Output.println ("Starting Service.");
 				running = f.create(values.get("server"));
+				
 				if (System.getSecurityManager() == null){
 					System.setSecurityManager ( new RMISecurityManager() );
 				}
 				Naming.bind (name, (Remote) running);
-				System.out.println ("Service bound....");
+				Output.println ("Service bound.");
 			} catch (NotAvailableException e) {
-				Output.error("The chosen server is not available!");
+				Output.error("The chosen Server is now available!");
 				Output.error("Available Types: " + f.getTypeList());
 				abort();
 			} catch (MalformedURLException e) {
@@ -95,9 +96,9 @@ public class CLI {
 					System.setSecurityManager( new RMISecurityManager() );
 				}
 				Calculator service = ( Calculator ) Naming.lookup( "rmi://my.host.edu/MyService" );
-				System.out.println ( service.pi(17) );
+				Output.println ( service.pi(20) );
 			} catch (NotAvailableException e) {
-				Output.error("The chosen client is not available!");
+				Output.error("The chosen Client is now available!");
 				Output.error("Available Types: " + f.getTypeList());
 				abort();
 			} catch (MalformedURLException e) {
@@ -106,6 +107,10 @@ public class CLI {
 				e.printStackTrace();
 			} catch (NotBoundException e) {
 				e.printStackTrace();
+			} catch(AccessControlException e){
+				Output.error("Couldn't bind Naming!");
+				e.printStackTrace();
+				abort();
 			}
 		}else{
 			Output.error("You have to choose, if you want to start a Server or client!");

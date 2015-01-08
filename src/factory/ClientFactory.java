@@ -21,7 +21,7 @@ public class ClientFactory implements Factory {
 		case("simple"): return new SimpleClient();
 		case("graphic"): return new GraphicClient();
 		}
-		return null;
+		throw new NotAvailableException();
 	}
 
 	/**

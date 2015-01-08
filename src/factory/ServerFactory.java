@@ -1,5 +1,7 @@
 package factory;
 
+import java.rmi.RemoteException;
+
 import interfaces.Factory;
 import interfaces.Server;
 import server.Balancer;
@@ -18,10 +20,15 @@ public class ServerFactory implements Factory {
 	 */
 	public Server create(String name) throws NotAvailableException{
 		switch(name.toLowerCase()){
-			case("piserver"): return new PiServer();
+			case("piserver"): try {
+				return new PiServer();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				
+			}
 			case("balancer"): return new Balancer();
 		}
-		return null;
+		throw new NotAvailableException();
 	}
 
 	/**
