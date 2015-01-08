@@ -11,11 +11,11 @@ public class PiServerTest {
 
 
     @Test
-    public void testPiKommerzeichen() throws Exception {
+    public void testPiKommazeichen() throws Exception {
         PiServer test = new PiServer();
         BigDecimal ret = test.pi(5);
-        // plus 2 weil erste stelle und kommer dazugezählt werden
+        // plus 2 weil erste stelle und komma dazugezählt werden
         assertEquals(5+2,ret.toString().length());
     }
-    
+
 }
