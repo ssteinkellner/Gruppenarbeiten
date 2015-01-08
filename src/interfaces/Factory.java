@@ -22,6 +22,6 @@ public interface Factory {
 	 * (um die verwendung zu erleichtern)
 	 * @return liste aller bekannter namen
 	 */
-	public abstract String getTypeList();
+	public abstract  String getTypeList();
 
 }

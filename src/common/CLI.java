@@ -22,7 +22,7 @@ public class CLI {
 		useArguments(values);
 	}
 	
-	private Map<String, String> parseArguments(String[] args){
+	private Map<String,String> parseArguments(String[] args){
 		HashMap<String,String> values = new HashMap<String,String>();
 		
 		for(int i=0;i<args.length;i++){
@@ -35,6 +35,12 @@ public class CLI {
 			}else if(checkArgument(args[i],"client","c")){
 				i++;
 				values.put("client",args[i]);
+			}else if(checkArgument(args[i],"port","p")){
+				i++;
+				values.put("port",args[i]);
+			}else if(checkArgument(args[i],"host","h")){
+				i++;
+				values.put("host",args[i]);
 			}
 		}
 		
@@ -45,17 +51,21 @@ public class CLI {
 	
 	private void useArguments(Map<String, String> values){
 		if(values.containsKey("server")){
+			ServerFactory f = new ServerFactory();
 			try {
-				running = new ServerFactory().create(values.get("server"));
+				running = f.create(values.get("server"));
 			} catch (NotAvailableException e) {
 				Output.error("The chosen server is not available!");
+				Output.error("Available Types: " + f.getTypeList());
 				abort();
 			}
 		}else if(values.containsKey("client")){
+			ClientFactory f = new ClientFactory();
 			try {
-				running = new ClientFactory().create(values.get("client"));
+				running = f.create(values.get("client"));
 			} catch (NotAvailableException e) {
 				Output.error("The chosen client is not available!");
+				Output.error("Available Types: " + f.getTypeList());
 				abort();
 			}
 		}else{

@@ -12,11 +12,12 @@ public class Test {
 
          double sum = 0;
          double temp =0;
+         double tempsum =0;
 
         for (double i = 0; i < 50000; i++) {
-            temp = Math.pow(16,i);
-            temp = 1/temp;
-            sum = (temp* ( 4/(8*i+1) - 2/(8*i+4) - 1/(8*i+5) - 1/(8*i+6)))+sum;
+            temp = 1/Math.pow(16,i);
+            tempsum = temp* ( 4/(8*i+1) - 2/(8*i+4) - 1/(8*i+5) - 1/(8*i+6));
+            sum = sum + tempsum;
         }
 
 
@@ -30,7 +31,7 @@ public class Test {
         BigDecimal eins = new BigDecimal (1);
         BigDecimal zwei = new BigDecimal (2);
         BigDecimal vier = new BigDecimal (4);
-        BigDecimal fünf = new BigDecimal (5);
+        BigDecimal fuenf = new BigDecimal (5);
         BigDecimal sechs = new BigDecimal (6);
         BigDecimal acht = new BigDecimal (8);
         BigDecimal zehnsechs = new BigDecimal (16);
@@ -58,7 +59,7 @@ public class Test {
             temp2=zwei.divide(temp2,20,BigDecimal.ROUND_DOWN);
 
             temp3=acht.multiply(j);
-            temp3=temp3.add(fünf);
+            temp3=temp3.add(fuenf);
             temp3=eins.divide(temp3,20,BigDecimal.ROUND_DOWN);
 
             temp4=acht.multiply(j);
