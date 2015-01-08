@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.Test;
 import server.PiServer;
 
 import java.math.BigDecimal;
@@ -9,11 +10,12 @@ import static org.junit.Assert.assertEquals;
 public class PiServerTest {
 
 
-
-    public void testPi() throws Exception {
+    @Test
+    public void testPiKommerzeichen() throws Exception {
         PiServer test = new PiServer();
         BigDecimal ret = test.pi(5);
-        BigDecimal testc = new BigDecimal(3.14);
-        assertEquals(testc,ret);
+        // plus 2 weil erste stelle und kommer dazugezählt werden
+        assertEquals(5+2,ret.toString().length());
     }
+    
 }
