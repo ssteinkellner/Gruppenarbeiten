@@ -1,0 +1,5 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Aufgabe}{2}
+\contentsline {section}{\numberline {2}Working time}{4}
+\contentsline {subsection}{\numberline {2.1}Estimated Working time}{4}
+\contentsline {section}{\numberline {3}Easy Bibliography}{5}
