@@ -12,33 +12,27 @@ public class PiServer implements Calculator, Createable {
 	 * @see interfaces.Calculator#pi(int)
 	 */
 	public BigDecimal pi(int anzahl_nachkommastellen) {
+		BigDecimal two = new BigDecimal (2);
+		BigDecimal one = new BigDecimal (1);
+		BigDecimal minone = new BigDecimal (-1);
+		BigDecimal temp, bd;
+
 
 		BigDecimal sum = new BigDecimal (0);
 		for(int i=0; i<anzahl_nachkommastellen; i++){
-			BigDecimal bd = new BigDecimal (i);
-			BigDecimal two = new BigDecimal (2);
-			BigDecimal one = new BigDecimal (1);
-			BigDecimal temp = new BigDecimal (0);
-			BigDecimal minone = new BigDecimal (-1);
+			bd = new BigDecimal (i);
+			temp = new BigDecimal(0);
 
-			if(i%2 == 0) { // if the remainder of `i/2` is 0
-
-				temp = bd.multiply(two);
-				temp = temp.subtract(one);
+			temp = bd.multiply(two);
+			temp = temp.subtract(one);
+			if(i%2 == 0) {
 				temp = minone.divide(temp);
-				sum = sum.add(temp);
-
-			}
-			else {
-
-				temp = bd.multiply(two);
-				temp = temp.subtract(one);
+			} else {
 				temp = one.divide(temp);
-				sum = sum.add(temp);
-
 			}
+			sum = sum.add(temp);
 		}
-	return sum;
+		return sum;
 	}
 
 }
