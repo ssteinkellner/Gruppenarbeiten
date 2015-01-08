@@ -1,7 +1,7 @@
 package factory;
 
-import interfaces.Createable;
 import interfaces.Factory;
+import interfaces.Server;
 import server.Balancer;
 import server.PiServer;
 import exceptions.NotAvailableException;
@@ -16,7 +16,7 @@ public class ServerFactory implements Factory {
 	/**
 	 * @see interfaces.Factory#create(java.lang.String)
 	 */
-	public Createable create(String name) throws NotAvailableException{
+	public Server create(String name) throws NotAvailableException{
 		switch(name.toLowerCase()){
 			case("piserver"): return new PiServer();
 			case("balancer"): return new Balancer();

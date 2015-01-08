@@ -3,10 +3,11 @@ package server;
 import interfaces.CalculationBalancer;
 import interfaces.Calculator;
 import interfaces.Createable;
+import interfaces.Server;
 
 import java.math.BigDecimal;
 
-public class Balancer implements Calculator, Createable, CalculationBalancer {
+public class Balancer implements Calculator, Server, CalculationBalancer {
 
 
 	/**

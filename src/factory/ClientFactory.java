@@ -1,10 +1,10 @@
 package factory;
 
-import server.Balancer;
-import server.PiServer;
-import exceptions.NotAvailableException;
-import interfaces.Createable;
+import interfaces.Client;
 import interfaces.Factory;
+import client.GraphicClient;
+import client.SimpleClient;
+import exceptions.NotAvailableException;
 
 /**
  * factory, die einen client erstellt
@@ -16,11 +16,11 @@ public class ClientFactory implements Factory {
 	/**
 	 * @see interfaces.Factory#create(java.lang.String)
 	 */
-	public Createable create(String name) throws NotAvailableException{
+	public Client create(String name) throws NotAvailableException{
 		switch(name.toLowerCase()){
-		case("simple"): return new PiServer();
-		case("graphic"): return new Balancer();
-	}
+		case("simple"): return new SimpleClient();
+		case("graphic"): return new GraphicClient();
+		}
 		return null;
 	}
 

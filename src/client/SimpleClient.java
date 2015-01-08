@@ -1,7 +1,7 @@
 package client;
 
-import interfaces.Createable;
+import interfaces.Client;
 
-public class SimpleClient implements Createable {
+public class SimpleClient implements Client {
 
 }

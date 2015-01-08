@@ -1,11 +1,11 @@
 package server;
 
 import interfaces.Calculator;
-import interfaces.Createable;
+import interfaces.Server;
 
 import java.math.BigDecimal;
 
-public class PiServer implements Calculator, Createable {
+public class PiServer implements Calculator, Server {
 
 
 	/**
