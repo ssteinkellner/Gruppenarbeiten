@@ -116,13 +116,24 @@ Planung  & \begin{tabular}[c]{c}Pöcher\\ Steinkellner\end{tabular} & \begin{tabu
 UML Design & \begin{tabular}[c]{c}Pöcher\end{tabular} & \begin{tabular}[c]{c}1/2\end{tabular}    \\ \hline 
 PI Methode desig. \& Implementieren  & \begin{tabular}[c]{c}Pöcher\end{tabular} & \begin{tabular}[c]{c}2\end{tabular}    \\ \hline \hline
 Total & \begin{tabular}[c]{c}Pöcher\\ Steinkellner\end{tabular} & \begin{tabular}[c]{c}2 1/2\\1\end{tabular}   \\ \hline 
-\textbf{Total Team} & & \textbf{4 hours}  \\ \hline 
+\textbf{Total Team} & & \textbf{3 1/2 hours}  \\ \hline 
 \end{tabular}
 \caption{Estimated working time}
 \end{table}
 
 
 \newpage
+
+\section{Umsetzung}
+
+\subsection{PI Methode}
+
+Zu PI Methode wird die Bailey-Borwein-Plouffe-Formel verwendet\cite{Bailey-Borwein-Plouffe}
+\\\\
+Als Datentyp wird BigDecimal verwendet. Bei der Umsetzung aufpassen: \\
+Um mit BigDecimal zu rechnen müssen die Methoden verwendet werden, um mit diesen jedoch zu rechnen müssen BigDecimal Datentypen verwendet werden, die ganz einfach mit new BigDecimal("int") erstellt sind.
+ \\\\
+\includegraphics{Auswahl_002}
 
 \section{Easy Bibliography}
 \listoftables
@@ -131,14 +142,10 @@ Total & \begin{tabular}[c]{c}Pöcher\\ Steinkellner\end{tabular} & \begin{tabular
 
 \begin{thebibliography}{56}
 
-\bibitem{name}
-   \textbf{Who}, When\\
-  \textit{url}
-  \newline last used: dd.mm.yyyy, hh:mm
+\bibitem{Bailey-Borwein-Plouffe}
+   \textbf{Wikipedia,Bailey-Borwein-Plouffe}\\
+  \textit{http://de.wikipedia.org/wiki/Bailey-Borwein-Plouffe-Formel}
+  \newline last used: 5.01.1995, 16:00
  
- \bibitem{example} 
-  \textbf{Mister Super-genious}, Answer from 20.01.2015\\
-  \textit{http://www.stackoverflow.com/question}
-  \newline last used: 22.10.2014, 21:00
 \end{thebibliography}
 \end{document}
